@@ -69,8 +69,8 @@ body{width:1080px;height:1920px;overflow:hidden;font-family:Poppins,sans-serif;b
 .litem{display:flex;align-items:center;gap:28px;background:#fff;border-radius:28px;padding:26px 30px;box-shadow:0 14px 36px rgba(26,51,33,.14)}
 .litem b{flex:none;width:84px;height:84px;border-radius:50%;background:var(--g);color:var(--au);display:grid;place-items:center;font-size:44px;font-weight:700}
 .litem span{font-size:40px;font-weight:600;line-height:1.25;color:var(--gd)}
-.perks{left:64px;right:64px;display:flex;flex-wrap:wrap;gap:14px}
-.perk{display:flex;align-items:center;gap:10px;padding:12px 22px;border-radius:16px;background:var(--cr);color:var(--gd);font-size:30px;font-weight:700;white-space:nowrap;box-shadow:0 10px 24px rgba(0,0,0,.35)}
+.perks{left:64px;right:64px;display:flex;flex-wrap:wrap;gap:10px}
+.perk{display:flex;align-items:center;gap:8px;padding:11px 16px;border-radius:16px;background:var(--cr);color:var(--gd);font-size:27px;font-weight:700;white-space:nowrap;box-shadow:0 10px 24px rgba(0,0,0,.35)}
 .perk i{font-style:normal;color:var(--g);font-size:30px}
 .web{left:0;right:0;text-align:center;font-size:42px;font-weight:600}
 .cta{left:50%;padding:24px 54px;border-radius:70px;background:var(--au);color:var(--gd);font-size:40px;font-weight:700;white-space:nowrap}
@@ -170,8 +170,14 @@ window.renderFrame=function(f){
 """
 
 def esc(s): return html.escape(s)
-FOOT = (f'<div class="abs foot" style="left:0;right:0;bottom:0;height:150px;background:rgba(20,40,26,.92);border-top:6px solid var(--au);color:#fff;'
-        f'display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:600;letter-spacing:1px">{WEB}</div>')
+FOOT_TOP = 1545  # bandın üst kenarı; marka satırı 1350-1470 arasında (Facebook 4:5 ve TikTok için güvenli)
+def foot_html():
+    return (f'<div class="abs foot" style="left:0;right:0;top:{FOOT_TOP}px;bottom:0;background:#14281A;border-top:8px solid var(--au);color:#fff">'
+            f'<div style="height:84px;display:flex;align-items:center;justify-content:center;gap:22px">'
+            f'<img src="__LOGO__" style="width:54px">'
+            f'<div style="line-height:1.15"><div style="font-size:30px;font-weight:700;letter-spacing:2px">YÜKSEL TARIM <span style="color:var(--au)">DENİZLİ</span></div>'
+            f'<div style="font-size:30px;font-weight:500;color:var(--au)">{WEB}</div></div></div></div>')
+FOOT = "__FOOT__"
 
 def title_html(t):
     return "".join(f'<span class="wd{" gold" if w.startswith("[") else ""}"><i>{esc(w.strip("[]"))}</i></span>' for w in t.split())
@@ -214,7 +220,7 @@ def build(cfg):
             # GÜVENLİ ALAN: Facebook akışı 9:16'yı ortadan 4:5 kırpar (üst/alt ~285px), TikTok altta ~420px ve sağda
             # ~150px'i butonlarla kaplar. Önemli her şey y 285-1480, x 64-930 içinde kalır.
             s.setdefault("dur", 100)
-            im = uri(s["image"]); fh = min(s.get("frame_h", 540), 560); FY = 500
+            im = uri(s["image"]); fh = min(s.get("frame_h", 560), 560); FY = 480
             chips = "".join(f'<div class="chip">{c}</div>' for c in s.get("chips", []))
             inset = ""
             if s.get("inset"):
@@ -228,7 +234,7 @@ def build(cfg):
                 y += 190
             perks = ""
             if s.get("perks"):
-                perks = (f'<div class="perks abs" style="top:{y}px;right:150px">' +
+                perks = (f'<div class="perks abs" style="top:{y}px;right:120px">' +
                          "".join(f'<div class="perk"><i>✓</i>{esc(x)}</div>' for x in s["perks"]) + '</div>')
                 alt = ""
             else:
@@ -265,6 +271,7 @@ def build(cfg):
                          f'<div class="web abs" style="top:1220px"></div>'
                          + (f'<div class="ring abs" style="top:1340px"></div><div class="cta abs" style="top:1340px">{esc(cta)}</div>' if cta else '') + '</div>')
         scenes.append(s); f += s["dur"]
+    parts = [x.replace("__FOOT__", foot_html()).replace("__LOGO__", logo) for x in parts]
     doc = (f'<html><head><meta charset="utf-8"><style>{CSS}</style></head><body>{"".join(parts)}'
            f'<div class="wipe2"></div><div class="wipe"></div><script>{JS.replace("__SCENES__", json.dumps(scenes))}</script></body></html>')
     return doc, f
