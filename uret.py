@@ -216,6 +216,21 @@ def taslak(kayit_yolu, klasor):
 
 def uret(klasor, muzik=None):
     klasor = pathlib.Path(klasor); cfg = json.loads((klasor / "config.json").read_text())
+    # Güvence: satış koşulu rozetleri (kredi/kart/takas) ürün sahnelerinden asla düşmesin.
+    ikinci = {}
+    if (klasor / "urunler.json").exists():
+        for b in json.loads((klasor / "urunler.json").read_text()):
+            if b.get("foto"):
+                ikinci[pathlib.Path(b["foto"]).name.split("_foto")[0]] = b.get("ikinci_el", False)
+    eklendi = False
+    for sc in cfg.get("scenes", []):
+        if sc.get("type") == "photo" and not sc.get("perks") and not sc.get("perks_yok"):
+            anahtar = pathlib.Path(sc.get("image", "")).name.split("_foto")[0]
+            sc["perks"] = odeme_secenekleri(ikinci.get(anahtar, "2. El" in sc.get("chips", [])))
+            eklendi = True
+    if eklendi:
+        (klasor / "config.json").write_text(json.dumps(cfg, ensure_ascii=False, indent=1))
+        print("UYARI: perks eksikti, otomatik eklendi", file=sys.stderr)
     if cfg["format"] == "Video":
         sessiz = klasor / "video_sessiz.mp4"
         subprocess.run([sys.executable, str(MOTOR / "motion2.py"), str(klasor / "config.json"), str(sessiz)], check=True)

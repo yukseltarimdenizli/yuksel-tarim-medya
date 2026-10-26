@@ -62,7 +62,7 @@ Türkçe ve kısa yaz.
    - Notta ürün dışı bir bilgi varsa (kredi, taksit, kampanya süresi) başlık sahnesinin `sub` alanına kısa yaz.
    - Ürünü olmayan kayıtlarda (firma tanıtımı, usta ipucu) video için ürün sahnesi yerine başlık + not yeterli; gerekirse `headline` `sub` alanını kullan.
 5. `python3 uret.py uret /tmp/is/<id> --muzik <müzik dosyası>` çalıştır.
-6. Kontrol: Videodan 3 kare çıkar (`ffmpeg -ss <t> -i video.mp4 -frames:v 1 kare.png`, başlık, ilk ürün, son ürün)
+6. Kontrol: Videodan 3 kare çıkar (ürün sahnelerinde sahnenin SONUNA yakın kare al; rozetler sahne başlayınca ~2 sn sonra belirir). Her ürün sahnesinde fiyatın altında kredi/kart/takas rozetleri GÖRÜNMELİ; yoksa config'te `perks` eksiktir, ekleyip yeniden üret. (Firma tanıtımı fotoğrafları gibi ürün olmayan sahnelerde rozet istemiyorsan sahneye `"perks_yok": true` yaz.)  (`ffmpeg -ss <t> -i video.mp4 -frames:v 1 kare.png`, başlık, ilk ürün, son ürün)
    ve Read ile bak. Taşan/kesilen/üst üste binen yazı varsa config'i düzeltip yeniden üret (en fazla 2 deneme).
    Görselde `gorsel_fb.png`'ye bak.
 7. Yükle: `python3 uret.py yukle <dosya> <YYYY-MM-DD>_<HHMM>_<kısa-slug>.<mp4|png>` → herkese açık linki verir.
