@@ -67,6 +67,21 @@ Türkçe ve kısa yaz.
    Görselde `gorsel_fb.png`'ye bak.
 7. Yükle: `python3 uret.py yukle <dosya> <YYYY-MM-DD>_<HHMM>_<kısa-slug>.<mp4|png>` → herkese açık linki verir.
 
+### Video sahne türleri (config.json → scenes)
+- `intro`: logo açılışı (her videoda ilk).
+- `headline`: krem zemin, `kicker`, `title` (altın vurgu için kelime `[ ]` içinde), `sub`.
+- `photo`: ürün fotoğrafı; `label`, `name`, `name_fs`, `image`, `frame_h`, `kb` (kamera hareketi), `desc`, `chips`, opsiyonel `price` + `price_label`, opsiyonel `inset` (köşe yakın çekim).
+- `list`: krem zemin, numaralı maddeler; `kicker`, `title`, `items` (en fazla 4, her biri kısa). Usta ipucu ve firma tanıtımı için.
+- `greeting`: kutlama sahnesi; `kicker`, `title`, `sub`, opsiyonel `bg`/`bg2` renkleri (29 Ekim, Cumhuriyet vb. için kırmızı `#5E0A12`/`#C8102E`; Cuma, kandil, bayram için varsayılan yeşil). Satış içermez.
+- `outro`: kapanış; `cta` butonu metni. Kutlama/özel gün videolarında `cta: ""` (buton gösterilmez).
+- Ürün sayfası dışındaki bir site fotoğrafı gerekirse: `python3 uret.py foto <url> <is_klasoru> <ad>.jpg` ile indir, `photo` sahnesinin `image` alanına yaz.
+- Kullanıcının notunda sahneye dair açık bir istek varsa (renk, kicker, alt metin, madde listesi) onu uygula.
+
+### Kullanıcı tercihleri
+- Kullanıcı GÖRSEL değil VİDEO istiyor. Kayıtta `format` "Görsel" olsa bile video üret (Facebook + TikTok için aynı dikey video).
+- Her videoda aynı müzik (plan sayfasındaki asset).
+- Ürünlerin hep aynı türden olmaması önemli; bir haftayı tek ürünle doldurma (bu, planlama yapılırken geçerli; kayıtları değiştirme).
+
 ### 4. Açıklama metni (caption)
 Türkçe, bu yapıda (örnek):
 ```

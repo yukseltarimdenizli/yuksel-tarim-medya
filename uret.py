@@ -164,8 +164,25 @@ def taslak(kayit_yolu, klasor):
     (klasor / "urunler.json").write_text(json.dumps(bilgiler, ensure_ascii=False, indent=1))
 
     title = kayit.get("title") or (bilgiler[0]["plan_adi"] if bilgiler else "Yüksel Tarım")
-    cfg = {"format": kayit.get("format", "Video"), "kayit_id": kayit.get("id"), "scenes": []}
-    if cfg["format"] == "Video":
+    cfg = {"format": "Video", "kayit_id": kayit.get("id"), "scenes": []}  # kullanıcı tercihi: hep video
+    tur = kayit.get("type")
+    satirlar = [re.sub(r"^\s*(\d+[).]|[-•*])\s*", "", x).strip() for x in re.split(r"\n|(?<=\.)\s+(?=\d+\))", kayit.get("note", "")) if x.strip()]
+    if cfg["format"] == "Video" and tur == "Özel gün":
+        cfg["scenes"] = [{"type": "intro", "overlap": 24},
+                         {"type": "greeting", "kicker": "YÜKSEL TARIM", "title": baslik_vurgula(title), "sub": ""},
+                         {"type": "outro", "cta": ""}]
+    elif cfg["format"] == "Video" and tur in ("Usta ipucu", "Firma tanıtımı"):
+        cfg["scenes"] = [{"type": "intro", "overlap": 24},
+                         {"type": "list", "kicker": "USTA İPUCU" if tur == "Usta ipucu" else "YÜKSEL TARIM · DENİZLİ", "title": title, "items": satirlar[:4]}]
+        for n, b in enumerate(bilgiler):
+            if b["foto"]:
+                ad = kisa_ad(b["plan_adi"])
+                cfg["scenes"].append({"type": "photo", "wipe": True, "label": etiket_ust(b["plan_adi"]), "name": ad,
+                                      "name_fs": 130 if len(ad) <= 12 else max(64, int(130 * 12 / len(ad))), "image": b["foto"],
+                                      "frame_h": 620, "kb": [20, 0, 1.04, -30, -10, 1.18], "desc": "Yüksel Tarım güvencesiyle.",
+                                      "chips": (["2. El"] if b.get("ikinci_el") else ["Sıfır"]) + etiketler(b["plan_adi"])[:2], "dur": 110})
+        cfg["scenes"].append({"type": "outro", "cta": "Bilgi için hemen arayın"})
+    elif cfg["format"] == "Video":
         cfg["scenes"].append({"type": "intro", "overlap": 24})
         cfg["scenes"].append({"type": "headline", "kicker": KICKER.get(kayit.get("type"), "YÜKSEL TARIM"),
                               "title": baslik_vurgula(title), "sub": "" if any(b["fiyat"] for b in bilgiler) else kayit.get("note", "")[:140]})
@@ -235,6 +252,14 @@ def tr_baslik(s):
     return re.sub(r"\bLs\b", "LS", re.sub(r"\bHp\b", "HP", s))
 
 
+def foto(url, klasor, ad):
+    """Herhangi bir site fotoğrafını indirip videoya hazırlar (firma tanıtımı vb.)."""
+    from PIL import Image, ImageFilter
+    im = beyaz_kirp(Image.open(io.BytesIO(get(url, binary=True))).convert("RGB"))
+    im = im.resize((im.width * 2, im.height * 2), Image.LANCZOS).filter(ImageFilter.UnsharpMask(2, 80, 2))
+    out = pathlib.Path(klasor) / ad; im.save(out, quality=93); print(out)
+
+
 def urun_listesi(cikti):
     page = get(SITE + "/urunler")
     out, seen = [], set()
@@ -268,4 +293,5 @@ if __name__ == "__main__":
     elif k == "uret": uret(sys.argv[2], sys.argv[sys.argv.index("--muzik") + 1] if "--muzik" in sys.argv else None)
     elif k == "yukle": yukle(sys.argv[2], sys.argv[3])
     elif k == "urun_listesi": urun_listesi(sys.argv[2])
+    elif k == "foto": foto(sys.argv[2], sys.argv[3], sys.argv[4])
     else: print(__doc__)

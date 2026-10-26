@@ -58,6 +58,17 @@ body{width:1080px;height:1920px;overflow:hidden;font-family:Poppins,sans-serif;b
 .price small{font-size:26px;font-weight:600;letter-spacing:1px;position:absolute;top:-44px;left:6px;color:var(--au)}
 .price b{font-size:104px;line-height:1;font-weight:700;font-variant-numeric:tabular-nums;letter-spacing:-2px}
 .price span{font-size:46px;font-weight:700}
+.gcol{left:70px;right:70px;top:640px;display:flex;flex-direction:column;align-items:center;gap:34px}
+.gtitle{text-align:center;font-weight:700;line-height:1.08;color:#fff}
+.gtitle .wd.gold i{color:var(--au)}
+.gsub{padding:0 20px;text-align:center;font-size:42px;line-height:1.45;color:rgba(255,255,255,.9)}
+.gline{height:6px;width:420px;background:var(--au);border-radius:6px;transform-origin:center}
+.gkick{text-align:center;font-size:32px;font-weight:600;letter-spacing:10px;color:var(--au)}
+.glogo{left:50%;width:150px;margin-left:-75px}
+.ltitle{font-size:84px;font-weight:700;line-height:1.08;color:var(--g)}
+.litem{display:flex;align-items:center;gap:28px;background:#fff;border-radius:28px;padding:26px 30px;box-shadow:0 14px 36px rgba(26,51,33,.14)}
+.litem b{flex:none;width:84px;height:84px;border-radius:50%;background:var(--g);color:var(--au);display:grid;place-items:center;font-size:44px;font-weight:700}
+.litem span{font-size:40px;font-weight:600;line-height:1.25;color:var(--gd)}
 .web{left:0;right:0;text-align:center;font-size:42px;font-weight:600}
 .cta{left:50%;padding:24px 54px;border-radius:70px;background:var(--au);color:var(--gd);font-size:40px;font-weight:700;white-space:nowrap}
 .ring{border:4px solid var(--au);border-radius:80px}
@@ -119,12 +130,28 @@ const R={
    const pr=$('.price',el); if(pr){ const s=spring(t-14,{damping:10,stiffness:120}); S(pr,{transform:`scale(${s}) rotate(${(1-s)*-6}deg)`,opacity:Math.min(1,s*2)});
      const v=+$('b',pr).dataset.v, k=lerp(t,[18,46],[0,1],eo); $('b',pr).textContent=(Math.round(v*k/1000)*1000).toLocaleString('tr-TR'); }
    const ins=$('.inset',el); if(ins){const s=spring(t-(cfg.inset_at||60),{damping:11,stiffness:110}); S(ins,{transform:`scale(${s}) rotate(${(1-s)*-25+4}deg)`,opacity:Math.min(1,s*2)});} },
+ greeting(el,t,d){ field($('canvas',el),t,'#D4A445',.09); dust($('canvas',el),t,'#F5D58A');
+   const up=lerp(t,[0,20],[0,1],eio); S(el,{clipPath:`circle(${up*140}% at 50% 50%)`});
+   S($('.glogo',el),{transform:`scale(${spring(t-8,{damping:11,stiffness:120})})`});
+   S($('.gkick',el),{opacity:lerp(t,[12,24],[0,1]),letterSpacing:`${lerp(t,[12,40],[2,10],eo)}px`});
+   words(el,t-18); const n=$$('.wd',el).length;
+   S($('.gline',el),{transform:`scaleX(${lerp(t,[22+n*4,40+n*4],[0,1],eo)})`});
+   S($('.gsub',el),{opacity:lerp(t,[30+n*4,46+n*4],[0,1]),transform:`translateY(${lerp(t,[30+n*4,48+n*4],[40,0],eo)}px)`}); },
+ list(el,t,d){ field($('canvas',el),t+40,'#2F5737',.05);
+   const up=lerp(t,[0,22],[0,1],eio); S(el,{clipPath:`polygon(0 ${100-up*100+(1-up)*9}%,100% ${100-up*100}%,100% 100%,0 100%)`});
+   S($('.hdr',el),{transform:`translateX(${(1-spring(t,{damping:16}))*-500}px)`});
+   S($('.kick',el),{transform:`scale(${spring(t-6,{damping:9,stiffness:150})})`});
+   const tt=spring(t-10,{damping:14}); S($('.ltitle',el),{opacity:Math.min(1,tt*1.5),transform:`translateY(${(1-tt)*80}px)`});
+   $$('.litem',el).forEach((it,i)=>{ const s=spring(t-26-i*14,{damping:13,stiffness:110}); S(it,{transform:`translateX(${(1-s)*1100}px) rotate(${(1-s)*5}deg)`});
+     S($('b',it),{transform:`scale(${spring(t-32-i*14,{damping:8,stiffness:170})})`}); });
+   S($('.foot',el),{transform:`translateY(${(1-spring(t-12,{damping:16}))*160}px)`}); },
  outro(el,t,d){ field($('canvas',el),t,'#D4A445',.08); dust($('canvas',el),t,'#D4A445');
    S(el,{clipPath:`circle(${lerp(t,[0,22],[0,140],eio)}% at 50% 72%)`});
    S($('.endhalo',el),{transform:`scale(${spring(t-6,{damping:12,stiffness:90})})`});
    S($('.endlogo',el),{transform:`scale(${spring(t-10,{damping:10,stiffness:110})}) rotate(${(1-spring(t-10))*-20}deg)`});
    [['.brand',18],['.city',23]].forEach(([q,dl])=>{const s=spring(t-dl,{damping:14}); S($(q,el),{opacity:Math.min(1,s),transform:`translateY(${(1-s)*60}px)`});});
    const url=el.dataset.web, k=Math.floor(lerp(t,[28,54],[0,url.length])); $('.web',el).textContent=url.slice(0,k)+((k<url.length&&t>26&&t%10<5)?'|':'');
+   if(!$('.cta',el)) return;
    const cs=spring(t-52,{damping:9,stiffness:140}); S($('.cta',el),{transform:`translateX(-50%) scale(${cs})`});
    const cr=$('.cta',el).getBoundingClientRect(), p=((t-60)%30)/30;
    S($('.ring',el),{display:t>60?'block':'none',left:cr.left+'px',top:cr.top+'px',width:cr.width+'px',height:cr.height+'px',transform:`scale(${1+p*.35})`,opacity:1-p}); }
@@ -140,7 +167,7 @@ window.renderFrame=function(f){
 """
 
 def esc(s): return html.escape(s)
-FOOT = (f'<div class="abs foot" style="left:0;right:0;bottom:0;height:150px;background:rgba(20,40,26,.92);border-top:6px solid var(--au);'
+FOOT = (f'<div class="abs foot" style="left:0;right:0;bottom:0;height:150px;background:rgba(20,40,26,.92);border-top:6px solid var(--au);color:#fff;'
         f'display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:600;letter-spacing:1px">{WEB}</div>')
 
 def title_html(t):
@@ -199,13 +226,32 @@ def build(cfg):
                          f'<div class="frame abs" style="top:560px;height:{fh}px"><div class="ph" style="background-image:url({im})"></div></div>'
                          f'<div class="pdesc abs" style="top:{dy}px;right:{520 if s.get("inset") else 64}px">{esc(s.get("desc",""))}</div>'
                          f'<div class="chips abs" style="top:{dy+(190 if s.get("inset") else 140)}px">{chips}</div>{inset}{price}{FOOT}</div>')
+        elif t == "greeting":
+            s.setdefault("dur", 150)
+            bg = s.get("bg", "#14281A")
+            longest = max(len(w.strip("[]")) for w in s["title"].split()); fs = min(140, int(1500 / max(longest, 6)))
+            parts.append(f'<div class="sc" style="background:radial-gradient(ellipse at 50% 40%,{s.get("bg2","#2F5737")},{bg} 70%)"><canvas width="1080" height="1920"></canvas>'
+                         f'<div class="halo abs" style="top:300px;width:300px;height:300px;margin-left:-150px"></div><img class="glogo abs" src="{logo}" style="top:370px">'
+                         f'<div class="gcol abs"><div class="gkick">{esc(s.get("kicker",""))}</div>'
+                         f'<div class="gtitle" style="font-size:{fs}px">{title_html(s["title"])}</div>'
+                         f'<div class="gline"></div><div class="gsub">{esc(s.get("sub",""))}</div></div>{FOOT}</div>')
+        elif t == "list":
+            items = s.get("items", [])
+            s.setdefault("dur", 60 + 14 * len(items) + 70)
+            li = "".join(f'<div class="litem"><b>{k+1}</b><span>{esc(x)}</span></div>' for k, x in enumerate(items))
+            parts.append(f'<div class="sc" style="background:var(--cr);color:var(--g)"><canvas width="1080" height="1920"></canvas>'
+                         f'<div class="hdr abs" style="color:var(--g)"><img src="{logo}"><div><b>YÜKSEL TARIM</b><span>DENİZLİ</span></div></div>'
+                         f'<div class="abs" style="left:64px;right:64px;top:250px;bottom:180px;display:flex;flex-direction:column;justify-content:center;gap:26px">'
+                         f'<div class="kick" style="align-self:flex-start">{esc(s.get("kicker","USTA İPUCU"))}</div>'
+                         f'<div class="ltitle">{esc(s["title"])}</div><div style="display:flex;flex-direction:column;gap:22px;margin-top:14px">{li}</div></div>{FOOT}</div>')
         elif t == "outro":
             s.setdefault("dur", 115)
+            cta = s.get("cta", "Bilgi için hemen arayın")
             parts.append(f'<div class="sc" data-web="{WEB}" style="background:var(--g)"><canvas width="1080" height="1920"></canvas>'
                          f'<div class="endhalo abs" style="top:500px"></div><img class="endlogo abs" src="{logo}" style="left:50%;top:565px;width:330px;margin-left:-165px">'
                          f'<div class="brand abs" style="top:1000px;font-size:74px;letter-spacing:4px">YÜKSEL TARIM</div><div class="city abs" style="top:1100px;letter-spacing:14px">DENİZLİ</div>'
-                         f'<div class="web abs" style="top:1220px"></div><div class="ring abs" style="top:1340px"></div>'
-                         f'<div class="cta abs" style="top:1340px">{esc(s.get("cta","Bilgi için hemen arayın"))}</div></div>')
+                         f'<div class="web abs" style="top:1220px"></div>'
+                         + (f'<div class="ring abs" style="top:1340px"></div><div class="cta abs" style="top:1340px">{esc(cta)}</div>' if cta else '') + '</div>')
         scenes.append(s); f += s["dur"]
     doc = (f'<html><head><meta charset="utf-8"><style>{CSS}</style></head><body>{"".join(parts)}'
            f'<div class="wipe2"></div><div class="wipe"></div><script>{JS.replace("__SCENES__", json.dumps(scenes))}</script></body></html>')
