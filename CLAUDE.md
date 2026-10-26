@@ -75,6 +75,7 @@ Türkçe ve kısa yaz.
 - `greeting`: kutlama sahnesi; `kicker`, `title`, `sub`, opsiyonel `bg`/`bg2` renkleri (29 Ekim, Cumhuriyet vb. için kırmızı `#5E0A12`/`#C8102E`; Cuma, kandil, bayram için varsayılan yeşil). Satış içermez.
 - `outro`: kapanış; `cta` butonu metni. Kutlama/özel gün videolarında `cta: ""` (buton gösterilmez).
 - Ürün sayfası dışındaki bir site fotoğrafı gerekirse: `python3 uret.py foto <url> <is_klasoru> <ad>.jpg` ile indir, `photo` sahnesinin `image` alanına yaz.
+- **Güvenli alan:** Videolar 9:16 kalır. Facebook akışı ortadan 4:5 kırptığı ve TikTok altta/sağda butonlarla kapladığı için önemli yazılar y 285-1480 ve x 64-930 arasında olmalı. Şablonlar buna göre ayarlı; kare kontrolünde bu alanın dışına taşan yazı varsa düzelt (`name_fs`/başlık kısalt, madde sayısını azalt).
 - Kullanıcının notunda sahneye dair açık bir istek varsa (renk, kicker, alt metin, madde listesi) onu uygula.
 
 ### Firma satış koşulları (her ürün videosunda ve açıklamada vurgula)

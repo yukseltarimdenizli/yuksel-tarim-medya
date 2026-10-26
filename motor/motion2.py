@@ -191,11 +191,11 @@ def build(cfg):
                          f'<div class="brand abs" style="top:1290px">{brand}</div><div class="city abs" style="top:1400px">DENİZLİ</div></div>')
         elif t == "headline":
             s.setdefault("dur", 95)
-            longest = max(len(w.strip("[]")) for w in s["title"].split()); fs = min(150, int(1700 / max(longest, 6)))
+            longest = max(len(w.strip("[]")) for w in s["title"].split()); fs = min(130, int(1450 / max(longest, 6)))
             parts.append(f'<div class="sc" style="background:var(--cr);color:var(--g)"><canvas width="1080" height="1920"></canvas>'
                          f'<img class="wm abs" src="{logo}" style="width:900px;right:-260px;bottom:200px;opacity:.06">'
                          f'<div class="hdr abs" style="color:var(--g)"><img src="{logo}"><div><b>YÜKSEL TARIM</b><span>DENİZLİ</span></div></div>'
-                         f'<div class="abs" style="left:64px;right:64px;top:0;bottom:0;display:flex;flex-direction:column;justify-content:center">'
+                         f'<div class="abs" style="left:64px;right:150px;top:290px;bottom:420px;display:flex;flex-direction:column;justify-content:center">'
                          f'<div class="kick" style="align-self:flex-start">{esc(s["kicker"])}</div>'
                          f'<div class="title" style="margin-top:30px;font-size:{fs}px;color:var(--g)">{title_html(s["title"])}</div>'
                          f'<div style="margin-top:34px;font-size:40px;line-height:1.4;color:#3d4b40">{esc(s.get("sub",""))}</div></div><div class="brush"></div></div>')
@@ -211,28 +211,33 @@ def build(cfg):
                          f'<div class="floor abs" style="top:{floor_y}px"></div><div class="hero abs" style="top:{s.get("img_top",760)}px;width:{s.get("img_w",1000)}px"><img src="{uri(s["image"])}"></div>'
                          f'<div class="pdesc abs" style="top:{desc_y}px">{esc(s.get("desc",""))}</div><div class="chips abs" style="top:{desc_y+140}px">{chips}</div>{FOOT}</div>')
         elif t == "photo":
+            # GÜVENLİ ALAN: Facebook akışı 9:16'yı ortadan 4:5 kırpar (üst/alt ~285px), TikTok altta ~420px ve sağda
+            # ~150px'i butonlarla kaplar. Önemli her şey y 285-1480, x 64-930 içinde kalır.
             s.setdefault("dur", 100)
-            im = uri(s["image"]); fh = s.get("frame_h", 640)
+            im = uri(s["image"]); fh = min(s.get("frame_h", 540), 560); FY = 500
             chips = "".join(f'<div class="chip">{c}</div>' for c in s.get("chips", []))
             inset = ""
             if s.get("inset"):
-                inset = (f'<div class="inset abs" style="right:40px;top:{560+fh-160}px"><img src="{uri(s["inset"])}">'
+                inset = (f'<div class="inset abs" style="right:40px;top:{FY+fh-200}px;width:360px"><img src="{uri(s["inset"])}">'
                          f'<div class="cap">{esc(s.get("inset_cap",""))}</div></div>')
-            dy = 560 + fh + (190 if s.get("inset") else 60)
+            y = FY + fh + 60
             price = ""
             if s.get("price"):
-                price = (f'<div class="price abs" style="top:{560+fh+110}px"><small>{esc(s.get("price_label","KAMPANYA FİYATI"))}</small>'
+                price = (f'<div class="price abs" style="top:{y+40}px"><small>{esc(s.get("price_label","KAMPANYA FİYATI"))}</small>'
                          f'<b data-v="{int(s["price"])}">0</b><span>TL</span></div>')
-                dy = 560 + fh + 300
+                y += 190
             perks = ""
             if s.get("perks"):
-                perks = (f'<div class="perks abs" style="top:{dy}px">' +
+                perks = (f'<div class="perks abs" style="top:{y}px;right:150px">' +
                          "".join(f'<div class="perk"><i>✓</i>{esc(x)}</div>' for x in s["perks"]) + '</div>')
+                alt = ""
+            else:
+                alt = (f'<div class="pdesc abs" style="top:{y}px;right:150px">{esc(s.get("desc",""))}</div>'
+                       f'<div class="chips abs" style="top:{y+120}px;right:150px">{chips}</div>')
             parts.append(f'<div class="sc" data-i="{i}"><div class="bgblur abs" style="background-image:url({im})"></div>{hdr(logo)}'
-                         f'<div class="label abs" style="top:290px">{esc(s["label"])}</div><div class="pname abs" style="top:340px;font-size:{s.get("name_fs",120)}px">{esc(s["name"])}</div>'
-                         f'<div class="frame abs" style="top:560px;height:{fh}px"><div class="ph" style="background-image:url({im})"></div></div>'
-                         + ("" if perks else f'<div class="pdesc abs" style="top:{dy}px;right:{520 if s.get("inset") else 64}px">{esc(s.get("desc",""))}</div>')
-                         + f'<div class="chips abs" style="top:{dy+(120 if perks else (190 if s.get("inset") else 140))}px">{chips}</div>{inset}{price}{perks}{FOOT}</div>')
+                         f'<div class="label abs" style="top:300px">{esc(s["label"])}</div><div class="pname abs" style="top:345px;font-size:{min(s.get("name_fs",120),120)}px">{esc(s["name"])}</div>'
+                         f'<div class="frame abs" style="top:{FY}px;height:{fh}px"><div class="ph" style="background-image:url({im})"></div></div>'
+                         f'{alt}{inset}{price}{perks}{FOOT}</div>')
         elif t == "greeting":
             s.setdefault("dur", 150)
             bg = s.get("bg", "#14281A")
@@ -248,7 +253,7 @@ def build(cfg):
             li = "".join(f'<div class="litem"><b>{k+1}</b><span>{esc(x)}</span></div>' for k, x in enumerate(items))
             parts.append(f'<div class="sc" style="background:var(--cr);color:var(--g)"><canvas width="1080" height="1920"></canvas>'
                          f'<div class="hdr abs" style="color:var(--g)"><img src="{logo}"><div><b>YÜKSEL TARIM</b><span>DENİZLİ</span></div></div>'
-                         f'<div class="abs" style="left:64px;right:64px;top:250px;bottom:180px;display:flex;flex-direction:column;justify-content:center;gap:26px">'
+                         f'<div class="abs" style="left:64px;right:150px;top:290px;bottom:420px;display:flex;flex-direction:column;justify-content:center;gap:24px">'
                          f'<div class="kick" style="align-self:flex-start">{esc(s.get("kicker","USTA İPUCU"))}</div>'
                          f'<div class="ltitle">{esc(s["title"])}</div><div style="display:flex;flex-direction:column;gap:22px;margin-top:14px">{li}</div></div>{FOOT}</div>')
         elif t == "outro":
