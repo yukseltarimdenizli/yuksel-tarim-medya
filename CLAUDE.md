@@ -89,6 +89,7 @@ Türkçe ve kısa yaz.
 ### Kullanıcı tercihleri
 - Kullanıcı GÖRSEL değil VİDEO istiyor. Kayıtta `format` "Görsel" olsa bile video üret (Facebook + TikTok için aynı dikey video).
 - Her videoda aynı müzik (plan sayfasındaki asset).
+- Birden fazla ürün varsa videoda ve açıklamada KÜÇÜKTEN BÜYÜĞE sırala (ör. 4'lü → 5'li, 40 HP → 101 HP, 3 m³ → 6 m³; ölçü yoksa ucuzdan pahalıya).
 - Ürünlerin hep aynı türden olmaması önemli; bir haftayı tek ürünle doldurma (bu, planlama yapılırken geçerli; kayıtları değiştirme).
 
 ### 4. Açıklama metni (caption)
