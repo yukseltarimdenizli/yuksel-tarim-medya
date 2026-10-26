@@ -45,6 +45,9 @@ Türkçe ve kısa yaz.
   fiyat yok → yeniden üret ve güncelle.
 - **Yayınlanmış mı:** `status` = "Planlandı" ve zamanı geçmişse `getScheduledPosts` ile bak; listede yoksa yayınlanmıştır → "Paylaşıldı" yap.
 - Paylaşım zamanına 20 dakikadan az kalmış ya da geçmiş "Taslak" kayıtları üretme; özette "kaçırıldı" diye belirt.
+- Değişmiş kayıtlar için de aynı 20 dakika kuralı: zamanına 20 dakikadan az kalmışsa yeniden üretme, özette "değişiklik yetişmedi" de.
+- Değişmiş kayıtta tarih/saat değiştiyse `publicationDate`'i, platform değiştiyse `providers`'ı (ve gerekli `youtubeData`/`tiktokData`) güncelle; yeni gönderi AÇMA, her zaman `updateScheduledPost` (id + uuid).
+- **Silinen kart kontrolü:** `getScheduledPosts` ile önümüzdeki 14 günün Metricool gönderilerini al; `uuid`'si hiçbir `posts` kaydının `metricoolUuid`'si ile eşleşmeyen gönderi varsa (kullanıcı kartı silmiş demektir) Metricool'dan SİLME (bağlantıda silme yok), özette tarih/saat ve ilk satırıyla birlikte "Bu gönderi planda yok, Metricool'dan elle silmen gerekiyor" diye bildir. `metricoolUuid` alanı olmayan eski kayıtlar için gönderi metninin ilk satırını ve saatini kayıtla karşılaştırarak eşleştir.
 
 ### 3. Her kayıt için üret
 1. Kaydı (belge verisi + `"id"`) `/tmp/is/<id>/kayit.json` olarak yaz. Kaydın `status`'unu "Hazırlanıyor" yap.
