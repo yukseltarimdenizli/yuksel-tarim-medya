@@ -247,7 +247,9 @@ def urun_listesi(cikti):
         txt = re.sub(r"\s*(arrow_forward|Ürünü İncele).*$", "", txt, flags=re.I)
         parcalar = re.split(r"₺|Fiyat İçin Arayın", txt, maxsplit=1)
         ad = parcalar[1] if len(parcalar) > 1 else txt
-        ad = re.split(r"\s*Tipi\s*:", ad)[0].strip(" .")
+        ad = re.split(r"\s*(?:Tipi|Türü)\s*:", ad)[0].strip(" .")
+        ad = re.sub(r"\s+(den|dan|'den|'dan)$", "", ad, flags=re.I)
+        ad = re.sub(r"\s*i̇?kinci el\b", "", ad, flags=re.I).strip()
         ad = re.split(r"\.\s*(?:yüksel|denizli)", ad, flags=re.I)[0]
         ad = re.sub(r"\s*(yüksel tarım\S*|denizli\S*)\s*", " ", ad, flags=re.I).strip(" .-")
         if len(ad) < 4:
