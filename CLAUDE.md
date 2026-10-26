@@ -127,7 +127,7 @@ Sıfır ürünler, Yüksel Tarım güvencesiyle. Denizli'den tüm Türkiye'ye g�
 
 ### 6. Kaydı güncelle
 ArtifactData `update` (`if_version` = okuduğun sürüm; çakışırsa yeniden oku, kullanıcının değişikliğini ezme):
-`status` "Planlandı", `metricoolId`, `mediaUrl`, `caption`, `preparedAt` (şimdi, ISO). Hata olursa `status` "Taslak",
+`status` "Planlandı", `metricoolId`, `metricoolUuid`, `mediaUrl`, `caption`, `preparedAt` (şimdi, ISO). `updateScheduledPost` gönderinin id'sini DEĞİŞTİRİR (uuid aynı kalır): güncellemeden sonra yanıttaki yeni id'yi `metricoolId` olarak yaz; güncellemede `id` ve `uuid` ikisini de ver. Hata olursa `status` "Taslak",
 `uyari` alanına kısa Türkçe sebep.
 
 ### 7. Özet
