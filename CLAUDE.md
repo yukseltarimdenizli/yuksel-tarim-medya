@@ -9,13 +9,13 @@ Türkçe ve kısa yaz.
 - Plan sayfası (Artifact): `https://claude.ai/artifact/Sd6RDHPTknjXNcwJ3CSn6A`
   - `posts` koleksiyonu: her belge bir paylaşım. Alanlar: `date` (YYYY-MM-DD), `time` (HH:MM, İstanbul),
     `type`, `format` ("Video" | "Görsel"), `products` [{name,url}], `product`, `productUrl`, `title`, `note`,
-    `platform` ("Facebook + TikTok" | "Facebook" | "TikTok"), `status` ("Taslak" | "Hazırlanıyor" | "Planlandı" | "Paylaşıldı"),
+    `platform` ("Facebook + TikTok + YouTube" | "Facebook + TikTok" | "Facebook" | "TikTok" | "YouTube"; boş/eksikse üçü birden), `status` ("Taslak" | "Hazırlanıyor" | "Planlandı" | "Paylaşıldı"),
     `example` (true ise örnek kayıt, ASLA işleme), `updatedAt` (sayfa düzenleyince yazar).
     Hazırlama sonrası senin yazdıkların: `preparedAt`, `metricoolId`, `mediaUrl`, `caption`, `uyari`.
   - `meta/urunler` belgesi: sitedeki ürün listesi (`items`: name, url, ikinci_el, fiyat; `guncelleme`).
   - Müzik dosyası (sayfanın dosya alanında): asset id `03b30fa268bba5cad720283cf68f0a1b`
     (acoustic folk, Pixabay; videolarda hep bu kullanılır). Herkese açık depoya KOYMA (lisans gereği).
-- Metricool: marka (blogId) `7661465`, saat dilimi `Europe/Istanbul`. Bağlı ağlar: Facebook sayfası ve TikTok.
+- Metricool: marka (blogId) `7661465`, saat dilimi `Europe/Istanbul`. Bağlı ağlar: Facebook sayfası, TikTok ve YouTube kanalı (Shorts).
   Ücretsiz plan: ayda en fazla 20 yayınlanmış paylaşım.
 - Medya deposu: `yukseltarimdenizli/yuksel-tarim-medya` (herkese açık). Metricool medyayı buradaki
   `https://raw.githubusercontent.com/yukseltarimdenizli/yuksel-tarim-medya/main/...` linklerinden çeker.
@@ -114,17 +114,21 @@ Sıfır ürünler, Yüksel Tarım güvencesiyle. Denizli'den tüm Türkiye'ye g�
 
 ### 5. Metricool'a planla
 `createScheduledPost`, `blogId` "7661465", `date` = `<date>T<time>:00+03:00`, info:
-- `providers`: kaydın `platform` alanına göre `facebook`, `tiktok` ya da ikisi.
+- `providers`: kaydın `platform` alanına göre `facebook`, `tiktok`, `youtube`. "Facebook + TikTok" yazan ESKİ kayıtlarda da varsayılan olarak YouTube'u ekle (kullanıcı Ekim 2026'da her paylaşımın Shorts olarak da gitmesini istedi); sadece kayıt açıkça "Facebook" ya da "TikTok" tek platformsa ekleme.
 - `media`: [herkese açık link], `text`: caption, `autoPublish`: true, `draft`: false,
   `publicationDate`: {"dateTime": "<date>T<time>:00", "timezone": "Europe/Istanbul"}.
 - `facebookData`: {"type": "POST"}.
 - `tiktokData`: {"title": "<kaydın başlığı, en fazla 90 karakter>", "privacyOption": "PUBLIC_TO_EVERYONE",
   "commercialContentOwnBrand": true, "commercialContentThirdParty": false, "autoAddMusic": false,
   "disableComment": false, "disableDuet": false, "disableStitch": false}  (TikTok başlığı zorunlu).
+- `youtubeData` (YouTube varsa ZORUNLU): {"title": "<başlık> | Yüksel Tarım Denizli #shorts" (en fazla 100 karakter; uzunsa "| Yüksel Tarım #shorts"),
+  "type": "short", "privacy": "public", "madeForKids": false, "isAiGeneratedContent": false,
+  "category": ürün/firma için "AUTOS_VEHICLES", usta ipucu için "HOWTO_STYLE", kutlama için "PEOPLE_BLOGS",
+  "tags": [4-7 Türkçe etiket, her zaman "Yüksel Tarım", "Denizli"]}. Açıklama (`text`) YouTube'da video açıklaması olur.
 - Diğer alanlar: `descendants` [], `firstCommentText` "", `hasNotReadNotes` false, `mediaAltText` [],
   `shortener` false, `smartLinkData` {"ids": []}.
 - **Aylık sınır:** Bu ay `posts` içinde "Planlandı"/"Paylaşıldı" olan kayıtları say; her platform ayrı bir paylaşım sayılır
-  (Metricool'un nasıl saydığı doğrulanınca bu satır güncellenecek). Yeni paylaşım 20'yi aşacaksa PLANLAMA,
+  (Metricool'un nasıl saydığı doğrulanınca bu satır güncellenecek). YouTube eklenince gönderi başına 3 hak gidebilir; ay içinde sınır yaklaşırsa önce YouTube'u, sonra TikTok'u değil, kayıtları planlamayı durdur ve kullanıcıya sor. Yeni paylaşım 20'yi aşacaksa PLANLAMA,
   kaydın `uyari` alanına "Aylık 20 sınırı doldu" yaz, status "Taslak" kalsın, özette belirt.
 
 ### 6. Kaydı güncelle
