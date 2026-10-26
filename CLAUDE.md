@@ -77,6 +77,15 @@ Türkçe ve kısa yaz.
 - Ürün sayfası dışındaki bir site fotoğrafı gerekirse: `python3 uret.py foto <url> <is_klasoru> <ad>.jpg` ile indir, `photo` sahnesinin `image` alanına yaz.
 - Kullanıcının notunda sahneye dair açık bir istek varsa (renk, kicker, alt metin, madde listesi) onu uygula.
 
+### Firma satış koşulları (her ürün videosunda ve açıklamada vurgula)
+- **Sıfır ürün:** "5 yıl kredi" + "Kredi kartına taksit" + "Takas imkânı".
+- **İkinci el ürün:** SADECE "Kredi kartına taksit" + "Takas imkânı" (5 yıl kredi YAZMA).
+- Ürünün sıfır/ikinci el bilgisi `uret.py taslak` çıktısındaki `ikinci_el` alanından gelir; `photo` sahnesinin `perks` alanı bunu otomatik doldurur, kontrol et.
+- Açıklama metnine şu satırı ekle (ürünler karışıksa sıfır ve 2. el için ayrı yaz):
+  sıfırda `💳 5 yıl kredi ve kredi kartına taksit imkânı · 🔄 Takas imkânı`, 2. elde `💳 Kredi kartına taksit imkânı · 🔄 Takas imkânı`.
+- Kutlama (Özel gün) videolarında satış koşulu YAZMA.
+- **Hububat Ekim Mibzerleri (12/14/16/18/20/22'lik):** sitedeki fiyat en küçük ölçünün fiyatı; videoda `price_label` "BAŞLAYAN FİYATLARLA", açıklamada "158.000 TL'den başlayan fiyatlarla" (güncel site fiyatıyla) yaz.
+
 ### Kullanıcı tercihleri
 - Kullanıcı GÖRSEL değil VİDEO istiyor. Kayıtta `format` "Görsel" olsa bile video üret (Facebook + TikTok için aynı dikey video).
 - Her videoda aynı müzik (plan sayfasındaki asset).

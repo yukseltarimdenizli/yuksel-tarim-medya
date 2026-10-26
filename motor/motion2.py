@@ -69,6 +69,9 @@ body{width:1080px;height:1920px;overflow:hidden;font-family:Poppins,sans-serif;b
 .litem{display:flex;align-items:center;gap:28px;background:#fff;border-radius:28px;padding:26px 30px;box-shadow:0 14px 36px rgba(26,51,33,.14)}
 .litem b{flex:none;width:84px;height:84px;border-radius:50%;background:var(--g);color:var(--au);display:grid;place-items:center;font-size:44px;font-weight:700}
 .litem span{font-size:40px;font-weight:600;line-height:1.25;color:var(--gd)}
+.perks{left:64px;right:64px;display:flex;flex-wrap:wrap;gap:14px}
+.perk{display:flex;align-items:center;gap:10px;padding:12px 22px;border-radius:16px;background:var(--cr);color:var(--gd);font-size:30px;font-weight:700;white-space:nowrap;box-shadow:0 10px 24px rgba(0,0,0,.35)}
+.perk i{font-style:normal;color:var(--g);font-size:30px}
 .web{left:0;right:0;text-align:center;font-size:42px;font-weight:600}
 .cta{left:50%;padding:24px 54px;border-radius:70px;background:var(--au);color:var(--gd);font-size:40px;font-weight:700;white-space:nowrap}
 .ring{border:4px solid var(--au);border-radius:80px}
@@ -126,7 +129,7 @@ const R={
    S($('.label',el),{opacity:lerp(t,[8,20],[0,1]),letterSpacing:`${lerp(t,[8,30],[2,8],eo)}px`});
    const n=spring(t-10,{damping:14,stiffness:120}); S($('.pname',el),{transform:`translateY(${(1-n)*100}px)`,opacity:Math.min(1,n*1.5)});
    S($('.pdesc',el),{opacity:lerp(t,[22,36],[0,1]),transform:`translateY(${lerp(t,[22,38],[30,0],eo)}px)`});
-   pops(el,'.chip',t-30,6); S($('.foot',el),{transform:`translateY(${(1-spring(t-12,{damping:16}))*160}px)`});
+   pops(el,'.chip',t-30,6); pops(el,'.perk',t-44,7); S($('.foot',el),{transform:`translateY(${(1-spring(t-12,{damping:16}))*160}px)`});
    const pr=$('.price',el); if(pr){ const s=spring(t-14,{damping:10,stiffness:120}); S(pr,{transform:`scale(${s}) rotate(${(1-s)*-6}deg)`,opacity:Math.min(1,s*2)});
      const v=+$('b',pr).dataset.v, k=lerp(t,[18,46],[0,1],eo); $('b',pr).textContent=(Math.round(v*k/1000)*1000).toLocaleString('tr-TR'); }
    const ins=$('.inset',el); if(ins){const s=spring(t-(cfg.inset_at||60),{damping:11,stiffness:110}); S(ins,{transform:`scale(${s}) rotate(${(1-s)*-25+4}deg)`,opacity:Math.min(1,s*2)});} },
@@ -221,11 +224,15 @@ def build(cfg):
                 price = (f'<div class="price abs" style="top:{560+fh+110}px"><small>{esc(s.get("price_label","KAMPANYA FİYATI"))}</small>'
                          f'<b data-v="{int(s["price"])}">0</b><span>TL</span></div>')
                 dy = 560 + fh + 300
+            perks = ""
+            if s.get("perks"):
+                perks = (f'<div class="perks abs" style="top:{dy}px">' +
+                         "".join(f'<div class="perk"><i>✓</i>{esc(x)}</div>' for x in s["perks"]) + '</div>')
             parts.append(f'<div class="sc" data-i="{i}"><div class="bgblur abs" style="background-image:url({im})"></div>{hdr(logo)}'
                          f'<div class="label abs" style="top:290px">{esc(s["label"])}</div><div class="pname abs" style="top:340px;font-size:{s.get("name_fs",120)}px">{esc(s["name"])}</div>'
                          f'<div class="frame abs" style="top:560px;height:{fh}px"><div class="ph" style="background-image:url({im})"></div></div>'
-                         f'<div class="pdesc abs" style="top:{dy}px;right:{520 if s.get("inset") else 64}px">{esc(s.get("desc",""))}</div>'
-                         f'<div class="chips abs" style="top:{dy+(190 if s.get("inset") else 140)}px">{chips}</div>{inset}{price}{FOOT}</div>')
+                         + ("" if perks else f'<div class="pdesc abs" style="top:{dy}px;right:{520 if s.get("inset") else 64}px">{esc(s.get("desc",""))}</div>')
+                         + f'<div class="chips abs" style="top:{dy+(120 if perks else (190 if s.get("inset") else 140))}px">{chips}</div>{inset}{price}{perks}{FOOT}</div>')
         elif t == "greeting":
             s.setdefault("dur", 150)
             bg = s.get("bg", "#14281A")

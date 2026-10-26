@@ -109,6 +109,11 @@ def foto_indir(info, klasor, n, en_fazla=10):
     return str(klasor / f"urun{n}_foto{en_iyi['sira']}.jpg"), [a["sira"] for a in adaylar]
 
 
+def odeme_secenekleri(ikinci_el):
+    """Firma kuralı: sıfırda 5 yıl kredi + kredi kartı, 2. elde sadece kredi kartı; her üründe takas."""
+    return (["Kredi kartına taksit"] if ikinci_el else ["5 yıl kredi", "Kredi kartına taksit"]) + ["Takas imkânı"]
+
+
 def kisa_ad(ad):
     s = ad
     for b in MARKALAR:
@@ -180,7 +185,8 @@ def taslak(kayit_yolu, klasor):
                 cfg["scenes"].append({"type": "photo", "wipe": True, "label": etiket_ust(b["plan_adi"]), "name": ad,
                                       "name_fs": 130 if len(ad) <= 12 else max(64, int(130 * 12 / len(ad))), "image": b["foto"],
                                       "frame_h": 620, "kb": [20, 0, 1.04, -30, -10, 1.18], "desc": "Yüksel Tarım güvencesiyle.",
-                                      "chips": (["2. El"] if b.get("ikinci_el") else ["Sıfır"]) + etiketler(b["plan_adi"])[:2], "dur": 110})
+                                      "chips": (["2. El"] if b.get("ikinci_el") else ["Sıfır"]) + etiketler(b["plan_adi"])[:2],
+                                      "perks": odeme_secenekleri(b.get("ikinci_el")), "dur": 110})
         cfg["scenes"].append({"type": "outro", "cta": "Bilgi için hemen arayın"})
     elif cfg["format"] == "Video":
         cfg["scenes"].append({"type": "intro", "overlap": 24})
@@ -193,6 +199,7 @@ def taslak(kayit_yolu, klasor):
             sc = {"type": "photo", "wipe": True, "label": etiket_ust(b["plan_adi"]), "name": ad,
                   "name_fs": 130 if len(ad) <= 12 else max(64, int(130 * 12 / len(ad))), "image": b["foto"], "frame_h": 620,
                   "kb": [20, 0, 1.04, -30, -10, 1.18], "desc": "Yüksel Tarım güvencesiyle.", "chips": (["2. El"] if b.get("ikinci_el") else ["Sıfır"]) + etiketler(b["plan_adi"])[:2], "dur": 115}
+            sc["perks"] = odeme_secenekleri(b.get("ikinci_el"))
             if b["fiyat"]:
                 sc["price"] = b["fiyat"]; sc["dur"] = 120
                 sc["price_label"] = "KAMPANYA FİYATI" if kayit.get("type") == "Kampanya" else "FİYAT"
