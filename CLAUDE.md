@@ -128,7 +128,7 @@ Sıfır ürünler, Yüksel Tarım güvencesiyle. Denizli'den tüm Türkiye'ye g�
 - Diğer alanlar: `descendants` [], `firstCommentText` "", `hasNotReadNotes` false, `mediaAltText` [],
   `shortener` false, `smartLinkData` {"ids": []}.
 - **Aylık sınır:** Bu ay `posts` içinde "Planlandı"/"Paylaşıldı" olan kayıtları say; her platform ayrı bir paylaşım sayılır
-  (Metricool'un nasıl saydığı doğrulanınca bu satır güncellenecek). YouTube eklenince gönderi başına 3 hak gidebilir; ay içinde sınır yaklaşırsa önce YouTube'u, sonra TikTok'u değil, kayıtları planlamayı durdur ve kullanıcıya sor. Yeni paylaşım 20'yi aşacaksa PLANLAMA,
+  (Metricool'un nasıl saydığı doğrulanınca bu satır güncellenecek). YouTube eklenince gönderi başına 3 hak gidebilir; ay içinde sınıra yaklaşılırsa platformları kendi başına çıkarma, kalan kayıtları planlamayı durdur ve özette kullanıcıya hangi platformdan vazgeçmek istediğini sor. Yeni paylaşım 20'yi aşacaksa PLANLAMA,
   kaydın `uyari` alanına "Aylık 20 sınırı doldu" yaz, status "Taslak" kalsın, özette belirt.
 
 ### 6. Kaydı güncelle
