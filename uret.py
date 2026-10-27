@@ -10,6 +10,8 @@ Adımlar (CLAUDE.md'deki çalışma talimatı bunları sırayla kullanır):
 
   python3 uret.py uret <is_klasoru> [--muzik dosya.mp4 --muzik-bas <sn>] [--son a,b]
   python3 uret.py muzik_sec <kayit.json> [--son a,b]   -> hangi müzik (dini mesajda müzik yok)
+  python3 uret.py referans_listesi <cikti.json>          -> sitedeki tüm referanslar (Teslimat / müşteri videoları için)
+  python3 uret.py referans_sec <kayit.json> <referanslar.json> [--kullanilan s1,s2] [--son-urun a,b] [--son-il a,b]
       config.json'a göre videoyu (format Video) ya da görseli (format Görsel) üretir.
       Çıktının yolunu yazdırır.
 
@@ -151,9 +153,120 @@ def baslik_vurgula(t):
     return " ".join(out)
 
 
+# ---------------------------------------------------------------- referanslar (Teslimat / müşteri)
+SITE = "https://www.yukseltarimdenizli.com.tr"
+
+
+def referans_oku(slug):
+    h = get(f"{SITE}/referanslar/{slug}")
+    t = re.sub(r"<script.*?</script>|<style.*?</style>", "", h, flags=re.S)
+    txt = re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", t)))
+    m = re.search(r"Deneyimi - Yüksel Tarım Referansları (.*?) Puan: ([\d.]+) / 5 (.*?) Konum: (.*?)(?: Satın Alınan Ürün: (.*?))? (\d\d\.\d\d\.\d{4})", txt)
+    if not m:
+        return None
+    ad, puan, yorum, konum, urun, tarih = m.groups()
+    foto = list(dict.fromkeys(re.findall(r"/api/uploads/references/[^\"\s&]+\.(?:webp|jpe?g|png)", h)))
+    yt = list(dict.fromkeys(re.findall(r"youtube\.com/embed/([\w-]{11})", h)))
+    return {"slug": slug, "ad": ad.strip(), "puan": float(puan), "yorum": yorum.strip(), "konum": konum.strip(),
+            "urun": (urun or "").strip(), "tarih": tarih, "foto": foto, "yt": yt, "url": f"{SITE}/referanslar/{slug}"}
+
+
+def referans_listesi(cikti):
+    import concurrent.futures as cf
+    slugs = sorted(set(re.findall(r'href="/referanslar/([^"?/#]+)"', get(f"{SITE}/referanslar"))))
+    with cf.ThreadPoolExecutor(8) as ex:
+        def guvenli(x):
+            try:
+                return referans_oku(x)
+            except Exception as e:
+                print("okunamadı:", x, e, file=sys.stderr)
+        R = [r for r in ex.map(guvenli, slugs) if r and r["foto"]]
+    pathlib.Path(cikti).write_text(json.dumps(R, ensure_ascii=False, indent=1))
+    print(len(slugs), "referans bulundu,", len(R), "tanesi fotoğraflı ve okunabildi ->", cikti)
+
+
+def _urun_turu(ad):
+    a = ad.lower()
+    for k, v in [("yem karma", "yem karma"), ("römork", "römork"), ("dorse", "römork"), ("pulluk", "pulluk"), ("mibzer", "mibzer"),
+                 ("traktör", "traktör"), ("silaj", "silaj"), ("sılaj", "silaj"), ("gübre", "gübre"), ("kepçe", "kepçe")]:
+        if k in a:
+            return v
+    return "diğer"
+
+
+def referans_sec(kayit, referanslar, kullanilan=(), son_urun=(), son_il=()):
+    """Kayıtta `referans` (slug) varsa onu, yoksa: kullanılmamış, fotoğrafı bol, son paylaşımlardan farklı ürün/il olanı seçer."""
+    R = {r["slug"]: r for r in referanslar}
+    istenen = (kayit.get("referans") or "").strip()
+    if istenen and istenen != "Otomatik":
+        return R.get(istenen) or referans_oku(istenen)
+    aday = [r for r in referanslar if r["slug"] not in kullanilan] or referanslar
+    def puan(r):
+        p = min(len(r["foto"]), 4) * 2 + (1 if r["yt"] else 0) + min(len(r["yorum"]), 400) / 200
+        if _urun_turu(r["urun"]) in list(son_urun)[-2:]: p -= 5
+        if r["konum"].split("/")[0].strip().lower() in [x.lower() for x in list(son_il)[-1:]]: p -= 2
+        return p
+    return max(aday, key=puan)
+
+
+def _referans_taslak(kayit, klasor):
+    import urllib.parse
+    R = json.loads(pathlib.Path(kayit["_referanslar"]).read_text()) if kayit.get("_referanslar") else []
+    r = referans_sec(kayit, R, kayit.get("_kullanilan", []), kayit.get("_son_urun", []), kayit.get("_son_il", []))
+    fotolar = []
+    for i, u in enumerate(r["foto"][:5]):
+        yol = klasor / f"ref_{i}.jpg"
+        try:
+            from PIL import Image
+            Image.open(io.BytesIO(get(SITE + urllib.parse.quote(u), binary=True))).convert("RGB").save(yol, quality=95)
+            fotolar.append(str(yol))
+        except Exception as e:
+            print("foto indirilemedi:", u, e, file=sys.stderr)
+    from PIL import Image
+    yatay = lambda y: (lambda im: im.width > im.height * 1.1)(Image.open(y))
+    fotolar.sort(key=lambda y: not yatay(y))  # yatay fotoğraflar öne (dikey/siyah bantlı telefon fotoğrafları sona)
+    cumle = [c.strip() for c in re.split(r"(?<=[.!?])\s+", r["yorum"]) if len(c.strip()) > 20]
+    secili, L = [], 0
+    for c in cumle:  # varsayılan: ilk cümleler, ~200 karakter. Çalışan oturum en güçlü 1-2 cümleyi AYNEN seçer.
+        if L + len(c) > 210 and secili:
+            break
+        secili.append(c); L += len(c)
+    # sitedeki ürün eşleşmesi (sıfır/2.el) — bulunamazsa 5 yıl kredi YAZILMAZ
+    ikinci = None
+    try:
+        for it in json.loads(pathlib.Path("/tmp/is/urunler.json").read_text()):
+            if it.get("name") and it["name"].lower()[:18] in r["urun"].lower():
+                ikinci = it.get("ikinci_el"); break
+    except Exception:
+        pass
+    perks = odeme_secenekleri(ikinci) if ikinci is not None else ["Kredi kartına taksit", "Takas imkânı"]
+    il = re.split(r"\s+-\s+", r["konum"])[0].strip()  # "Denizli / Pamukkale - Goncalı Mahallesi" -> "Denizli / Pamukkale"
+    f = fotolar + fotolar[:1] * 3
+    scenes = [{"type": "intro", "dur": 70},
+              {"type": "photo", "label": "MUTLU MÜŞTERİMİZ", "name": r["ad"], "name_fs": 110 if len(r["ad"]) <= 16 else max(64, int(110 * 16 / len(r["ad"]))),
+               "image": f[1] if len(fotolar) > 1 else f[0], "frame_h": 560, "kb": [0, 0, 1.02, -20, 10, 1.12],
+               "desc": r["urun"] or "Yüksel Tarım güvencesiyle.", "chips": [f'📍 {il.split("/")[0].strip()}', "★★★★★"],
+               "perks_yok": True, "dur": 105},
+              {"type": "quote", "image": f[0], "who": r["ad"], "where": il, "sentences": secili, "tum_cumleler": cumle}]
+    if len(fotolar) > 2:
+        scenes.append({"type": "photo", "label": "YÜKSEL TARIM · TESLİMAT", "name": "Teslim edildi", "name_fs": 110, "image": f[2], "frame_h": 560,
+                       "kb": [0, 0, 1.04, 20, -10, 1.14], "perks": perks, "dur": 100})
+    else:
+        scenes[1]["perks"] = perks; scenes[1].pop("perks_yok", None)
+    scenes.append({"type": "outro", "cta": "Siz de ailemize katılın"})
+    kapak = {"tur": "referans", "sablon": "R", "foto": f[1] if len(fotolar) > 1 else f[0], "pos": "center",
+             "ad": r["ad"], "konum": il, "urun": r["urun"], "ust": "MUTLU MÜŞTERİMİZ"}
+    cfg = {"format": "Video", "kayit_id": kayit.get("id"), "referans": r, "scenes": scenes, "kapak": kapak}
+    (klasor / "config.json").write_text(json.dumps(cfg, ensure_ascii=False, indent=1))
+    print(json.dumps({"config": str(klasor / "config.json"), "referans": {k: r[k] for k in ("slug", "ad", "konum", "urun", "url", "yt")},
+                      "fotolar": fotolar, "cumleler": cumle, "urun_turu": _urun_turu(r["urun"])}, ensure_ascii=False, indent=1))
+
+
 def taslak(kayit_yolu, klasor):
     kayit = json.loads(pathlib.Path(kayit_yolu).read_text())
     klasor = pathlib.Path(klasor); klasor.mkdir(parents=True, exist_ok=True)
+    if kayit.get("type") == "Teslimat / müşteri" and not kayit.get("products"):
+        return _referans_taslak(kayit, klasor)
     urunler = kayit.get("products") or ([{"name": kayit["product"], "url": kayit.get("productUrl", "")}] if kayit.get("product") else [])
     bilgiler = []
     for n, u in enumerate(urunler):
@@ -411,6 +524,12 @@ if __name__ == "__main__":
     elif k == "uret": uret(sys.argv[2], sys.argv[sys.argv.index("--muzik") + 1] if "--muzik" in sys.argv else None,
                            [x for x in (sys.argv[sys.argv.index("--son") + 1].split(",") if "--son" in sys.argv else []) if x],
                            float(sys.argv[sys.argv.index("--muzik-bas") + 1]) if "--muzik-bas" in sys.argv else None)
+    elif k == "referans_listesi": referans_listesi(sys.argv[2])
+    elif k == "referans_sec":
+        al = lambda f: [x for x in (sys.argv[sys.argv.index(f) + 1].split(",") if f in sys.argv else []) if x]
+        r = referans_sec(json.loads(pathlib.Path(sys.argv[2]).read_text()), json.loads(pathlib.Path(sys.argv[3]).read_text()),
+                         al("--kullanilan"), al("--son-urun"), al("--son-il"))
+        print(json.dumps({k: r[k] for k in ("slug", "ad", "konum", "urun")} | {"tur": _urun_turu(r["urun"])}, ensure_ascii=False))
     elif k == "muzik_sec":
         son = [x for x in (sys.argv[sys.argv.index("--son") + 1].split(",") if "--son" in sys.argv else []) if x]
         print(json.dumps(muzik_sec(json.loads(pathlib.Path(sys.argv[2]).read_text()), son), ensure_ascii=False))

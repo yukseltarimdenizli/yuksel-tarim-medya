@@ -13,6 +13,8 @@ Türkçe ve kısa yaz.
     `example` (true ise örnek kayıt, ASLA işleme), `updatedAt` (sayfa düzenleyince yazar).
     Hazırlama sonrası senin yazdıkların: `preparedAt`, `metricoolId`, `mediaUrl`, `caption`, `uyari`.
   - `meta/urunler` belgesi: sitedeki ürün listesi (`items`: name, url, ikinci_el, fiyat; `guncelleme`).
+  - `meta/referanslar` belgesi: sitedeki müşteri referansları (`items`: slug, ad, konum, urun) + `kullanilan` (paylaşılmış slug'lar),
+    `son_urun`, `son_il` (son referans paylaşımlarının ürün türü / ili). Kayıttaki `referans` alanı: "Otomatik" ya da bir slug.
   - Müzikler (sayfanın dosya alanında, 6 parça): liste, asset id'leri, başlangıç saniyeleri ve kredi satırları depodaki
     `muzikler.json`'da. Müzik dosyalarını herkese açık depoya KOYMA (lisans gereği). Kullanım geçmişi: `meta/muzik` belgesi (`son`).
 - Metricool: marka (blogId) `7661465`, saat dilimi `Europe/Istanbul`. Bağlı ağlar: Facebook sayfası, TikTok ve YouTube kanalı (Shorts).
@@ -32,6 +34,9 @@ Türkçe ve kısa yaz.
 `python3 uret.py urun_listesi /tmp/is/urunler.json` çalıştır; 30'dan fazla ürün geldiyse
 `meta/urunler` belgesini `{"items":[{name,url,ikinci_el,fiyat}], "guncelleme": <ISO>}` olarak yaz
 (url = `https://www.yukseltarimdenizli.com.tr/urunler/<slug>`). Daha az geldiyse site değişmiş olabilir: yazma, özette belirt.
+
+Önümüzdeki 7 günde "Teslimat / müşteri" kaydı varsa ayrıca `python3 uret.py referans_listesi /tmp/is/referanslar.json` çalıştır;
+100'den fazla gelirse `meta/referanslar`'ın `items`'ını (slug, ad, konum, urun) güncelle, `kullanilan`/`son_urun`/`son_il`'e DOKUNMA.
 
 ### 2. İşlenecek kayıtları seç
 `posts` koleksiyonunu oku. İşlenecekler (`example` true olanları HİÇBİR ZAMAN işleme):
@@ -73,6 +78,39 @@ Türkçe ve kısa yaz.
    ve Read ile bak. Taşan/kesilen/üst üste binen yazı varsa config'i düzeltip yeniden üret (en fazla 2 deneme).
    Görselde `gorsel_fb.png`'ye bak.
 7. Yükle: `python3 uret.py yukle <dosya> <YYYY-MM-DD>_<HHMM>_<kısa-slug>.<mp4|png>` → herkese açık linki verir.
+
+### Teslimat / müşteri (referans) videoları
+Kayıt türü "Teslimat / müşteri" ve ürün seçilmemişse video sitedeki **Referanslar** bölümünden yapılır:
+1. `kayit.json`'a şunları ekle: `"_referanslar": "/tmp/is/referanslar.json"`, `"_kullanilan"`, `"_son_urun"`, `"_son_il"` (meta/referanslar'dan).
+   `uret.py taslak` referansı seçer (kayıtta slug varsa o; "Otomatik"te kullanılmamış, fotoğrafı bol, son paylaşımlardan farklı ürün/il),
+   fotoğrafları `ref_N.jpg` olarak indirir ve config'i kurar: kapak "MUTLU MÜŞTERİMİZ" → logo → teslimat fotoğrafı (ad, ürün, il) →
+   müşteri sözü (`quote`) → teslimat fotoğrafı + rozetler → kapanış ("Siz de ailemize katılın").
+2. **Müşterinin sözü:** `tum_cumleler` içinden en güçlü 1-2 cümleyi (toplam ~120-230 karakter) KELİMESİ KELİMESİNE seç; değiştirme, ekleme, uydurma YOK.
+3. **Fotoğraflar:** HİÇBİR ZAMAN yüz/kişi kırpması yapma, fotoğraf hep tam gösterilir (kullanıcı kararı: selfie'lerde işyeri sahibi Ahmet Bey de
+   olur; yüz kırpması onu müşteri gibi gösterir). Her `ref_N.jpg`'ye Read ile bak: bulanık, dikey ve siyah bantlı, ürünün görünmediği fotoğrafları
+   sona at. Kapakta (müşteri adı üstüne yazılır) Ahmet Bey'in tek başına ya da öne çıktığı selfie'yi KULLANMA; müşterinin makineyle olduğu
+   ya da teslimat fotoğrafını seç.
+4. Müşteri adı TAM yazılır (kullanıcı kararı). Videoda ve açıklamada FİYAT YOK.
+5. Rozetler: ürün sitede eşleşip sıfır olduğu doğrulanırsa sıfır rozetleri (5 yıl kredi dahil), eşleşmezse/2. else sadece taksit + takas.
+6. Açıklama (caption):
+```
+🤝 Mutlu müşterimiz: <Ad> – <İl / İlçe>
+
+"<seçilen cümleler, aynen>"
+
+✅ <aldığı ürün>
+<satış koşulu satırı (sıfır/2. el kuralı)>
+
+<Ad soyadının ilk adı> Bey'e / Hanım'a güveni için teşekkür ederiz. 🙏   (firma adıysa: "<Firma>'na teşekkür ederiz.")
+👉 Referansın tamamı: www.yukseltarimdenizli.com.tr/referanslar/<slug>
+📍 Yüksel Tarım Denizli
+🌐 www.yukseltarimdenizli.com.tr
+<müzik kredi satırı>
+
+#mutlumüşteri #<ürün etiketleri> #<il> #tarım #denizli #yükseltarım
+```
+   (Ürün sayfası linki DEĞİL, referans linki konur — kullanıcı kararı.) YouTube: `category` "AUTOS_VEHICLES".
+7. Planlandıktan sonra `meta/referanslar`: `kullanilan`'a slug, `son_urun`'a ürün türü, `son_il`'e il eklenir (son ikisi en fazla 6).
 
 ### Kapak (videonun ilk 0,5 saniyesi — TikTok/YouTube profil ızgarasında görünen kare)
 `uret.py taslak` config.json'a `kapak` bölümü yazar; `uret` bunu `motor/kapak.py` ile çizip videonun başına 0,5 sn ekler.
