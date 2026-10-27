@@ -269,10 +269,25 @@ def urun_sablonu_sec(urun_sayisi, son_kullanilanlar=()):
             return random.choice(aday)
 
 
+# --------------------------------------------------------------------------- referans (mutlu müşteri) kapağı
+def referans_html(k, L):
+    """{"tur":"referans","foto":..., "ad":"Yılmaz Aksoy","konum":"Antalya / Serik","urun":"Alpler 3'lü Dönerli Pulluk","ust":"MUTLU MÜŞTERİMİZ"}"""
+    f = _u(k["foto"]); ad = _e(k.get("ad", "")); fs = 104 if len(k.get("ad", "")) <= 16 else (84 if len(k.get("ad", "")) <= 22 else 66)
+    return (f"<div class='a' style='inset:0;background:url({f}) {k.get('pos', 'center')}/cover'></div>"
+            "<div class='a' style='inset:0;background:linear-gradient(180deg,rgba(10,20,12,.55) 0%,rgba(10,20,12,0) 24%,rgba(10,20,12,0) 46%,rgba(10,20,12,.92) 68%,#0d1a10)'></div>"
+            + _logo(L, w=120, kutu=True)
+            + f"<div class='a' style='left:60px;top:960px;background:#D4A445;color:#14281A;font-weight:800;font-size:34px;padding:10px 28px;border-radius:14px;letter-spacing:1px'>{_e(k.get('ust', 'MUTLU MÜŞTERİMİZ'))}</div>"
+            + "<div class='a' style='left:60px;top:1050px;color:#D4A445;font-size:58px;letter-spacing:8px'>★★★★★</div>"
+            + f"<div class='a' style='left:60px;right:60px;top:1150px;color:#fff;font-size:{fs}px;font-weight:800;line-height:1.02;letter-spacing:-1px'>{ad}</div>"
+            + f"<div class='a' style='left:60px;right:60px;top:{1150 + fs + 30}px;color:#F5F0E3;font-size:38px;font-weight:600'>📍 {_e(k.get('konum', ''))}</div>"
+            + (f"<div class='a' style='left:60px;right:60px;top:{1150 + fs + 90}px;color:rgba(245,240,227,.8);font-size:32px;font-weight:500'>{_e(k['urun'])}</div>" if k.get("urun") else ""))
+
+
 def kapak_uret(k, cikti):
     from playwright.sync_api import sync_playwright
     L = _u(ROOT / "assets/logo.png")
-    govde = urun_html(k, L) if k.get("tur", "urun") == "urun" else kutlama_html(k, L)
+    tur = k.get("tur", "urun")
+    govde = urun_html(k, L) if tur == "urun" else (referans_html(k, L) if tur == "referans" else kutlama_html(k, L))
     doc = f"<html><head><meta charset='utf-8'><style>{BASE}</style></head><body>{govde}</body></html>"
     with sync_playwright() as p:
         b = p.chromium.launch(); pg = b.new_page(viewport={"width": 1080, "height": 1920})

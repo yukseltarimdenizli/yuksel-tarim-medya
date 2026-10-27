@@ -75,6 +75,14 @@ body{width:1080px;height:1920px;overflow:hidden;font-family:Poppins,sans-serif;b
 .web{left:0;right:0;text-align:center;font-size:42px;font-weight:600}
 .cta{left:50%;padding:24px 54px;border-radius:70px;background:var(--au);color:var(--gd);font-size:40px;font-weight:700;white-space:nowrap}
 .ring{border:4px solid var(--au);border-radius:80px}
+.qava{left:50%;width:300px;height:300px;margin-left:-150px;border-radius:50%;background-size:cover;border:8px solid var(--au);box-shadow:0 20px 50px rgba(26,51,33,.3)}
+.qstars{left:0;right:0;text-align:center;font-size:64px;letter-spacing:10px;color:var(--au)}
+.qstars i{display:inline-block;font-style:normal}
+.qmark{left:64px;font-size:260px;line-height:1;font-weight:700;color:var(--au);opacity:.9}
+.qtext{left:90px;right:90px;font-size:46px;line-height:1.42;font-weight:500;color:var(--gd);font-style:italic}
+.qtext span{display:inline}
+.qname{left:64px;right:64px;text-align:center;font-size:52px;font-weight:700;color:var(--g)}
+.qloc{left:64px;right:64px;text-align:center;font-size:34px;font-weight:600;color:#8a6a24}
 .endhalo{left:50%;width:460px;height:460px;margin-left:-230px;border-radius:50%;background:var(--cr);box-shadow:0 0 0 18px rgba(212,164,69,.35)}
 """
 
@@ -147,6 +155,17 @@ const R={
    const tt=spring(t-10,{damping:14}); S($('.ltitle',el),{opacity:Math.min(1,tt*1.5),transform:`translateY(${(1-tt)*80}px)`});
    $$('.litem',el).forEach((it,i)=>{ const s=spring(t-26-i*14,{damping:13,stiffness:110}); S(it,{transform:`translateX(${(1-s)*1100}px) rotate(${(1-s)*5}deg)`});
      S($('b',it),{transform:`scale(${spring(t-32-i*14,{damping:8,stiffness:170})})`}); });
+   S($('.foot',el),{transform:`translateY(${(1-spring(t-12,{damping:16}))*160}px)`}); },
+ quote(el,t,d){ field($('canvas',el),t+40,'#2F5737',.05);
+   const up=lerp(t,[0,22],[0,1],eio); S(el,{clipPath:`polygon(0 ${100-up*100+(1-up)*9}%,100% ${100-up*100}%,100% 100%,0 100%)`});
+   S($('.hdr',el),{transform:`translateX(${(1-spring(t,{damping:16}))*-500}px)`});
+   const a=spring(t-6,{damping:11,stiffness:110}); S($('.qava',el),{transform:`scale(${a})`});
+   const kb=lerp(t,[0,d],[1,1.1]); S($('.qava',el),{backgroundSize:`auto ${kb*(+el.dataset.zoom||100)}%`});
+   $$('.qstars i',el).forEach((st,i)=>{const s=spring(t-16-i*4,{damping:8,stiffness:170}); S(st,{transform:`scale(${s}) rotate(${(1-s)*-90}deg)`,opacity:Math.min(1,s*2)});});
+   S($('.qmark',el),{opacity:lerp(t,[30,40],[0,.9]),transform:`translateY(${lerp(t,[30,44],[-40,0],eo)}px)`});
+   $$('.qtext span',el).forEach((sp,i)=>S(sp,{opacity:lerp(t,[36+i*22,52+i*22],[.08,1])}));
+   const n=spring(t-50,{damping:14}); S($('.qname',el),{opacity:Math.min(1,n),transform:`translateY(${(1-n)*50}px)`});
+   S($('.qloc',el),{opacity:lerp(t,[58,72],[0,1])});
    S($('.foot',el),{transform:`translateY(${(1-spring(t-12,{damping:16}))*160}px)`}); },
  outro(el,t,d){ field($('canvas',el),t,'#D4A445',.08); dust($('canvas',el),t,'#D4A445');
    S(el,{clipPath:`circle(${lerp(t,[0,22],[0,140],eio)}% at 50% 72%)`});
@@ -256,6 +275,23 @@ def build(cfg):
                          f'<div class="abs" style="left:64px;right:150px;top:290px;bottom:420px;display:flex;flex-direction:column;justify-content:center;gap:24px">'
                          f'<div class="kick" style="align-self:flex-start">{esc(s.get("kicker","USTA İPUCU"))}</div>'
                          f'<div class="ltitle">{esc(s["title"])}</div><div style="display:flex;flex-direction:column;gap:22px;margin-top:14px">{li}</div></div>{FOOT}</div>')
+        elif t == "quote":
+            # müşteri sözü: yuvarlak fotoğraf, 5 yıldız, alıntı (cümle cümle belirir), ad + konum
+            cumleler = [c.strip() for c in s["sentences"]]
+            s.setdefault("dur", 90 + 22 * len(cumleler) + 40)
+            L = sum(len(c) for c in cumleler); qfs = 50 if L < 170 else (44 if L < 260 else 38)
+            ava = f'<div class="qava abs" style="top:300px;background-image:url({uri(s["image"])});background-position:{s.get("pos","50% 40%")}"></div>' if s.get("image") else ""
+            ty = 720 if ava else 420
+            import math; satir = math.ceil(L * qfs * 0.5 / 880) + len(cumleler) - 1
+            s.setdefault("name_y", min(1330, int(ty + 70 + satir * qfs * 1.42 + 70)))
+            parts.append(f'<div class="sc" data-zoom="{s.get("zoom",100)}" style="background:var(--cr)"><canvas width="1080" height="1920"></canvas>'
+                         f'<img class="wm abs" src="{logo}" style="width:900px;right:-260px;bottom:200px;opacity:.05">'
+                         f'<div class="hdr abs" style="color:var(--g)"><img src="{logo}"><div><b>YÜKSEL TARIM</b><span>DENİZLİ</span></div></div>{ava}'
+                         f'<div class="qstars abs" style="top:{ty-100}px">' + "".join("<i>★</i>" for _ in range(int(s.get("stars", 5)))) + '</div>'
+                         f'<div class="qmark abs" style="top:{ty-40}px">“</div>'
+                         f'<div class="qtext abs" style="top:{ty+70}px;font-size:{qfs}px">' + " ".join(f"<span>{esc(c)}</span>" for c in cumleler) + '</div>'
+                         f'<div class="qname abs" style="top:{s.get("name_y",1290)}px">{esc(s["who"])}</div>'
+                         f'<div class="qloc abs" style="top:{s.get("name_y",1290)+76}px">📍 {esc(s.get("where",""))}</div>{FOOT}</div>')
         elif t == "outro":
             s.setdefault("dur", 115)
             cta = s.get("cta", "Bilgi için hemen arayın")
