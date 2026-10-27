@@ -61,8 +61,10 @@ BASE = ("*{margin:0;padding:0;box-sizing:border-box} body{width:1080px;height:19
         "font-family:Poppins,sans-serif;position:relative} .a{position:absolute} .c{left:0;right:0;text-align:center}")
 
 
-def _logo(L, renk="#fff", w=120, top=300, left=60, orta=False):
+def _logo(L, renk="#fff", w=120, top=300, left=60, orta=False, kutu=False):
     pos = "left:0;right:0;justify-content:center" if orta else f"left:{left}px"
+    if kutu:  # parlak fotoğraf üstünde okunsun diye koyu zemin
+        pos += ";background:rgba(13,26,16,.85);padding:12px 30px 12px 16px;border-radius:22px"
     return (f'<div class="a" style="{pos};top:{top}px;display:flex;align-items:center;gap:18px;color:{renk}">'
             f'<img src="{L}" style="width:{w}px;filter:drop-shadow(0 6px 14px rgba(0,0,0,.35))"><div style="line-height:1.05">'
             f'<div style="font-size:{int(w * .36)}px;font-weight:800;letter-spacing:2px">YÜKSEL TARIM</div>'
@@ -115,8 +117,8 @@ def urun_html(k, L):
                           f"<div style='font-size:32px;font-weight:700'>{_e(x.get('ad', ''))}</div>"
                           + (f"<div style='font-size:60px;font-weight:800;color:#D4A445;line-height:1'>{_fiyat(x['fiyat'])} TL</div>" if x.get("fiyat") else "") + "</div>")
         return (parcalar + "<div class='a' style='inset:0;background:linear-gradient(180deg,rgba(10,20,12,.65) 0%,rgba(10,20,12,.1) 25%,rgba(10,20,12,.1) 75%,rgba(10,20,12,.85) 100%)'></div>"
-                f"{_logo(L, w=130)}<div class='a c' style='top:{(h if n == 2 else h) - 80}px'><span style='background:#14281A;color:#fff;font-size:{_fs(bas, 64, 24)}px;font-weight:800;padding:10px 34px;border-radius:18px;border:5px solid #D4A445'>{_vurgu(bas)}</span></div>"
-                + etiketler + (f"<div class='a' style='left:60px;right:60px;top:1440px;color:#F5F0E3;font-size:30px;font-weight:700'>{roz}</div>" if roz else ""))
+                f"{_logo(L, w=110, kutu=True)}<div class='a c' style='top:{(h if n == 2 else h) - 80}px'><span style='background:#14281A;color:#fff;font-size:{_fs(bas, 64, 24)}px;font-weight:800;padding:10px 34px;border-radius:18px;border:5px solid #D4A445'>{_vurgu(bas)}</span></div>"
+                + etiketler + (f"<div class='a c' style='top:1420px'><span style='background:rgba(13,26,16,.88);color:#F5F0E3;font-size:30px;font-weight:700;padding:12px 30px;border-radius:16px'>{roz}</span></div>" if roz else ""))
 
     if s == "2":
         G = "<style>body{background:radial-gradient(ellipse at 50% 35%,#2F5737,#14281A 70%)}</style>"
@@ -187,6 +189,11 @@ def urun_html(k, L):
          f"<div class='a c' style='top:290px'><img src='{L}' style='width:190px'></div>"
          f"<div class='a' style='left:40px;right:40px;top:520px;text-align:center;font-size:{_fs(bas, 150, 8)}px;font-weight:900;line-height:.92;letter-spacing:-4px'>{_vurgu(_ust(bas))}</div>")
     alt = f"<div class='a c' style='top:1440px;font-size:30px;font-weight:600;color:rgba(255,255,255,.85)'>{roz}</div>" if roz else ""
+    if n == 0:  # ürünsüz (firma tanıtımı vb.): yazı ortada, altında alt yazı + web adresi
+        G = G.replace("top:290px'><img src='" + L + "' style='width:190px'", "top:330px'><img src='" + L + "' style='width:230px'").replace("top:520px;text-align:center", "top:640px;text-align:center")
+        a2 = f"<div class='a c' style='top:1120px;font-size:44px;font-weight:600;color:#F5F0E3;padding:0 80px'>{_vurgu(k['alt'])}</div>" if k.get("alt") else ""
+        web = "<div class='a c' style='top:1300px'><span style='border:3px solid #D4A445;color:#D4A445;font-size:34px;font-weight:700;padding:14px 34px;border-radius:40px'>www.yukseltarimdenizli.com.tr</span></div>"
+        return G + a2 + web
     if n <= 1:
         foto = f"<div class='a' style='left:60px;right:60px;top:860px;height:420px;border-radius:26px;background:url({f[0]}) center/cover;border:6px solid #D4A445'></div>" if n else ""
         fy = (f"<div class='a c' style='top:1320px;font-size:40px;font-weight:600'>{_e(U[0].get('ad', ''))} <b style='color:#D4A445;font-size:64px'>{_fiyat(U[0]['fiyat'])} TL</b></div>") if n and U[0].get("fiyat") else ""
