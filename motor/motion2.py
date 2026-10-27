@@ -76,6 +76,8 @@ body{width:1080px;height:1920px;overflow:hidden;font-family:Poppins,sans-serif;b
 .cta{left:50%;padding:24px 54px;border-radius:70px;background:var(--au);color:var(--gd);font-size:40px;font-weight:700;white-space:nowrap}
 .ring{border:4px solid var(--au);border-radius:80px}
 .qava{left:50%;width:300px;height:300px;margin-left:-150px;border-radius:50%;background-size:cover;border:8px solid var(--au);box-shadow:0 20px 50px rgba(26,51,33,.3)}
+.qfoto{left:50%;border-radius:28px;overflow:hidden;border:6px solid var(--au);box-shadow:0 24px 54px rgba(26,51,33,.3)}
+.qfoto img{display:block;width:100%;height:100%;object-fit:cover}
 .qstars{left:0;right:0;text-align:center;font-size:64px;letter-spacing:10px;color:var(--au)}
 .qstars i{display:inline-block;font-style:normal}
 .qmark{left:64px;font-size:260px;line-height:1;font-weight:700;color:var(--au);opacity:.9}
@@ -161,6 +163,8 @@ const R={
    S($('.hdr',el),{transform:`translateX(${(1-spring(t,{damping:16}))*-500}px)`});
    const a=spring(t-6,{damping:11,stiffness:110}); S($('.qava',el),{transform:`scale(${a})`});
    const kb=lerp(t,[0,d],[1,1.1]); S($('.qava',el),{backgroundSize:`auto ${kb*(+el.dataset.zoom||100)}%`});
+   const qf=$('.qfoto',el); if(qf){ const s=spring(t-4,{damping:14,stiffness:100}); S(qf,{transform:`translateX(-50%) translateY(${(1-s)*-200}px) scale(${.9+.1*s})`,opacity:Math.min(1,s*2)});
+     S($('img',qf),{transform:`scale(${lerp(t,[0,d],[1,1.05])})`}); }
    $$('.qstars i',el).forEach((st,i)=>{const s=spring(t-16-i*4,{damping:8,stiffness:170}); S(st,{transform:`scale(${s}) rotate(${(1-s)*-90}deg)`,opacity:Math.min(1,s*2)});});
    S($('.qmark',el),{opacity:lerp(t,[30,40],[0,.9]),transform:`translateY(${lerp(t,[30,44],[-40,0],eo)}px)`});
    $$('.qtext span',el).forEach((sp,i)=>S(sp,{opacity:lerp(t,[36+i*22,52+i*22],[.08,1])}));
@@ -279,19 +283,26 @@ def build(cfg):
             # müşteri sözü: yuvarlak fotoğraf, 5 yıldız, alıntı (cümle cümle belirir), ad + konum
             cumleler = [c.strip() for c in s["sentences"]]
             s.setdefault("dur", 90 + 22 * len(cumleler) + 40)
-            L = sum(len(c) for c in cumleler); qfs = 50 if L < 170 else (44 if L < 260 else 38)
-            ava = f'<div class="qava abs" style="top:300px;background-image:url({uri(s["image"])});background-position:{s.get("pos","50% 40%")}"></div>' if s.get("image") else ""
-            ty = 720 if ava else 420
+            L = sum(len(c) for c in cumleler); qfs = (50 if L < 170 else (44 if L < 260 else 38)) - (6 if s.get("image") else 0)
+            # Fotoğraf KIRPILMADAN tam gösterilir (kullanıcı kararı: selfie'lerde işyeri sahibi + müşteri birlikte olur,
+            # yuvarlak yüz kırpması yanlış kişiyi müşteri gibi gösterebilir).
+            ava, ty = "", 420
+            if s.get("image"):
+                from PIL import Image as _I
+                iw, ih = _I.open(ROOT / s["image"]).size; fw = 780; fh = min(600, int(fw * ih / iw)); fw = int(fh * iw / ih) if fh == 600 else fw
+                ava = f'<div class="qfoto abs" style="top:300px;width:{fw}px;height:{fh}px;margin-left:0"><img src="{uri(s["image"])}"></div>'
+                ty = 300 + fh + 130
             import math; satir = math.ceil(L * qfs * 0.5 / 880) + len(cumleler) - 1
-            s.setdefault("name_y", min(1330, int(ty + 70 + satir * qfs * 1.42 + 70)))
+            s.setdefault("name_y", min(1340, int(ty + 70 + satir * qfs * 1.42 + 50)))
             parts.append(f'<div class="sc" data-zoom="{s.get("zoom",100)}" style="background:var(--cr)"><canvas width="1080" height="1920"></canvas>'
                          f'<img class="wm abs" src="{logo}" style="width:900px;right:-260px;bottom:200px;opacity:.05">'
                          f'<div class="hdr abs" style="color:var(--g)"><img src="{logo}"><div><b>YÜKSEL TARIM</b><span>DENİZLİ</span></div></div>{ava}'
                          f'<div class="qstars abs" style="top:{ty-100}px">' + "".join("<i>★</i>" for _ in range(int(s.get("stars", 5)))) + '</div>'
                          f'<div class="qmark abs" style="top:{ty-40}px">“</div>'
-                         f'<div class="qtext abs" style="top:{ty+70}px;font-size:{qfs}px">' + " ".join(f"<span>{esc(c)}</span>" for c in cumleler) + '</div>'
-                         f'<div class="qname abs" style="top:{s.get("name_y",1290)}px">{esc(s["who"])}</div>'
-                         f'<div class="qloc abs" style="top:{s.get("name_y",1290)+76}px">📍 {esc(s.get("where",""))}</div>{FOOT}</div>')
+                         f'<div class="abs" style="left:0;right:0;top:{ty+70}px;display:flex;flex-direction:column;gap:14px">'
+                         f'<div class="qtext" style="padding:0 90px;font-size:{qfs}px">' + " ".join(f"<span>{esc(c)}</span>" for c in cumleler) + '</div>'
+                         f'<div class="qname" style="margin-top:26px">{esc(s["who"])}</div>'
+                         f'<div class="qloc">📍 {esc(s.get("where",""))}</div></div>{FOOT}</div>')
         elif t == "outro":
             s.setdefault("dur", 115)
             cta = s.get("cta", "Bilgi için hemen arayın")
