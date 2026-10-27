@@ -19,6 +19,9 @@ Türkçe ve kısa yaz.
     `muzikler.json`'da. Müzik dosyalarını herkese açık depoya KOYMA (lisans gereği). Kullanım geçmişi: `meta/muzik` belgesi (`son`).
 - Metricool: marka (blogId) `7661465`, saat dilimi `Europe/Istanbul`. Bağlı ağlar: Facebook sayfası, TikTok ve YouTube kanalı (Shorts).
   Ücretsiz plan: ayda en fazla 20 yayınlanmış paylaşım.
+- Buffer (yedek paylaşım aracı, ücretsiz plan): organizasyon `6ae08d03b299ca87c96e5bfe` ("My organization"), saat dilimi Europe/Istanbul.
+  Kanallar: Facebook sayfası `6ae090e92f1f5ed648e948b5`, TikTok `6ae091132f1f5ed648e949b7` (yuksel.tarim.denizli), YouTube `6ae0913a2f1f5ed648e94aae`.
+  Ücretsiz sınır: kanal başına AYNI ANDA en fazla 10 bekleyen paylaşım (yayınlanınca yer açılır); aylık sınır yok.
 - Medya deposu: `yukseltarimdenizli/yuksel-tarim-medya` (herkese açık). Metricool medyayı buradaki
   `https://raw.githubusercontent.com/yukseltarimdenizli/yuksel-tarim-medya/main/...` linklerinden çeker.
 
@@ -195,14 +198,25 @@ Sıfır ürünler, Yüksel Tarım güvencesiyle. Denizli'den tüm Türkiye'ye g�
   "tags": [4-7 Türkçe etiket, her zaman "Yüksel Tarım", "Denizli"]}. Açıklama (`text`) YouTube'da video açıklaması olur.
 - Diğer alanlar: `descendants` [], `firstCommentText` "", `hasNotReadNotes` false, `mediaAltText` [],
   `shortener` false, `smartLinkData` {"ids": []}.
-- **Aylık sınır:** Metricool gönderi başına 1 hak düşer; Facebook + TikTok + YouTube'a birlikte giden paylaşım da 1 sayılır
-  (27.10.2026'da 3 platforma giden paylaşımla doğrulandı). Bu ay `posts` içinde "Planlandı"/"Paylaşıldı" olan kayıtları say;
-  yeni paylaşım 20'yi aşacaksa PLANLAMA, kaydın `uyari` alanına "Aylık 20 sınırı doldu" yaz, status "Taslak" kalsın, özette belirt.
-  Platformları kendi başına çıkarma.
+- **Aylık sınır ve Buffer'a taşma:** Metricool gönderi başına 1 hak düşer; 3 platforma birlikte giden paylaşım da 1 sayılır
+  (27.10.2026'da doğrulandı). Bu ay Metricool'a giden (`arac` boş ya da "Metricool") "Planlandı"/"Paylaşıldı" kayıtları say.
+  20'den azsa Metricool'a planla (`arac`: "Metricool"). 20 dolduysa **Buffer'a planla** (`arac`: "Buffer"), kullanıcıya sorma:
+  - Buffer'a yalnızca paylaşım zamanı **en fazla 4 gün sonra** olan kayıtlar planlanır (10 bekleyen sınırına takılmamak için).
+    Daha ileri tarihli olanlar "Taslak" kalır, `uyari` YAZMA; sonraki sabah çalışmasında sırası gelince planlanır. Özette "Buffer sırasında bekliyor" de.
+  - Her platform için AYRI `create_post` (Buffer bir gönderiyi tek kanala atar): `schedulingType` "automatic", `mode` "customScheduled",
+    `dueAt` "<date>T<time>:00+03:00", `text` = caption, `assets` [{"video": {"url": <herkese açık link>}}].
+    Facebook: `metadata.facebook.type` "post". TikTok: `metadata.tiktok.title` (kaydın başlığı, en fazla 90 karakter).
+    YouTube: `metadata.youtube` {"title": Metricool'daki YouTube başlığıyla aynı kural, "categoryId": "2" (Autos & Vehicles; usta ipucu "26" Howto & Style,
+    kutlama "22" People & Blogs), "privacy": "public", "madeForKids": false}.
+  - Kayda `bufferIds` {"facebook": id, "tiktok": id, "youtube": id} yaz. Değişmiş kayıtta `edit_post` ile güncelle (asset ve metadata'yı eksiksiz gönder).
+  - Bir kanal hata verirse (ör. TikTok işletme hesabı değilse) diğerlerini yine planla, `uyari`'ya hangi kanalın gitmediğini yaz.
+  - "Yayınlanmış mı" ve "silinen kart" kontrollerini Buffer kayıtları için `list_posts` (status scheduled/sent/error) ile yap; `error` durumundaki
+    gönderiyi özette bildir.
+  Platformları kendi başına çıkarma. Yeni ay başında sayaç sıfırlanır; Metricool yeniden önceliklidir.
 
 ### 6. Kaydı güncelle
 ArtifactData `update` (`if_version` = okuduğun sürüm; çakışırsa yeniden oku, kullanıcının değişikliğini ezme):
-`status` "Planlandı", `metricoolId`, `metricoolUuid`, `mediaUrl`, `caption`, `preparedAt` (şimdi, ISO). `updateScheduledPost` gönderinin id'sini DEĞİŞTİRİR (uuid aynı kalır): güncellemeden sonra yanıttaki yeni id'yi `metricoolId` olarak yaz; güncellemede `id` ve `uuid` ikisini de ver. Hata olursa `status` "Taslak",
+`status` "Planlandı", `arac` ("Metricool" | "Buffer"), `metricoolId`, `metricoolUuid` ya da `bufferIds`, `mediaUrl`, `caption`, `preparedAt` (şimdi, ISO). `updateScheduledPost` gönderinin id'sini DEĞİŞTİRİR (uuid aynı kalır): güncellemeden sonra yanıttaki yeni id'yi `metricoolId` olarak yaz; güncellemede `id` ve `uuid` ikisini de ver. Hata olursa `status` "Taslak",
 `uyari` alanına kısa Türkçe sebep.
 
 ### 7. Özet
