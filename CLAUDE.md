@@ -91,7 +91,7 @@ Kayıt türü "Teslimat / müşteri" ve ürün seçilmemişse video sitedeki **R
    sona at. Kapakta (müşteri adı üstüne yazılır) Ahmet Bey'in tek başına ya da öne çıktığı selfie'yi KULLANMA; müşterinin makineyle olduğu
    ya da teslimat fotoğrafını seç.
 4. Müşteri adı TAM yazılır (kullanıcı kararı). Videoda ve açıklamada FİYAT YOK.
-5. Rozetler: ürün sitede eşleşip sıfır olduğu doğrulanırsa sıfır rozetleri (5 yıl kredi dahil), eşleşmezse/2. else sadece taksit + takas.
+5. Rozetler: ürün sitede eşleşip sıfır olduğu doğrulanırsa sıfır rozetleri (5 yıl kredi dahil), eşleşmezse ya da 2. el ise sadece taksit + takas.
 6. Açıklama (caption):
 ```
 🤝 Mutlu müşterimiz: <Ad> – <İl / İlçe>
