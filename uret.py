@@ -210,11 +210,61 @@ def taslak(kayit_yolu, klasor):
         cfg["gorsel"] = {"slug": "gorsel", "kicker": KICKER.get(kayit.get("type"), "YÜKSEL TARIM"), "title": baslik_vurgula(title),
                          "body": "" if bilgiler else kayit.get("note", ""), "bullets": madde[:5],
                          "photo": next((b["foto"] for b in bilgiler if b["foto"]), None)}
+    cfg["kapak"] = kapak_taslagi(kayit, title, bilgiler, cfg)
     (klasor / "config.json").write_text(json.dumps(cfg, ensure_ascii=False, indent=1))
     print(json.dumps({"config": str(klasor / "config.json"), "urunler": bilgiler}, ensure_ascii=False, indent=1))
 
 
-def uret(klasor, muzik=None):
+KAPAK_UST = {"Kampanya": "KAMPANYA", "Ürün tanıtımı": "YÜKSEL TARIM'DA", "Firma tanıtımı": "YÜKSEL TARIM",
+             "Usta ipucu": "USTA İPUCU", "Teslimat / müşteri": "TESLİMAT", "Özel gün": ""}
+
+
+def kapak_taslagi(kayit, title, bilgiler, cfg):
+    """Kapak (videonun ilk yarım saniyesi) için varsayılan ayarlar. Çalışan oturum `baslik`ı 2-4 kelimelik
+    vurucu bir kapak yazısına çevirir; kullanıcı plan sayfasında `kapakYazisi`/`kapak` verdiyse onlar geçerli."""
+    tur = kayit.get("type")
+    secim = (kayit.get("kapak") or "Otomatik").strip()
+    yazi = (kayit.get("kapakYazisi") or "").strip()
+    if tur == "Özel gün":
+        sablon = secim if secim in list("ABCDE") else "auto"
+        return {"tur": "kutlama", "sablon": sablon, "ust": "", "baslik": yazi or title, "alt": "", "buyuk": ""}
+    fiyatli = tur not in ("Usta ipucu", "Firma tanıtımı")
+    sahne_foto = [sc for sc in cfg.get("scenes", []) if sc.get("type") == "photo"]
+    urunler = []
+    for b in bilgiler:
+        if not b.get("foto"):
+            continue
+        sc = next((x for x in sahne_foto if x.get("image") == b["foto"]), {})
+        urunler.append({"ad": sc.get("name") or kisa_ad(b["plan_adi"]), "foto": b["foto"],
+                        "fiyat": b.get("fiyat") if fiyatli else None, "ikinci_el": bool(b.get("ikinci_el")),
+                        "fiyat_etiket": "BAŞLAYAN FİYATLARLA" if "hububat" in b["plan_adi"].lower() else ""})
+    sablon = secim if secim in list("12345") else "auto"
+    return {"tur": "urun", "sablon": sablon, "ust": KAPAK_UST.get(tur, ""), "baslik": yazi or baslik_vurgula(title),
+            "urunler": urunler, "rozetler": fiyatli and bool(urunler)}
+
+
+def kapak_hazirla(klasor, cfg, son=()):
+    """config'teki kapağı üretir; sablon 'auto' ise tekrar etmeyecek şekilde seçer. Kapak PNG yolunu döner."""
+    sys.path.insert(0, str(MOTOR)); import kapak as K
+    kp = cfg.get("kapak")
+    if not kp:
+        return None
+    if kp.get("sablon", "auto") == "auto":
+        if kp.get("tur") == "kutlama":
+            kp["sablon"] = K.kutlama_sablonu_oner(kp.get("baslik", "") + " " + kp.get("ust", "") + " " + kp.get("alt", ""), son)
+        else:
+            kp["sablon"] = K.urun_sablonu_sec(len(kp.get("urunler", [])), son)
+    yol = pathlib.Path(klasor) / "kapak.png"
+    K.kapak_uret(kp, yol)
+    (pathlib.Path(klasor) / "config.json").write_text(json.dumps(cfg, ensure_ascii=False, indent=1))
+    print("KAPAK_SABLONU", kp["sablon"], file=sys.stderr)
+    return yol
+
+
+KAPAK_SURE = 0.5  # sn — kullanıcı kararı
+
+
+def uret(klasor, muzik=None, son=()):
     klasor = pathlib.Path(klasor); cfg = json.loads((klasor / "config.json").read_text())
     # Güvence: satış koşulu rozetleri (kredi/kart/takas) ürün sahnelerinden asla düşmesin.
     ikinci = {}
@@ -232,8 +282,16 @@ def uret(klasor, muzik=None):
         (klasor / "config.json").write_text(json.dumps(cfg, ensure_ascii=False, indent=1))
         print("UYARI: perks eksikti, otomatik eklendi", file=sys.stderr)
     if cfg["format"] == "Video":
+        govde = klasor / "video_govde.mp4"
+        subprocess.run([sys.executable, str(MOTOR / "motion2.py"), str(klasor / "config.json"), str(govde)], check=True)
         sessiz = klasor / "video_sessiz.mp4"
-        subprocess.run([sys.executable, str(MOTOR / "motion2.py"), str(klasor / "config.json"), str(sessiz)], check=True)
+        kp = kapak_hazirla(klasor, cfg, son)
+        if kp:  # ilk yarım saniye kapak, sonra video
+            subprocess.run(["ffmpeg", "-y", "-v", "error", "-loop", "1", "-framerate", "30", "-t", str(KAPAK_SURE), "-i", str(kp), "-i", str(govde),
+                            "-filter_complex", "[0:v]scale=1080:1920,setsar=1,format=yuv420p[k];[1:v]scale=1080:1920,setsar=1,format=yuv420p[g];[k][g]concat=n=2:v=1:a=0[v]",
+                            "-map", "[v]", "-r", "30", "-c:v", "libx264", "-preset", "veryfast", "-crf", "18", "-pix_fmt", "yuv420p", "-movflags", "+faststart", str(sessiz)], check=True)
+        else:
+            shutil.copy(govde, sessiz)
         out = klasor / "video.mp4"
         if muzik:
             dur = float(subprocess.check_output(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(sessiz)]).decode())
@@ -312,7 +370,8 @@ def urun_listesi(cikti):
 if __name__ == "__main__":
     k = sys.argv[1]
     if k == "taslak": taslak(sys.argv[2], sys.argv[3])
-    elif k == "uret": uret(sys.argv[2], sys.argv[sys.argv.index("--muzik") + 1] if "--muzik" in sys.argv else None)
+    elif k == "uret": uret(sys.argv[2], sys.argv[sys.argv.index("--muzik") + 1] if "--muzik" in sys.argv else None,
+                           [x for x in (sys.argv[sys.argv.index("--son") + 1].split(",") if "--son" in sys.argv else []) if x])
     elif k == "yukle": yukle(sys.argv[2], sys.argv[3])
     elif k == "urun_listesi": urun_listesi(sys.argv[2])
     elif k == "foto": foto(sys.argv[2], sys.argv[3], sys.argv[4])

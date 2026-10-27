@@ -70,6 +70,18 @@ Türkçe ve kısa yaz.
    Görselde `gorsel_fb.png`'ye bak.
 7. Yükle: `python3 uret.py yukle <dosya> <YYYY-MM-DD>_<HHMM>_<kısa-slug>.<mp4|png>` → herkese açık linki verir.
 
+### Kapak (videonun ilk 0,5 saniyesi — TikTok/YouTube profil ızgarasında görünen kare)
+`uret.py taslak` config.json'a `kapak` bölümü yazar; `uret` bunu `motor/kapak.py` ile çizip videonun başına 0,5 sn ekler.
+- Şablonlar: ürünler için `1` tam fotoğraf, `2` yeşil çerçeve, `3` krem dergi, `4` afiş, `5` sade yazı (3+ üründe yalnızca 3/4/5).
+  Kutlamalar (Özel gün) için büyük logolu `A` yeşil halka, `B` kırmızı milli bayram (`buyuk`: "103." gibi), `C` gece mavisi kandil, `D` kurdeleli bayram, `E` buğdaylı çiftçi.
+- Kayıtta `kapak` "Otomatik" ya da boşsa `sablon: "auto"` kalır: ürünlerde son kullanılanlar hariç sırayla döner; kutlamada metne göre seçilir (29 Ekim → B, kandil → C, bayram → D, çiftçi → E, Cuma vb. A/D/E arasında döner). Kayıtta 1-5 / A-E seçiliyse ona uy.
+- Kapak yazısı: kayıtta `kapakYazisi` varsa AYNEN kullan. Yoksa `kapak.baslik`'ı 2-4 kelimelik vurucu bir yazıya çevir, bir kelimeyi `[ ]` ile altın yap (ör. "Mibzer [sezonu!]", "Dönerli pullukta [fırsat]").
+  `ust` (küçük üst yazı, ör. "EKİM SEZONU", "KAMPANYA") ayarla. Kutlamada `ust`/`alt` (ör. "Cumhuriyet Bayramımız kutlu olsun") ve gerekirse `buyuk` doldur.
+- Ürün `ad`larını kapak için kısalt (ör. "Hububat Mibzeri", "Azim 4'lü (2. el)"). Fiyat ürün kapaklarında HEP görünür (usta ipucu/firma tanıtımında fiyat yok); hububat mibzerinde `fiyat_etiket` "BAŞLAYAN FİYATLARLA".
+- Şablon geçmişi: plan sayfasında `meta/kapak` belgesi (`son`: son kullanılan şablonlar listesi, en fazla 6). `uret` komutuna `--son <a,b,c>` ver (urun ve kutlama ayrı tutulmaz, ikisi de aynı listeden okunur).
+  `uret` stderr'e `KAPAK_SABLONU X` yazar; X'i listenin sonuna ekleyip `meta/kapak`'ı güncelle (belge yoksa oluştur).
+- Kontrol: `kapak.png`'ye ve videonun ilk karesine (`ffmpeg -ss 0.1 ...`) Read ile bak; yazı taşıyor/kesiliyorsa yazıyı kısalt, yeniden üret.
+
 ### Video sahne türleri (config.json → scenes)
 - `intro`: logo açılışı (her videoda ilk).
 - `headline`: krem zemin, `kicker`, `title` (altın vurgu için kelime `[ ]` içinde), `sub`.
