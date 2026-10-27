@@ -68,6 +68,10 @@ Türkçe ve kısa yaz.
    - `desc`: UYDURMA ÖZELLİK YAZMA. Sadece ürün adından, nottan ya da ürün sayfasından doğrulanabilen bilgi. Emin değilsen "Yüksel Tarım güvencesiyle." kalsın.
    - Notta ürün dışı bir bilgi varsa (kredi, taksit, kampanya süresi) başlık sahnesinin `sub` alanına kısa yaz.
    - Ürünü olmayan kayıtlarda (firma tanıtımı, usta ipucu) video için ürün sahnesi yerine başlık + not yeterli; gerekirse `headline` `sub` alanını kullan.
+   - **Not ve başlık boş olabilir** (kullanıcı yazmakla uğraşmak istemiyor; boşsa metinleri SEN yaz). Ürünlü kayıtta bilgiler ürün sayfasından gelir.
+     Usta ipucu / firma tanıtımında not boşsa `list` maddelerini (3-4 kısa madde) sen yaz: usta ipucunda genel, doğru bakım/kullanım bilgisi;
+     firma tanıtımında yalnızca sitede/bu talimatta geçen bilgiler (ürün grupları, markalar, Türkiye'ye gönderim, kredi/takas). Uydurma rakam, yıl, iddia YOK.
+     Başlık boşsa kısa, doğal bir başlık sen yaz (referansta: "Mutlu müşterimiz: <Ad>"); TikTok/YouTube başlığı da bundan türer.
 5. Müzik seç: `python3 uret.py muzik_sec /tmp/is/<id>/kayit.json --son <meta/muzik son listesi, virgüllü>` → JSON.
    `anahtar` null ise (dini mesaj ya da kullanıcı "Müziksiz" dedi) `--muzik` VERME, video müziksiz çıkar.
    Değilse Artifact `action: "read"`, `url` = plan sayfası, `path` = `asset`, `out_dir` = `/tmp/is/muzik` ile indir ve
