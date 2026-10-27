@@ -91,6 +91,8 @@ Kayıt türü "Teslimat / müşteri" ve ürün seçilmemişse video sitedeki **R
    sona at. Kapakta (müşteri adı üstüne yazılır) Ahmet Bey'in tek başına ya da öne çıktığı selfie'yi KULLANMA; müşterinin makineyle olduğu
    ya da teslimat fotoğrafını seç.
 4. Müşteri adı TAM yazılır (kullanıcı kararı). Videoda ve açıklamada FİYAT YOK.
+   **Ürün adı referanstaki gibi BİREBİR** yazılır (kısaltma, yeniden adlandırma, model/ölçü ekleme YOK); yalnızca bariz yazım hatası düzeltilir
+   (ör. sitede "Toprak Taışma Makinesi" → doğrusu "Toprak Taşıma Makinesi"; bilinen hatalar `uret.py` → `YAZIM_DUZELT`, yeni bir hata görürsen oraya ekle) ve özette belirt.
 5. Rozetler: ürün sitede eşleşip sıfır olduğu doğrulanırsa sıfır rozetleri (5 yıl kredi dahil), eşleşmezse ya da 2. el ise sadece taksit + takas.
 6. Açıklama (caption):
 ```

@@ -185,6 +185,16 @@ def referans_listesi(cikti):
     print(len(slugs), "referans bulundu,", len(R), "tanesi fotoğraflı ve okunabildi ->", cikti)
 
 
+# Sitedeki bilinen yazım hataları (ürün adı başka türlü birebir korunur)
+YAZIM_DUZELT = {"Taışma": "Taşıma"}
+
+
+def urun_adi_duzelt(ad):
+    for yanlis, dogru in YAZIM_DUZELT.items():
+        ad = ad.replace(yanlis, dogru)
+    return ad
+
+
 def _urun_turu(ad):
     a = ad.lower()
     for k, v in [("yem karma", "yem karma"), ("römork", "römork"), ("dorse", "römork"), ("pulluk", "pulluk"), ("mibzer", "mibzer"),
@@ -213,6 +223,7 @@ def _referans_taslak(kayit, klasor):
     import urllib.parse
     R = json.loads(pathlib.Path(kayit["_referanslar"]).read_text()) if kayit.get("_referanslar") else []
     r = referans_sec(kayit, R, kayit.get("_kullanilan", []), kayit.get("_son_urun", []), kayit.get("_son_il", []))
+    r = dict(r, urun=urun_adi_duzelt(r.get("urun", "")))
     fotolar = []
     for i, u in enumerate(r["foto"][:5]):
         yol = klasor / f"ref_{i}.jpg"
