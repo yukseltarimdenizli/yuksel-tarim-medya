@@ -8,7 +8,8 @@ Adımlar (CLAUDE.md'deki çalışma talimatı bunları sırayla kullanır):
       fotoğraf seçer, <is_klasoru>/config.json ve urunler.json yazar,
       her ürün için fotoğraf kontrol sayfası (kontrol_<n>.png) üretir.
 
-  python3 uret.py uret <is_klasoru> [--muzik dosya.mp3]
+  python3 uret.py uret <is_klasoru> [--muzik dosya.mp4 --muzik-bas <sn>] [--son a,b]
+  python3 uret.py muzik_sec <kayit.json> [--son a,b]   -> hangi müzik (dini mesajda müzik yok)
       config.json'a göre videoyu (format Video) ya da görseli (format Görsel) üretir.
       Çıktının yolunu yazdırır.
 
@@ -263,8 +264,45 @@ def kapak_hazirla(klasor, cfg, son=()):
 
 KAPAK_SURE = 0.5  # sn — kullanıcı kararı
 
+# ---------------------------------------------------------------- müzik seçimi
+MUZIKLER = json.loads((pathlib.Path(__file__).parent / "muzikler.json").read_text())
+DINI = ["cuma", "kandil", "ramazan", "kurban", "şeker bayram", "hicri", "mevlid", "mevlit", "kadir gece", "regaip",
+        "miraç", "mirac", "berat", "aşure", "asure", "arefe", "iftar", "sahur", "oruç", "hac ", "mübarek", "mubarek", "bayram"]
+MILLI = ["cumhuriyet", "29 ekim", "23 nisan", "19 mayıs", "19 mayis", "30 ağustos", "zafer bayram", "15 temmuz",
+         "atatürk", "ataturk", "10 kasım", "milli", "çiftçi", "ciftci", "yılbaşı", "yeni yıl", "öğretmen", "anneler", "babalar"]
 
-def uret(klasor, muzik=None, son=()):
+
+def dini_mi(kayit):
+    """Kullanıcı kararı: Cuma ve dini günlerin mesajlarında müzik kullanılmaz."""
+    if kayit.get("type") != "Özel gün":
+        return False
+    m = " ".join(str(kayit.get(a, "")) for a in ("title", "note", "kapakYazisi")).lower().replace("İ", "i")
+    if any(w in m for w in MILLI) and not any(w in m for w in ("cuma", "kandil", "ramazan", "kurban", "mübarek")):
+        return False
+    return any(w in m for w in DINI)
+
+
+def muzik_sec(kayit, son=()):
+    """{anahtar, asset, baslangic, kredi} ya da {anahtar: None, neden}."""
+    P = MUZIKLER["parcalar"]; secim = (kayit.get("muzik") or "Otomatik").strip()
+    if dini_mi(kayit):
+        return {"anahtar": None, "neden": "dini mesaj: müzik kullanılmaz"}
+    if secim == "Müziksiz":
+        return {"anahtar": None, "neden": "kullanıcı müziksiz istedi"}
+    if secim in P:
+        a = secim
+    else:
+        aday = MUZIKLER["turlere_gore"].get(kayit.get("type"), list(P))
+        son = [x for x in son if x]
+        uygun = [x for x in aday if x not in son[-2:]] or aday
+        # en uzun süredir kullanılmayanı seç (hiç kullanılmamışlar önce, listedeki sıraya göre)
+        uygun.sort(key=lambda x: (son[::-1].index(x) if x in son else -1), reverse=True)
+        uygun.sort(key=lambda x: x in son)
+        a = uygun[0]
+    return {"anahtar": a, **P[a]}
+
+
+def uret(klasor, muzik=None, son=(), muzik_bas=None):
     klasor = pathlib.Path(klasor); cfg = json.loads((klasor / "config.json").read_text())
     # Güvence: satış koşulu rozetleri (kredi/kart/takas) ürün sahnelerinden asla düşmesin.
     ikinci = {}
@@ -295,9 +333,9 @@ def uret(klasor, muzik=None, son=()):
         out = klasor / "video.mp4"
         if muzik:
             dur = float(subprocess.check_output(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", str(sessiz)]).decode())
-            subprocess.run(["ffmpeg", "-y", "-v", "error", "-i", str(sessiz), "-ss", str(MUZIK_BASLANGIC), "-i", muzik, "-filter_complex",
-                            f"[1:a]atrim=0:{dur},asetpts=PTS-STARTPTS,afade=t=in:st=0:d=0.25,afade=t=out:st={dur-1.8:.2f}:d=1.8,volume=0.9[a]",
-                            "-map", "0:v", "-map", "[a]", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-shortest", "-movflags", "+faststart", str(out)], check=True)
+            subprocess.run(["ffmpeg", "-y", "-v", "error", "-i", str(sessiz), "-ss", str(MUZIK_BASLANGIC if muzik_bas is None else muzik_bas), "-i", muzik, "-filter_complex",
+                            f"[1:a]atrim=0:{dur},asetpts=PTS-STARTPTS,loudnorm=I=-14:TP=-1.5:LRA=11,afade=t=in:st=0:d=0.25,afade=t=out:st={dur-1.8:.2f}:d=1.8[a]",
+                            "-map", "0:v", "-map", "[a]", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-ar", "44100", "-shortest", "-movflags", "+faststart", str(out)], check=True)
         else:
             shutil.copy(sessiz, out)
     else:
@@ -371,7 +409,11 @@ if __name__ == "__main__":
     k = sys.argv[1]
     if k == "taslak": taslak(sys.argv[2], sys.argv[3])
     elif k == "uret": uret(sys.argv[2], sys.argv[sys.argv.index("--muzik") + 1] if "--muzik" in sys.argv else None,
-                           [x for x in (sys.argv[sys.argv.index("--son") + 1].split(",") if "--son" in sys.argv else []) if x])
+                           [x for x in (sys.argv[sys.argv.index("--son") + 1].split(",") if "--son" in sys.argv else []) if x],
+                           float(sys.argv[sys.argv.index("--muzik-bas") + 1]) if "--muzik-bas" in sys.argv else None)
+    elif k == "muzik_sec":
+        son = [x for x in (sys.argv[sys.argv.index("--son") + 1].split(",") if "--son" in sys.argv else []) if x]
+        print(json.dumps(muzik_sec(json.loads(pathlib.Path(sys.argv[2]).read_text()), son), ensure_ascii=False))
     elif k == "yukle": yukle(sys.argv[2], sys.argv[3])
     elif k == "urun_listesi": urun_listesi(sys.argv[2])
     elif k == "foto": foto(sys.argv[2], sys.argv[3], sys.argv[4])

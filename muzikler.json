@@ -1,0 +1,19 @@
+{
+ "_aciklama": "Videolarda kullanılan müzikler. Dosyalar plan sayfasının dosya alanında (asset); lisans gereği bu herkese açık depoya KONMAZ. baslangic = parçanın videoya giren saniyesi.",
+ "parcalar": {
+  "akustik":       {"ad": "Akustik Folk (ilk müzik)", "asset": "03b30fa268bba5cad720283cf68f0a1b", "baslangic": 17.48, "kaynak": "Pixabay", "kredi": ""},
+  "corp_upbeat":   {"ad": "The Corporate Upbeat", "asset": "4eb77345e72943620c9e4b95d2a160c6", "baslangic": 45.0, "kaynak": "https://www.jamendo.com/track/1670594", "kredi": "🎵 Müzik: The Corporate Upbeat – Soundrider/Dope (CC BY 3.0)"},
+  "corp_latypov":  {"ad": "Corporate Music", "asset": "bfa98cfc383055bed0f5813f403665a4", "baslangic": 18.0, "kaynak": "https://www.jamendo.com/track/1693123", "kredi": "🎵 Müzik: Corporate Music – Ruslan Latypov (CC BY 3.0)"},
+  "inspiring":     {"ad": "Inspiring Corporate", "asset": "3e5c122ce15c2d396279a8bb88f6dfc9", "baslangic": 96.0, "kaynak": "https://www.jamendo.com/track/1670484", "kredi": "🎵 Müzik: Inspiring Corporate – Soundrider/Dope (CC BY 3.0)"},
+  "uplifting":     {"ad": "Uplifting Corporate", "asset": "a23d0bd3e4ad72625015825fa0af8477", "baslangic": 28.5, "kaynak": "https://www.jamendo.com/track/1670597", "kredi": "🎵 Müzik: Uplifting Corporate – Soundrider/Dope (CC BY 3.0)"},
+  "wakeup":        {"ad": "Wake Up (akustik)", "asset": "e888e439bb1349004fb34f3a635f8908", "baslangic": 110.5, "kaynak": "https://www.jamendo.com/track/628970", "kredi": "🎵 Müzik: Wake Up (Instrumental) – Josh Woodward (CC BY 3.0)"}
+ },
+ "turlere_gore": {
+  "Kampanya":           ["corp_upbeat", "corp_latypov", "inspiring", "akustik"],
+  "Ürün tanıtımı":      ["corp_upbeat", "corp_latypov", "inspiring", "akustik", "uplifting"],
+  "Firma tanıtımı":     ["uplifting", "inspiring", "wakeup", "akustik"],
+  "Usta ipucu":         ["wakeup", "akustik", "uplifting"],
+  "Teslimat / müşteri": ["wakeup", "akustik", "uplifting"],
+  "Özel gün":           ["uplifting", "inspiring", "akustik"]
+ }
+}

@@ -13,8 +13,8 @@ Türkçe ve kısa yaz.
     `example` (true ise örnek kayıt, ASLA işleme), `updatedAt` (sayfa düzenleyince yazar).
     Hazırlama sonrası senin yazdıkların: `preparedAt`, `metricoolId`, `mediaUrl`, `caption`, `uyari`.
   - `meta/urunler` belgesi: sitedeki ürün listesi (`items`: name, url, ikinci_el, fiyat; `guncelleme`).
-  - Müzik dosyası (sayfanın dosya alanında): asset id `03b30fa268bba5cad720283cf68f0a1b`
-    (acoustic folk, Pixabay; videolarda hep bu kullanılır). Herkese açık depoya KOYMA (lisans gereği).
+  - Müzikler (sayfanın dosya alanında, 6 parça): liste, asset id'leri, başlangıç saniyeleri ve kredi satırları depodaki
+    `muzikler.json`'da. Müzik dosyalarını herkese açık depoya KOYMA (lisans gereği). Kullanım geçmişi: `meta/muzik` belgesi (`son`).
 - Metricool: marka (blogId) `7661465`, saat dilimi `Europe/Istanbul`. Bağlı ağlar: Facebook sayfası, TikTok ve YouTube kanalı (Shorts).
   Ücretsiz plan: ayda en fazla 20 yayınlanmış paylaşım.
 - Medya deposu: `yukseltarimdenizli/yuksel-tarim-medya` (herkese açık). Metricool medyayı buradaki
@@ -25,8 +25,7 @@ Türkçe ve kısa yaz.
 ### 0. Hazırlık
 1. `add_repo` ile `yukseltarimdenizli/yuksel-tarim-medya` deposunu `access: "push"` olarak ekle, `~/yuksel-tarim-medya`'ya klonla
    (bu talimatı okuyorsan zaten klonlanmış olabilir; `git pull` yap).
-2. Müziği indir: Artifact `action: "read"`, `url` = plan sayfası, `path` = müzik asset id, `out_dir` = `/tmp/is`.
-   Kaydedilen `.mp4` dosyası müziktir (`--muzik` ile ver). İndirilemezse müziksiz üret ve özette belirt.
+2. Müzik her kayıt için ayrı seçilir (bkz. "Müzik"); dosyayı o adımda indir.
 3. Bugünün tarihini ve saatini İstanbul saatiyle al (`mcp__claude_ai__current_time` ya da `TZ=Europe/Istanbul date`).
 
 ### 1. Ürün listesini tazele
@@ -64,7 +63,12 @@ Türkçe ve kısa yaz.
    - `desc`: UYDURMA ÖZELLİK YAZMA. Sadece ürün adından, nottan ya da ürün sayfasından doğrulanabilen bilgi. Emin değilsen "Yüksel Tarım güvencesiyle." kalsın.
    - Notta ürün dışı bir bilgi varsa (kredi, taksit, kampanya süresi) başlık sahnesinin `sub` alanına kısa yaz.
    - Ürünü olmayan kayıtlarda (firma tanıtımı, usta ipucu) video için ürün sahnesi yerine başlık + not yeterli; gerekirse `headline` `sub` alanını kullan.
-5. `python3 uret.py uret /tmp/is/<id> --muzik <müzik dosyası>` çalıştır.
+5. Müzik seç: `python3 uret.py muzik_sec /tmp/is/<id>/kayit.json --son <meta/muzik son listesi, virgüllü>` → JSON.
+   `anahtar` null ise (dini mesaj ya da kullanıcı "Müziksiz" dedi) `--muzik` VERME, video müziksiz çıkar.
+   Değilse Artifact `action: "read"`, `url` = plan sayfası, `path` = `asset`, `out_dir` = `/tmp/is/muzik` ile indir ve
+   `python3 uret.py uret /tmp/is/<id> --muzik <indirilen .mp4> --muzik-bas <baslangic> --son <kapak son listesi>` çalıştır.
+   İndirilemezse `akustik` parçayı dene, o da olmazsa müziksiz üret ve özette belirt.
+   Sonra `meta/muzik` belgesinin `son` listesine `anahtar`'ı ekle (en fazla 6; belge yoksa oluştur).
 6. Kontrol: Videodan 3 kare çıkar (ürün sahnelerinde sahnenin SONUNA yakın kare al; rozetler sahne başlayınca ~2 sn sonra belirir). Her ürün sahnesinde fiyatın altında kredi/kart/takas rozetleri GÖRÜNMELİ; yoksa config'te `perks` eksiktir, ekleyip yeniden üret. (Firma tanıtımı fotoğrafları gibi ürün olmayan sahnelerde rozet istemiyorsan sahneye `"perks_yok": true` yaz.)  (`ffmpeg -ss <t> -i video.mp4 -frames:v 1 kare.png`, başlık, ilk ürün, son ürün)
    ve Read ile bak. Taşan/kesilen/üst üste binen yazı varsa config'i düzeltip yeniden üret (en fazla 2 deneme).
    Görselde `gorsel_fb.png`'ye bak.
@@ -104,7 +108,10 @@ Türkçe ve kısa yaz.
 
 ### Kullanıcı tercihleri
 - Kullanıcı GÖRSEL değil VİDEO istiyor. Kayıtta `format` "Görsel" olsa bile video üret (Facebook + TikTok için aynı dikey video).
-- Her videoda aynı müzik (plan sayfasındaki asset).
+- **Müzik:** 6 parça türe göre dönüşümlü kullanılır (`muzikler.json` → `turlere_gore`; son 2 kullanılan tekrar edilmez). Kayıtta `muzik` alanı
+  "Otomatik"/boş ise sistem seçer, "Müziksiz" ise müzik yok, bir parça anahtarı yazıyorsa o kullanılır.
+- **Dini mesajlarda (Cuma, kandil, Ramazan/Kurban bayramı, hicri yılbaşı vb.) MÜZİK KULLANILMAZ** (kullanıcının açık isteği). `muzik_sec` bunu
+  otomatik yapar; yine de Özel gün kaydı dini içerikliyse ve müzik seçilmişse müziksiz üret. Milli bayramlarda (29 Ekim vb.) müzik olur.
 - Birden fazla ürün varsa videoda ve açıklamada KÜÇÜKTEN BÜYÜĞE sırala (ör. 4'lü → 5'li, 40 HP → 101 HP, 3 m³ → 6 m³; ölçü yoksa ucuzdan pahalıya).
 - Ürünlerin hep aynı türden olmaması önemli; bir haftayı tek ürünle doldurma (bu, planlama yapılırken geçerli; kayıtları değiştirme).
 
@@ -126,6 +133,8 @@ Sıfır ürünler, Yüksel Tarım güvencesiyle. Denizli'den tüm Türkiye'ye g�
 - Fiyatı olmayan üründe "Fiyat için arayın" yaz. İkinci el ürünü "Sıfır" diye anma.
 - Uydurma özellik, telefon numarası, kampanya süresi yazma (kullanıcı notta vermediyse).
 - 6-9 ilgili hashtag; her zaman `#yükseltarım #denizli #tarım` olsun.
+- Seçilen müziğin `kredi` alanı doluysa (CC BY lisans şartı) hashtag'lerden hemen önce ayrı satır olarak ekle, ör.
+  `🎵 Müzik: The Corporate Upbeat – Soundrider/Dope (CC BY 3.0)`. Müziksiz videoda bu satır olmaz.
 
 ### 5. Metricool'a planla
 `createScheduledPost`, `blogId` "7661465", `date` = `<date>T<time>:00+03:00`, info:
