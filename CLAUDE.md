@@ -195,9 +195,10 @@ Sıfır ürünler, Yüksel Tarım güvencesiyle. Denizli'den tüm Türkiye'ye g�
   "tags": [4-7 Türkçe etiket, her zaman "Yüksel Tarım", "Denizli"]}. Açıklama (`text`) YouTube'da video açıklaması olur.
 - Diğer alanlar: `descendants` [], `firstCommentText` "", `hasNotReadNotes` false, `mediaAltText` [],
   `shortener` false, `smartLinkData` {"ids": []}.
-- **Aylık sınır:** Bu ay `posts` içinde "Planlandı"/"Paylaşıldı" olan kayıtları say; her platform ayrı bir paylaşım sayılır
-  (Metricool'un nasıl saydığı doğrulanınca bu satır güncellenecek). YouTube eklenince gönderi başına 3 hak gidebilir; ay içinde sınıra yaklaşılırsa platformları kendi başına çıkarma, kalan kayıtları planlamayı durdur ve özette kullanıcıya hangi platformdan vazgeçmek istediğini sor. Yeni paylaşım 20'yi aşacaksa PLANLAMA,
-  kaydın `uyari` alanına "Aylık 20 sınırı doldu" yaz, status "Taslak" kalsın, özette belirt.
+- **Aylık sınır:** Metricool gönderi başına 1 hak düşer; Facebook + TikTok + YouTube'a birlikte giden paylaşım da 1 sayılır
+  (27.10.2026'da 3 platforma giden paylaşımla doğrulandı). Bu ay `posts` içinde "Planlandı"/"Paylaşıldı" olan kayıtları say;
+  yeni paylaşım 20'yi aşacaksa PLANLAMA, kaydın `uyari` alanına "Aylık 20 sınırı doldu" yaz, status "Taslak" kalsın, özette belirt.
+  Platformları kendi başına çıkarma.
 
 ### 6. Kaydı güncelle
 ArtifactData `update` (`if_version` = okuduğun sürüm; çakışırsa yeniden oku, kullanıcının değişikliğini ezme):
