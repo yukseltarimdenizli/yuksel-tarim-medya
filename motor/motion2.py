@@ -218,7 +218,7 @@ FOOT = (f'<div class="abs foot" style="left:0;right:0;bottom:0;height:150px;back
         f'display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:600;letter-spacing:1px">{WEB}</div>')
 
 def title_html(t):
-    return "".join(f'<span class="wd{" gold" if w.startswith("[") else ""}"><i>{esc(w.strip("[]"))}</i></span>' for w in t.split())
+    return "".join(f'<span class="wd{" gold" if w.startswith("[") else ""}"><i>{esc(w.replace("[", "").replace("]", ""))}</i></span>' for w in t.split())
 
 def hdr(logo): return f'<div class="hdr abs"><img src="{logo}"><div><b>YÜKSEL TARIM</b><span>DENİZLİ</span></div></div>'
 
@@ -344,11 +344,14 @@ def build(cfg):
             sys.path.insert(0, str(ROOT)); from cami import cami_svg
             s.setdefault("dur", 130)
             sh = "text-shadow:0 4px 24px rgba(0,0,0,.75);"
-            def blok(top):
-                return (f'<div class="abs" style="left:0;right:0;top:{top}px;display:flex;flex-direction:column;align-items:center;gap:22px">'
-                        f'<div class="gkick" style="{sh}">{esc(s.get("kicker",""))}</div>'
-                        f'<div class="gtitle" style="font-size:{s.get("fs",104)}px;{sh}">{title_html(s["title"])}</div>'
-                        f'<div class="gline"></div><div class="gsub" style="font-size:40px;padding:0 90px;{sh}">{esc(s.get("sub",""))}</div></div>')
+            def blok(top, panel=False):
+                pn = ("left:60px;right:60px;padding:40px 10px 46px;border-radius:34px;background:rgba(8,20,12,.66);backdrop-filter:blur(6px);"
+                      "border:2px solid rgba(212,164,69,.55);box-shadow:0 20px 60px rgba(0,0,0,.45)" if panel else "left:0;right:0")
+                return (f'<div class="abs" style="{pn};top:{top}px;display:flex;flex-direction:column;align-items:center;gap:22px">'
+                        f'<div class="gkick" style="{sh}{"color:#FFE3A3;font-weight:800;font-size:34px" if panel else ""}">{esc(s.get("kicker",""))}</div>'
+                        + (f'<div class="gtitle" style="font-size:{s.get("fs",104)}px;{sh}">{title_html(s["title"])}</div>' if not s.get("dua") else
+                           f'<div class="gtitle" style="font-size:{s.get("dua_fs",54)}px;font-weight:700;line-height:1.32;padding:0 30px;{sh}">{title_html(s["dua"])}</div>')
+                        + f'<div class="gline"></div><div class="gsub" style="font-size:40px;padding:0 {40 if panel else 90}px;{sh}{"font-weight:600;color:#fff" if panel else ""}">{esc(s.get("sub",""))}</div></div>')
             hil = ('<svg class="hilal abs" viewBox="0 0 100 100" style="right:80px;top:290px;width:120px"><defs><mask id="hm' + str(i) + '"><rect width="100" height="100" fill="white"/>'
                    '<circle cx="62" cy="42" r="36" fill="black"/></mask></defs><circle cx="48" cy="50" r="40" fill="#F5D58A" mask="url(#hm' + str(i) + ')"/>'
                    '<polygon points="80,30 83,38 92,38 85,43 88,52 80,46 72,52 75,43 68,38 77,38" fill="#F5D58A"/></svg>')
@@ -360,15 +363,15 @@ def build(cfg):
             else:
                 im = uri(s["foto"]); stil = s.get("stil", "vinyet")
                 if stil == "ust":
-                    ft = (f'<div class="fmfoto abs" style="left:0;right:0;top:0;height:1450px;background-image:url({im});-webkit-mask-image:linear-gradient(180deg,#000 0%,#000 55%,transparent 100%)"></div>'
+                    ft = (f'<div class="fmfoto abs" style="left:0;right:0;top:0;height:1450px;background-image:url({im});background-position:{s.get("pos","center")};-webkit-mask-image:linear-gradient(180deg,#000 0%,#000 55%,transparent 100%)"></div>'
                           '<div class="abs" style="inset:0;background:linear-gradient(180deg,rgba(15,32,20,.55) 0%,rgba(15,32,20,0) 22%,rgba(15,32,20,0) 45%,rgba(15,32,20,.6) 70%)"></div>'); ty = 930
                 elif stil == "tam":
-                    ft = (f'<div class="fmfoto abs" style="inset:0;background-image:url({im});filter:saturate(.9) brightness(.75)"></div>'
+                    ft = (f'<div class="fmfoto abs" style="inset:0;background-image:url({im});background-position:{s.get("pos","center")};filter:saturate(.9) brightness(.75)"></div>'
                           '<div class="abs" style="inset:0;background:linear-gradient(180deg,rgba(15,32,20,.75) 0%,rgba(20,50,30,.35) 35%,rgba(20,50,30,.35) 60%,rgba(15,32,20,.92) 85%)"></div>'); ty = 780
                 else:
-                    ft = (f'<div class="fmfoto abs" style="left:-60px;right:-60px;top:240px;height:1300px;background-image:url({im});-webkit-mask-image:radial-gradient(ellipse 62% 55% at 50% 50%,#000 55%,transparent 100%)"></div>'
+                    ft = (f'<div class="fmfoto abs" style="left:-60px;right:-60px;top:120px;height:1520px;background-image:url({im});background-position:{s.get("pos","center")};-webkit-mask-image:radial-gradient(ellipse 80% 62% at 50% 50%,#000 58%,transparent 100%)"></div>'
                           '<div class="abs" style="left:0;right:0;top:640px;height:560px;background:radial-gradient(ellipse 70% 60% at 50% 50%,rgba(10,22,14,.6),rgba(10,22,14,0) 75%)"></div>'); ty = 700
-                parts.append(f'<div class="sc" style="background:#0f2014">{ft}{lg}{hil}{blok(s.get("text_y", ty))}{FOOT}</div>')
+                parts.append(f'<div class="sc" style="background:#0f2014">{ft}{lg}{hil}{blok(s.get("text_y", ty - 40), panel=True)}{FOOT}</div>')
         elif t == "outro":
             s.setdefault("dur", 115)
             cta = s.get("cta", "Bilgi için hemen arayın")
