@@ -1,19 +1,121 @@
 {
- "_aciklama": "Videolarda kullanılan müzikler. Dosyalar plan sayfasının dosya alanında (asset); lisans gereği bu herkese açık depoya KONMAZ. baslangic = parçanın videoya giren saniyesi.",
+ "_aciklama": "Videolarda kullanılan müzikler. Dosyalar plan sayfasının dosya alanında (asset); lisans gereği bu herkese açık depoya KONMAZ. baslangic = parçanın videoya giren saniyesi. Dini paylaşımlarda (Cuma, kandil, dini bayram) yalnızca 'dini' listesindeki ney/kaval kayıtları kullanılır (kullanıcı kararı 30.10.2026).",
  "parcalar": {
-  "akustik":       {"ad": "Akustik Folk (ilk müzik)", "asset": "03b30fa268bba5cad720283cf68f0a1b", "baslangic": 17.48, "kaynak": "Pixabay", "kredi": ""},
-  "corp_upbeat":   {"ad": "The Corporate Upbeat", "asset": "4eb77345e72943620c9e4b95d2a160c6", "baslangic": 45.0, "kaynak": "https://www.jamendo.com/track/1670594", "kredi": "🎵 Müzik: The Corporate Upbeat – Soundrider/Dope (CC BY 3.0)"},
-  "corp_latypov":  {"ad": "Corporate Music", "asset": "bfa98cfc383055bed0f5813f403665a4", "baslangic": 18.0, "kaynak": "https://www.jamendo.com/track/1693123", "kredi": "🎵 Müzik: Corporate Music – Ruslan Latypov (CC BY 3.0)"},
-  "inspiring":     {"ad": "Inspiring Corporate", "asset": "3e5c122ce15c2d396279a8bb88f6dfc9", "baslangic": 96.0, "kaynak": "https://www.jamendo.com/track/1670484", "kredi": "🎵 Müzik: Inspiring Corporate – Soundrider/Dope (CC BY 3.0)"},
-  "uplifting":     {"ad": "Uplifting Corporate", "asset": "a23d0bd3e4ad72625015825fa0af8477", "baslangic": 28.5, "kaynak": "https://www.jamendo.com/track/1670597", "kredi": "🎵 Müzik: Uplifting Corporate – Soundrider/Dope (CC BY 3.0)"},
-  "wakeup":        {"ad": "Wake Up (akustik)", "asset": "e888e439bb1349004fb34f3a635f8908", "baslangic": 110.5, "kaynak": "https://www.jamendo.com/track/628970", "kredi": "🎵 Müzik: Wake Up (Instrumental) – Josh Woodward (CC BY 3.0)"}
+  "akustik": {
+   "ad": "Akustik Folk (ilk müzik)",
+   "asset": "03b30fa268bba5cad720283cf68f0a1b",
+   "baslangic": 17.48,
+   "kaynak": "Pixabay",
+   "kredi": ""
+  },
+  "corp_upbeat": {
+   "ad": "The Corporate Upbeat",
+   "asset": "4eb77345e72943620c9e4b95d2a160c6",
+   "baslangic": 45.0,
+   "kaynak": "https://www.jamendo.com/track/1670594",
+   "kredi": "🎵 Müzik: The Corporate Upbeat – Soundrider/Dope (CC BY 3.0)"
+  },
+  "corp_latypov": {
+   "ad": "Corporate Music",
+   "asset": "bfa98cfc383055bed0f5813f403665a4",
+   "baslangic": 18.0,
+   "kaynak": "https://www.jamendo.com/track/1693123",
+   "kredi": "🎵 Müzik: Corporate Music – Ruslan Latypov (CC BY 3.0)"
+  },
+  "inspiring": {
+   "ad": "Inspiring Corporate",
+   "asset": "3e5c122ce15c2d396279a8bb88f6dfc9",
+   "baslangic": 96.0,
+   "kaynak": "https://www.jamendo.com/track/1670484",
+   "kredi": "🎵 Müzik: Inspiring Corporate – Soundrider/Dope (CC BY 3.0)"
+  },
+  "uplifting": {
+   "ad": "Uplifting Corporate",
+   "asset": "a23d0bd3e4ad72625015825fa0af8477",
+   "baslangic": 28.5,
+   "kaynak": "https://www.jamendo.com/track/1670597",
+   "kredi": "🎵 Müzik: Uplifting Corporate – Soundrider/Dope (CC BY 3.0)"
+  },
+  "wakeup": {
+   "ad": "Wake Up (akustik)",
+   "asset": "e888e439bb1349004fb34f3a635f8908",
+   "baslangic": 110.5,
+   "kaynak": "https://www.jamendo.com/track/628970",
+   "kredi": "🎵 Müzik: Wake Up (Instrumental) – Josh Woodward (CC BY 3.0)"
+  },
+  "ney_taksim": {
+   "ad": "Ney taksim (avnonsen)",
+   "asset": "ac51ec3cf7bd49bb1f26078e844b98bd",
+   "baslangic": 177.0,
+   "kaynak": "https://freesound.org/people/avnonsen/sounds/440815",
+   "kredi": "",
+   "dini": true
+  },
+  "ney_kisa": {
+   "ad": "Kısa ney (avnonsen)",
+   "asset": "31c072d742d1142f68a541a21bf93bde",
+   "baslangic": 4.5,
+   "kaynak": "https://freesound.org/people/avnonsen/sounds/440816",
+   "kredi": "",
+   "dini": true
+  },
+  "ney_makam": {
+   "ad": "Makam ney (Hamza Zeytinoğlu)",
+   "asset": "285005c4415a920708095ee0d8cac8f0",
+   "baslangic": 10.0,
+   "kaynak": "https://freesound.org/people/xserra/sounds/115398",
+   "kredi": "🎵 Ney: Hamza Zeytinoğlu – xserra / Freesound (CC BY)",
+   "dini": true
+  },
+  "kaval": {
+   "ad": "Kaval (Tomlija)",
+   "asset": "784c21821c1f19c12ef3b89c63745616",
+   "baslangic": 0.5,
+   "kaynak": "https://freesound.org/people/Tomlija/sounds/110332",
+   "kredi": "🎵 Kaval: Tomlija / Freesound (CC BY 3.0)",
+   "dini": true
+  }
  },
  "turlere_gore": {
-  "Kampanya":           ["corp_upbeat", "corp_latypov", "inspiring", "akustik"],
-  "Ürün tanıtımı":      ["corp_upbeat", "corp_latypov", "inspiring", "akustik", "uplifting"],
-  "Firma tanıtımı":     ["uplifting", "inspiring", "wakeup", "akustik"],
-  "Usta ipucu":         ["wakeup", "akustik", "uplifting"],
-  "Teslimat / müşteri": ["wakeup", "akustik", "uplifting"],
-  "Özel gün":           ["uplifting", "inspiring", "akustik"]
- }
+  "Kampanya": [
+   "corp_upbeat",
+   "corp_latypov",
+   "inspiring",
+   "akustik"
+  ],
+  "Ürün tanıtımı": [
+   "corp_upbeat",
+   "corp_latypov",
+   "inspiring",
+   "akustik",
+   "uplifting"
+  ],
+  "Firma tanıtımı": [
+   "uplifting",
+   "inspiring",
+   "wakeup",
+   "akustik"
+  ],
+  "Usta ipucu": [
+   "wakeup",
+   "akustik",
+   "uplifting"
+  ],
+  "Teslimat / müşteri": [
+   "wakeup",
+   "akustik",
+   "uplifting"
+  ],
+  "Özel gün": [
+   "uplifting",
+   "inspiring",
+   "akustik"
+  ]
+ },
+ "dini": [
+  "ney_taksim",
+  "ney_makam",
+  "kaval",
+  "ney_kisa"
+ ]
 }

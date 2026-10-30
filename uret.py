@@ -273,6 +273,19 @@ def _referans_taslak(kayit, klasor):
                       "fotolar": fotolar, "cumleler": cumle, "urun_turu": _urun_turu(r["urun"])}, ensure_ascii=False, indent=1))
 
 
+# Dini paylaşımlar için varsayılan dualar (çalışan oturum her seferinde güne uygun, YENİ ve içten bir dua yazar; bunlar yedek)
+DUALAR = [
+    "Rabbim bu mübarek günün hürmetine dualarımızı kabul, emeğimizi [bereketli], sofralarımızı bol eylesin.",
+    "Toprağa düşen her tohum gibi dualarımız da yeşersin; bu mübarek gün hanelerimize huzur, tarlalarımıza [bereket] getirsin.",
+    "Alın terimizle ektiğimiz her tohuma bereket, sofralarımıza bolluk, gönüllerimize [huzur] nasip olsun.",
+    "Rabbim bu günün hürmetine hastalarımıza şifa, çiftçimize bol hasat, ülkemize birlik ve [huzur] versin.",
+]
+
+
+def _ust(t):
+    return re.sub(r"[\[\]]", "", t).replace("i", "İ").replace("ı", "I").upper()
+
+
 def taslak(kayit_yolu, klasor):
     kayit = json.loads(pathlib.Path(kayit_yolu).read_text())
     klasor = pathlib.Path(klasor); klasor.mkdir(parents=True, exist_ok=True)
@@ -297,7 +310,22 @@ def taslak(kayit_yolu, klasor):
     cfg = {"format": "Video", "kayit_id": kayit.get("id"), "scenes": []}  # kullanıcı tercihi: hep video
     tur = kayit.get("type")
     satirlar = [re.sub(r"^\s*(\d+[).]|[-•*])\s*", "", x).strip() for x in re.split(r"\n|(?<=\.)\s+(?=\d+\))", kayit.get("note", "")) if x.strip()]
-    if cfg["format"] == "Video" and tur == "Özel gün":
+    if cfg["format"] == "Video" and tur == "Özel gün" and dini_mi(kayit):
+        # Dini günler (kullanıcı onayı 30.10.2026): gece göğü + hilal + altın cami → büyük cami fotoğrafı üstünde dua → kapanış
+        C = json.loads((pathlib.Path(__file__).parent / "camiler.json").read_text())["fotolar"]
+        son = kayit.get("_cami_son", [])
+        cami = next((c for c in C if c["id"] not in son[-(len(C) - 1):]), C[0]) if C else None
+        kucuk = title.lower()
+        kick = "KANDİL" if "kandil" in kucuk else ("BAYRAM" if "bayram" in kucuk else ("CUMA" if "cuma" in kucuk else ""))
+        dua = DUALAR[sum(map(ord, kayit.get("date", ""))) % len(DUALAR)]
+        cfg["scenes"] = [{"type": "gece", "kicker": kick, "title": baslik_vurgula(title), "sub": satirlar[0] if satirlar else {"CUMA": "Cumanız mübarek, emeğiniz bereketli olsun.", "KANDİL": "Kandiliniz mübarek olsun.", "BAYRAM": "Bayramınız mübarek olsun."}.get(kick, ""), "dur": 120}]
+        if cami:
+            cfg["scenes"].append({"type": "fotomesaj", "stil": cami["stil"], "pos": cami["pos"],
+                                  "foto": str(pathlib.Path(__file__).parent / cami["dosya"]), "cami_id": cami["id"], "cami_kredi": cami["kredi"],
+                                  "kicker": _ust(title) if len(title) < 28 else kick, "title": "x", "dua": dua,
+                                  "sub": "Yüksel Tarım ailesi olarak " + ("cumanızı" if kick == "CUMA" else ("kandilinizi" if kick == "KANDİL" else "bayramınızı")) + " tebrik ederiz.", "dur": 190})
+        cfg["scenes"].append({"type": "outro", "cta": ""})
+    elif cfg["format"] == "Video" and tur == "Özel gün":
         cfg["scenes"] = [{"type": "intro", "overlap": 24},
                          {"type": "greeting", "kicker": "YÜKSEL TARIM", "title": baslik_vurgula(title), "sub": ""},
                          {"type": "outro", "cta": ""}]
@@ -351,8 +379,10 @@ def kapak_taslagi(kayit, title, bilgiler, cfg):
     secim = (kayit.get("kapak") or "Otomatik").strip()
     yazi = (kayit.get("kapakYazisi") or "").strip()
     if tur == "Özel gün":
-        sablon = secim if secim in list("ABCDE") else "auto"
-        return {"tur": "kutlama", "sablon": sablon, "ust": "", "baslik": yazi or title, "alt": "", "buyuk": ""}
+        sablon = secim if secim in list("ABCDEFG") else ("G" if dini_mi(kayit) else "auto")
+        alt = next((sc.get("sub", "") for sc in cfg.get("scenes", []) if sc.get("type") == "gece"), "")
+        ust = next((sc.get("kicker", "") for sc in cfg.get("scenes", []) if sc.get("type") == "gece"), "")
+        return {"tur": "kutlama", "sablon": sablon, "ust": ust, "baslik": yazi or title, "alt": alt, "buyuk": ""}
     fiyatli = tur not in ("Usta ipucu", "Firma tanıtımı")
     sahne_foto = [sc for sc in cfg.get("scenes", []) if sc.get("type") == "photo"]
     urunler = []
@@ -409,14 +439,16 @@ def dini_mi(kayit):
 def muzik_sec(kayit, son=()):
     """{anahtar, asset, baslangic, kredi} ya da {anahtar: None, neden}."""
     P = MUZIKLER["parcalar"]; secim = (kayit.get("muzik") or "Otomatik").strip()
-    if dini_mi(kayit):
-        return {"anahtar": None, "neden": "dini mesaj: müzik kullanılmaz"}
+    dini = dini_mi(kayit)
     if secim == "Müziksiz":
         return {"anahtar": None, "neden": "kullanıcı müziksiz istedi"}
-    if secim in P:
+    # Dini paylaşımlarda yalnızca ney/kaval (MUZIKLER["dini"]); diğerlerinde bunlar hiç kullanılmaz.
+    if secim in P and bool(P[secim].get("dini")) == dini:
         a = secim
     else:
-        aday = MUZIKLER["turlere_gore"].get(kayit.get("type"), list(P))
+        aday = MUZIKLER.get("dini", []) if dini else [x for x in MUZIKLER["turlere_gore"].get(kayit.get("type"), list(P)) if not P[x].get("dini")]
+        if not aday:
+            return {"anahtar": None, "neden": "uygun müzik yok"}
         son = [x for x in son if x]
         uygun = [x for x in aday if x not in son[-2:]] or aday
         # en uzun süredir kullanılmayanı seç (hiç kullanılmamışlar önce, listedeki sıraya göre)

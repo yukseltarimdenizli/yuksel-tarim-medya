@@ -157,8 +157,19 @@ Kayıt türü "Teslimat / müşteri" ve ürün seçilmemişse video sitedeki **R
 - Kullanıcı GÖRSEL değil VİDEO istiyor. Kayıtta `format` "Görsel" olsa bile video üret (Facebook + TikTok için aynı dikey video).
 - **Müzik:** 6 parça türe göre dönüşümlü kullanılır (`muzikler.json` → `turlere_gore`; son 2 kullanılan tekrar edilmez). Kayıtta `muzik` alanı
   "Otomatik"/boş ise sistem seçer, "Müziksiz" ise müzik yok, bir parça anahtarı yazıyorsa o kullanılır.
-- **Dini mesajlarda (Cuma, kandil, Ramazan/Kurban bayramı, hicri yılbaşı vb.) MÜZİK KULLANILMAZ** (kullanıcının açık isteği). `muzik_sec` bunu
-  otomatik yapar; yine de Özel gün kaydı dini içerikliyse ve müzik seçilmişse müziksiz üret. Milli bayramlarda (29 Ekim vb.) müzik olur.
+- **Dini mesajlarda (Cuma, kandil, Ramazan/Kurban bayramı, hicri yılbaşı vb.) normal müzikler KULLANILMAZ; yalnızca ney/kaval kayıtları**
+  (`muzikler.json` → `dini`: ney_taksim, ney_makam, kaval, ney_kisa; dönüşümlü). `muzik_sec` bunu otomatik yapar (kullanıcı kararı 30.10.2026).
+  Kayıtta "Müziksiz" seçiliyse ses yok. Milli bayramlarda (29 Ekim vb.) normal müzik olur.
+- **Dini paylaşım formatı** (kullanıcı onayı 30.10.2026; `uret.py taslak` otomatik kurar): kapak `G` (gece göğü, hilal, dev altın cami silüeti)
+  → `gece` sahnesi (kısa mesaj: "CUMA · Hayırlı Cumalar" + alt yazı) → `fotomesaj` sahnesi (Türkiye'nin büyük camilerinden biri, kenarları yumuşak geçişli,
+  koyu panel içinde DUA) → kapanış (buton yok).
+  - **Dua:** fotomesaj sahnesinin `dua` alanını HER SEFERİNDE YENİ, içten, dua eder gibi uzun bir cümleyle yaz (18-30 kelime; çiftçilik/toprak/bereket/
+    hasat/huzur temalı, güne uygun: Cuma/kandil/bayram). Bir kelimeyi `[ ]` ile altın yap. Ayet/hadis UYDURMA, alıntı yapma; kendi duamız olsun.
+    `uret.py` → `DUALAR` yalnızca yedektir.
+  - **Cami fotoğrafı:** `camiler.json` (Wikimedia Commons, CC BY) dönüşümlü; `kayit.json`'a `"_cami_son"` (meta/cami `son`) ver, taslak son kullanılmayanı seçer.
+    Planlandıktan sonra `meta/cami` belgesinin `son` listesine seçilen `cami_id`'yi ekle (belge yoksa oluştur). Yeni fotoğraf eklenecekse yalnızca
+    CC0/CC BY/kamu malı, insan yüzü öne çıkmayan, geniş açılı ve ≥1600 px fotoğraf; `camiler/`'a koy, `camiler.json`'a kredisiyle ekle.
+  - **Açıklama:** kısa ve samimi (dua + tebrik), satış YOK; sonuna fotoğrafın `kredi` satırı ve müziğin `kredi` satırı (doluysa) eklenir.
 - Birden fazla ürün varsa videoda ve açıklamada KÜÇÜKTEN BÜYÜĞE sırala (ör. 4'lü → 5'li, 40 HP → 101 HP, 3 m³ → 6 m³; ölçü yoksa ucuzdan pahalıya).
 - Ürünlerin hep aynı türden olmaması önemli; bir haftayı tek ürünle doldurma (bu, planlama yapılırken geçerli; kayıtları değiştirme).
 

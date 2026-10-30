@@ -1,0 +1,32 @@
+{
+ "_aciklama": "Dini paylaşımlarda kullanılan cami fotoğrafları (Wikimedia Commons, ticari kullanım serbest, isim belirtmek şart). 'kredi' satırı açıklamaya eklenir.",
+ "fotolar": [
+  {
+   "id": "camlica_dis",
+   "dosya": "camiler/camlica_dis.jpg",
+   "ad": "Çamlıca Camii",
+   "stil": "ust",
+   "pos": "50% 15%",
+   "kredi": "📷 Fotoğraf: Mondo79 – Wikimedia Commons (CC BY 2.0)",
+   "kaynak": "https://commons.wikimedia.org/wiki/File:%C3%87aml%C4%B1ca_Mosque_front_view.jpg"
+  },
+  {
+   "id": "sultanahmet",
+   "dosya": "camiler/sultanahmet.jpg",
+   "ad": "Sultanahmet Camii",
+   "stil": "ust",
+   "pos": "60% center",
+   "kredi": "📷 Fotoğraf: inyucho – Wikimedia Commons (CC BY 2.0)",
+   "kaynak": "https://commons.wikimedia.org/wiki/File:Blue_Mosque,_Istanbul.jpg"
+  },
+  {
+   "id": "camlica_ic",
+   "dosya": "camiler/camlica_ic.jpg",
+   "ad": "Çamlıca Camii (iç)",
+   "stil": "vinyet",
+   "pos": "center",
+   "kredi": "📷 Fotoğraf: Mondo79 – Wikimedia Commons (CC BY 2.0)",
+   "kaynak": "https://commons.wikimedia.org/wiki/File:%C3%87aml%C4%B1ca_Mosque,_Istanbul_Interiror.jpg"
+  }
+ ]
+}

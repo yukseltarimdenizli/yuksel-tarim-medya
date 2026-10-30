@@ -19,7 +19,7 @@ import base64, html, json, pathlib, random, re, sys
 
 ROOT = pathlib.Path(__file__).parent
 URUN_SABLONLARI = ["1", "2", "3", "4", "5"]
-KUTLAMA_SABLONLARI = ["A", "B", "C", "D", "E", "F"]
+KUTLAMA_SABLONLARI = ["A", "B", "C", "D", "E", "F", "G"]
 
 
 def _u(p):
@@ -236,6 +236,18 @@ def kutlama_html(k, L):
                 f"<img class='a' src='{L}' style='left:-260px;top:420px;width:1600px;opacity:.05'><img class='a' src='{L}' style='left:50%;top:330px;width:500px;margin-left:-250px;filter:drop-shadow(0 18px 30px rgba(47,87,55,.25))'>"
                 f"<div class='a' style='left:-40px;right:-40px;top:1000px;height:200px;background:#D4A445;transform:rotate(-4deg);display:flex;align-items:center;justify-content:center;color:#14281A;font-size:{_fs(bas, 108, 14)}px;font-weight:900;letter-spacing:-2px;box-shadow:0 14px 30px rgba(0,0,0,.15);white-space:nowrap'>{_ust(_e(re.sub(r'[\[\]]', '', bas)))}</div>"
                 + (f"<div class='a c' style='top:1250px;color:#2F5737;font-size:40px;font-weight:600'>{alt}</div>" if alt else "") + marka(renk="#2F5737", top=1380))
+    if s == "G":  # gece göğü: lacivert-yeşil gök, yıldızlar, parlayan hilal, alt yarıda dev altın cami (kullanıcı seçimi, dini günler)
+        from cami import cami_svg
+        yildiz = "".join(f"<div class='a' style='left:{(i * 137) % 1040 + 20}px;top:{(i * 263) % 900 + 150}px;width:{3 + i % 4}px;height:{3 + i % 4}px;border-radius:50%;background:#F5D58A;opacity:{.25 + (i % 4) * .12}'></div>" for i in range(90))
+        return ("<style>body{background:linear-gradient(180deg,#0a1428 0%,#14281A 75%)}</style>" + yildiz
+                + "<div class='a' style='left:690px;top:250px;width:260px;height:260px;border-radius:50%;box-shadow:-46px 24px 0 0 #F5D58A;filter:drop-shadow(0 0 30px rgba(245,213,138,.5))'></div>"
+                + f"<img class='a' src='{L}' style='left:64px;top:300px;width:110px'>"
+                + (f"<div class='a c' style='top:560px;color:#F5D58A;font-size:34px;font-weight:700;letter-spacing:10px'>{ust}</div>" if ust else "")
+                + f"<div class='a c' style='left:40px;right:40px;top:610px;color:#fff;font-size:{_fs(bas, 100, 13)}px;font-weight:800;line-height:1.05'>{_vurgu(bas, '#F5D58A')}</div>"
+                + "<div class='a' style='left:50%;top:745px;width:420px;height:6px;margin-left:-210px;background:#D4A445;border-radius:6px'></div>"
+                + (f"<div class='a c' style='left:60px;right:60px;top:775px;color:rgba(255,255,255,.9);font-size:38px'>{alt}</div>" if alt else "")
+                + "<div class='a' style='left:-60px;top:1010px;width:1200px'>" + cami_svg(1080, 520).replace('width="1080" height="520"', 'width="1200" height="578"', 1) + "</div>"
+                + "<div class='a' style='left:0;right:0;bottom:0;height:150px;background:rgba(20,40,26,.92);border-top:6px solid #D4A445;display:flex;align-items:center;justify-content:center;color:#fff;font-size:38px;font-weight:600'>www.yukseltarimdenizli.com.tr</div>")
     if s == "F":  # cami silüeti (Cuma, kandil, dini bayram)
         from cami import cami_svg
         yildiz = "".join(f"<div class='a' style='left:{(i * 137) % 1040 + 20}px;top:{(i * 263) % 640 + 260}px;width:{3 + i % 4}px;height:{3 + i % 4}px;border-radius:50%;background:#F5D58A;opacity:{.25 + (i % 4) * .12}'></div>" for i in range(40))
