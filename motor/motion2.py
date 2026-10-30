@@ -85,6 +85,9 @@ body{width:1080px;height:1920px;overflow:hidden;font-family:Poppins,sans-serif;b
 .qtext span{display:inline}
 .qname{left:64px;right:64px;text-align:center;font-size:52px;font-weight:700;color:var(--g)}
 .qloc{left:64px;right:64px;text-align:center;font-size:34px;font-weight:600;color:#8a6a24}
+.cami{left:0;right:0;transform-origin:50% 100%}
+.cami svg{display:block;width:100%;height:auto}
+.hilal{width:150px;height:150px}
 .endhalo{left:50%;width:460px;height:460px;margin-left:-230px;border-radius:50%;background:var(--cr);box-shadow:0 0 0 18px rgba(212,164,69,.35)}
 """
 
@@ -149,7 +152,9 @@ const R={
    S($('.gkick',el),{opacity:lerp(t,[12,24],[0,1]),letterSpacing:`${lerp(t,[12,40],[2,10],eo)}px`});
    words(el,t-18); const n=$$('.wd',el).length;
    S($('.gline',el),{transform:`scaleX(${lerp(t,[22+n*4,40+n*4],[0,1],eo)})`});
-   S($('.gsub',el),{opacity:lerp(t,[30+n*4,46+n*4],[0,1]),transform:`translateY(${lerp(t,[30+n*4,48+n*4],[40,0],eo)}px)`}); },
+   S($('.gsub',el),{opacity:lerp(t,[30+n*4,46+n*4],[0,1]),transform:`translateY(${lerp(t,[30+n*4,48+n*4],[40,0],eo)}px)`});
+   const cm=$('.cami',el); if(cm){ const c=spring(t-10,{damping:16,stiffness:60}); S(cm,{opacity:Math.min(1,c*1.3),transform:`translateY(${(1-c)*180}px) scale(${.92+.08*c})`}); const im=$('img',cm); if(im) S(im,{transform:`scale(${lerp(t,[0,d],[1,1.1])})`});
+     S($('.hilal',el),{opacity:lerp(t,[16,34],[0,1]),transform:`rotate(${lerp(t,[16,d],[-20,6])}deg)`}); } },
  list(el,t,d){ field($('canvas',el),t+40,'#2F5737',.05);
    const up=lerp(t,[0,22],[0,1],eio); S(el,{clipPath:`polygon(0 ${100-up*100+(1-up)*9}%,100% ${100-up*100}%,100% 100%,0 100%)`});
    S($('.hdr',el),{transform:`translateX(${(1-spring(t,{damping:16}))*-500}px)`});
@@ -264,6 +269,21 @@ def build(cfg):
         elif t == "greeting":
             s.setdefault("dur", 150)
             bg = s.get("bg", "#14281A")
+            if s.get("cami"):  # dini günler: özgün cami silüeti + hilal (motor/cami.py)
+                sys.path.insert(0, str(ROOT)); from cami import cami_svg
+                longest = max(len(w.strip("[]")) for w in s["title"].split()); fs = min(100, int(1350 / max(longest, 6)))
+                hilal = ('<svg class="hilal abs" viewBox="0 0 100 100" style="right:120px;top:300px"><defs><mask id="hm"><rect width="100" height="100" fill="white"/>'
+                         '<circle cx="62" cy="42" r="36" fill="black"/></mask></defs><circle cx="48" cy="50" r="40" fill="#F5D58A" mask="url(#hm)"/>'
+                         '<polygon points="80,30 83,38 92,38 85,43 88,52 80,46 72,52 75,43 68,38 77,38" fill="#F5D58A"/></svg>')
+                parts.append(f'<div class="sc" style="background:radial-gradient(ellipse at 50% 30%,{s.get("bg2","#2F5737")},{bg} 72%)"><canvas width="1080" height="1920"></canvas>'
+                             f'{hilal}<img class="glogo abs" src="{logo}" style="top:300px;left:64px;margin-left:0;width:110px">'
+                             f'<div class="gcol abs" style="top:470px"><div class="gkick">{esc(s.get("kicker",""))}</div>'
+                             f'<div class="gtitle" style="font-size:{fs}px">{title_html(s["title"])}</div>'
+                             f'<div class="gline"></div><div class="gsub" style="font-size:38px">{esc(s.get("sub",""))}</div></div>'
+                             + (f'<div class="cami abs" style="left:90px;right:90px;top:{s.get("cami_y",1000)}px;height:470px;opacity:0;border-radius:30px;overflow:hidden;border:6px solid #D4A445;box-shadow:0 30px 70px rgba(0,0,0,.5)">'
+                              f'<img src="{uri(s["foto"])}" style="width:100%;height:100%;object-fit:cover;display:block"></div>' if s.get("foto") else
+                              f'<div class="cami abs" style="top:{s.get("cami_y",960)}px;opacity:0">{cami_svg(1080, 520)}</div>') + f'{FOOT}</div>')
+                scenes.append(s); f += s["dur"]; continue
             longest = max(len(w.strip("[]")) for w in s["title"].split()); fs = min(140, int(1500 / max(longest, 6)))
             parts.append(f'<div class="sc" style="background:radial-gradient(ellipse at 50% 40%,{s.get("bg2","#2F5737")},{bg} 70%)"><canvas width="1080" height="1920"></canvas>'
                          f'<div class="halo abs" style="top:300px;width:300px;height:300px;margin-left:-150px"></div><img class="glogo abs" src="{logo}" style="top:370px">'

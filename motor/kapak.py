@@ -19,7 +19,7 @@ import base64, html, json, pathlib, random, re, sys
 
 ROOT = pathlib.Path(__file__).parent
 URUN_SABLONLARI = ["1", "2", "3", "4", "5"]
-KUTLAMA_SABLONLARI = ["A", "B", "C", "D", "E"]
+KUTLAMA_SABLONLARI = ["A", "B", "C", "D", "E", "F"]
 
 
 def _u(p):
@@ -236,6 +236,16 @@ def kutlama_html(k, L):
                 f"<img class='a' src='{L}' style='left:-260px;top:420px;width:1600px;opacity:.05'><img class='a' src='{L}' style='left:50%;top:330px;width:500px;margin-left:-250px;filter:drop-shadow(0 18px 30px rgba(47,87,55,.25))'>"
                 f"<div class='a' style='left:-40px;right:-40px;top:1000px;height:200px;background:#D4A445;transform:rotate(-4deg);display:flex;align-items:center;justify-content:center;color:#14281A;font-size:{_fs(bas, 108, 14)}px;font-weight:900;letter-spacing:-2px;box-shadow:0 14px 30px rgba(0,0,0,.15);white-space:nowrap'>{_ust(_e(re.sub(r'[\[\]]', '', bas)))}</div>"
                 + (f"<div class='a c' style='top:1250px;color:#2F5737;font-size:40px;font-weight:600'>{alt}</div>" if alt else "") + marka(renk="#2F5737", top=1380))
+    if s == "F":  # cami silüeti (Cuma, kandil, dini bayram)
+        from cami import cami_svg
+        yildiz = "".join(f"<div class='a' style='left:{(i * 137) % 1040 + 20}px;top:{(i * 263) % 640 + 260}px;width:{3 + i % 4}px;height:{3 + i % 4}px;border-radius:50%;background:#F5D58A;opacity:{.25 + (i % 4) * .12}'></div>" for i in range(40))
+        return ("<style>body{background:radial-gradient(ellipse at 50% 30%,#2F5737,#0f2014 72%)}</style>" + yildiz
+                + "<svg class='a' viewBox='0 0 100 100' style='right:110px;top:300px;width:150px'><defs><mask id='hm'><rect width='100' height='100' fill='white'/><circle cx='62' cy='42' r='36' fill='black'/></mask></defs><circle cx='48' cy='50' r='40' fill='#F5D58A' mask='url(#hm)'/></svg>"
+                f"<div class='a' style='left:50%;top:280px;width:300px;height:300px;margin-left:-150px;border-radius:50%;background:#F5F0E3;border:6px solid #D4A445;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 18px rgba(212,164,69,.18)'><img src='{L}' style='width:215px'></div>"
+                + (f"<div class='a c' style='top:625px;color:#F5D58A;font-size:34px;font-weight:700;letter-spacing:10px'>{ust}</div>" if ust else "")
+                + f"<div class='a c' style='left:40px;right:40px;top:675px;color:#fff;font-size:{_fs(bas, 112, 12)}px;font-weight:800;line-height:1.02'>{_vurgu(bas, '#F5D58A')}</div>"
+                + (f"<div class='a c' style='top:870px;color:rgba(255,255,255,.88);font-size:34px;font-weight:600'>{alt}</div>" if alt else "")
+                + f"<div class='a' style='left:0;right:0;top:940px'>{cami_svg(1080, 540)}</div>")
     # E
     bugday = "".join(f"<div class='a' style='left:{(i * 173) % 1100 - 40}px;top:{(i * 311) % 1700 + 150}px;width:8px;height:{90 + i % 4 * 30}px;background:#D4A445;opacity:.10;transform:rotate({(i % 7) * 8 - 24}deg);border-radius:6px'></div>" for i in range(80))
     return ("<style>body{background:linear-gradient(180deg,#2F5737,#14281A)}</style>" + bugday
