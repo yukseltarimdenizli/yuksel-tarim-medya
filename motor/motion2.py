@@ -88,6 +88,8 @@ body{width:1080px;height:1920px;overflow:hidden;font-family:Poppins,sans-serif;b
 .cami{left:0;right:0;transform-origin:50% 100%}
 .cami svg{display:block;width:100%;height:auto}
 .hilal{width:150px;height:150px}
+.ay{width:260px;height:260px;border-radius:50%;box-shadow:-46px 24px 0 0 #F5D58A;filter:drop-shadow(0 0 30px rgba(245,213,138,.55))}
+.fmfoto{background-size:cover;background-position:center}
 .endhalo{left:50%;width:460px;height:460px;margin-left:-230px;border-radius:50%;background:var(--cr);box-shadow:0 0 0 18px rgba(212,164,69,.35)}
 """
 
@@ -176,6 +178,20 @@ const R={
    const n=spring(t-50,{damping:14}); S($('.qname',el),{opacity:Math.min(1,n),transform:`translateY(${(1-n)*50}px)`});
    S($('.qloc',el),{opacity:lerp(t,[58,72],[0,1])});
    S($('.foot',el),{transform:`translateY(${(1-spring(t-12,{damping:16}))*160}px)`}); },
+ gece(el,t,d){ const cv=$('canvas',el); cv.getContext('2d').clearRect(0,0,1080,1920); dust(cv,t,'#F5D58A');
+   S(el,{opacity:lerp(t,[0,10],[0,1])});
+   const a=spring(t-4,{damping:12,stiffness:70}); S($('.ay',el),{transform:`scale(${a}) rotate(${lerp(t,[0,d],[-25,0])}deg)`,opacity:Math.min(1,a)});
+   S($('.glogo',el),{opacity:lerp(t,[6,18],[0,1])});
+   S($('.gkick',el),{opacity:lerp(t,[12,24],[0,1]),letterSpacing:`${lerp(t,[12,40],[2,10],eo)}px`}); words(el,t-16);
+   const n=$$('.wd',el).length; S($('.gline',el),{transform:`scaleX(${lerp(t,[20+n*4,36+n*4],[0,1],eo)})`});
+   S($('.gsub',el),{opacity:lerp(t,[28+n*4,44+n*4],[0,1])});
+   const c=spring(t-8,{damping:16,stiffness:55}); S($('.cami',el),{transform:`translateY(${(1-c)*420}px)`,opacity:Math.min(1,c*1.5)}); },
+ fotomesaj(el,t,d){ S(el,{opacity:lerp(t,[0,14],[0,1])});
+   S($('.fmfoto',el),{transform:`scale(${lerp(t,[0,d],[1.08,1.0])})`});
+   S($('.glogo',el),{opacity:lerp(t,[8,20],[0,1])}); S($('.hilal',el),{opacity:lerp(t,[10,24],[0,1]),transform:`rotate(${lerp(t,[0,d],[-15,5])}deg)`});
+   S($('.gkick',el),{opacity:lerp(t,[16,28],[0,1]),letterSpacing:`${lerp(t,[16,44],[2,10],eo)}px`}); words(el,t-20);
+   const n=$$('.wd',el).length; S($('.gline',el),{transform:`scaleX(${lerp(t,[24+n*4,40+n*4],[0,1],eo)})`});
+   S($('.gsub',el),{opacity:lerp(t,[32+n*4,48+n*4],[0,1])}); },
  outro(el,t,d){ field($('canvas',el),t,'#D4A445',.08); dust($('canvas',el),t,'#D4A445');
    S(el,{clipPath:`circle(${lerp(t,[0,22],[0,140],eio)}% at 50% 72%)`});
    S($('.endhalo',el),{transform:`scale(${spring(t-6,{damping:12,stiffness:90})})`});
@@ -323,6 +339,36 @@ def build(cfg):
                          f'<div class="qtext" style="padding:0 90px;font-size:{qfs}px">' + " ".join(f"<span>{esc(c)}</span>" for c in cumleler) + '</div>'
                          f'<div class="qname" style="margin-top:26px">{esc(s["who"])}</div>'
                          f'<div class="qloc">📍 {esc(s.get("where",""))}</div></div>{FOOT}</div>')
+        elif t in ("gece", "fotomesaj"):
+            # dini günler: "gece" = gece göğü + hilal + altın cami silüeti; "fotomesaj" = yumuşak kenarlı cami fotoğrafı üstünde mesaj
+            sys.path.insert(0, str(ROOT)); from cami import cami_svg
+            s.setdefault("dur", 130)
+            sh = "text-shadow:0 4px 24px rgba(0,0,0,.75);"
+            def blok(top):
+                return (f'<div class="abs" style="left:0;right:0;top:{top}px;display:flex;flex-direction:column;align-items:center;gap:22px">'
+                        f'<div class="gkick" style="{sh}">{esc(s.get("kicker",""))}</div>'
+                        f'<div class="gtitle" style="font-size:{s.get("fs",104)}px;{sh}">{title_html(s["title"])}</div>'
+                        f'<div class="gline"></div><div class="gsub" style="font-size:40px;padding:0 90px;{sh}">{esc(s.get("sub",""))}</div></div>')
+            hil = ('<svg class="hilal abs" viewBox="0 0 100 100" style="right:80px;top:290px;width:120px"><defs><mask id="hm' + str(i) + '"><rect width="100" height="100" fill="white"/>'
+                   '<circle cx="62" cy="42" r="36" fill="black"/></mask></defs><circle cx="48" cy="50" r="40" fill="#F5D58A" mask="url(#hm' + str(i) + ')"/>'
+                   '<polygon points="80,30 83,38 92,38 85,43 88,52 80,46 72,52 75,43 68,38 77,38" fill="#F5D58A"/></svg>')
+            lg = f'<img class="glogo abs" src="{logo}" style="left:64px;top:290px;width:110px;margin-left:0;filter:drop-shadow(0 4px 12px rgba(0,0,0,.6))">'
+            if t == "gece":
+                parts.append(f'<div class="sc" style="background:linear-gradient(180deg,#0a1428 0%,#14281A 75%)"><canvas width="1080" height="1920"></canvas>'
+                             f'<div class="ay abs" style="left:690px;top:250px"></div>{lg}{blok(560)}'
+                             f'<div class="cami abs" style="left:-60px;top:1010px;width:1200px">{cami_svg(1080, 520).replace(chr(119)+chr(105)+"dth=\"1080\" height=\"520\"", "width=\"1200\" height=\"578\"", 1)}</div>{FOOT}</div>')
+            else:
+                im = uri(s["foto"]); stil = s.get("stil", "vinyet")
+                if stil == "ust":
+                    ft = (f'<div class="fmfoto abs" style="left:0;right:0;top:0;height:1450px;background-image:url({im});-webkit-mask-image:linear-gradient(180deg,#000 0%,#000 55%,transparent 100%)"></div>'
+                          '<div class="abs" style="inset:0;background:linear-gradient(180deg,rgba(15,32,20,.55) 0%,rgba(15,32,20,0) 22%,rgba(15,32,20,0) 45%,rgba(15,32,20,.6) 70%)"></div>'); ty = 930
+                elif stil == "tam":
+                    ft = (f'<div class="fmfoto abs" style="inset:0;background-image:url({im});filter:saturate(.9) brightness(.75)"></div>'
+                          '<div class="abs" style="inset:0;background:linear-gradient(180deg,rgba(15,32,20,.75) 0%,rgba(20,50,30,.35) 35%,rgba(20,50,30,.35) 60%,rgba(15,32,20,.92) 85%)"></div>'); ty = 780
+                else:
+                    ft = (f'<div class="fmfoto abs" style="left:-60px;right:-60px;top:240px;height:1300px;background-image:url({im});-webkit-mask-image:radial-gradient(ellipse 62% 55% at 50% 50%,#000 55%,transparent 100%)"></div>'
+                          '<div class="abs" style="left:0;right:0;top:640px;height:560px;background:radial-gradient(ellipse 70% 60% at 50% 50%,rgba(10,22,14,.6),rgba(10,22,14,0) 75%)"></div>'); ty = 700
+                parts.append(f'<div class="sc" style="background:#0f2014">{ft}{lg}{hil}{blok(s.get("text_y", ty))}{FOOT}</div>')
         elif t == "outro":
             s.setdefault("dur", 115)
             cta = s.get("cta", "Bilgi için hemen arayın")
