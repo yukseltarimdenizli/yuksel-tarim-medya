@@ -13,6 +13,7 @@ Türkçe ve kısa yaz.
     `example` (true ise örnek kayıt, ASLA işleme), `updatedAt` (sayfa düzenleyince yazar).
     Hazırlama sonrası senin yazdıkların: `preparedAt`, `metricoolId`, `mediaUrl`, `caption`, `uyari`.
   - `meta/urunler` belgesi: sitedeki ürün listesi (`items`: name, url, ikinci_el, fiyat; `guncelleme`).
+  - `meta/rehber` belgesi: sitedeki Yararlı Bilgiler yazıları (`items`: slug, baslik, tarih) + `kullanilan`. Kayıttaki `rehber` alanı: "Otomatik", "Yok" ya da bir slug.
   - `meta/referanslar` belgesi: sitedeki müşteri referansları (`items`: slug, ad, konum, urun) + `kullanilan` (paylaşılmış slug'lar),
     `son_urun`, `son_il` (son referans paylaşımlarının ürün türü / ili). Kayıttaki `referans` alanı: "Otomatik" ya da bir slug.
   - Müzikler (sayfanın dosya alanında, 6 parça): liste, asset id'leri, başlangıç saniyeleri ve kredi satırları depodaki
@@ -120,6 +121,24 @@ Kayıt türü "Teslimat / müşteri" ve ürün seçilmemişse video sitedeki **R
 ```
    (Ürün sayfası linki DEĞİL, referans linki konur — kullanıcı kararı.) YouTube: `category` "AUTOS_VEHICLES".
 7. Planlandıktan sonra `meta/referanslar`: `kullanilan`'a slug, `son_urun`'a ürün türü, `son_il`'e il eklenir (son ikisi en fazla 6).
+
+### Usta ipucu = rehber videosu (sitedeki "Yararlı Bilgiler" yazıları; kullanıcı onayı 30.10.2026)
+Kayıt türü "Usta ipucu", ürün seçilmemiş ve `rehber` "Yok" değilse video sitedeki bir blog yazısından yapılır:
+1. `python3 uret.py blog_listesi /tmp/is/rehberler.json` çalıştır; plan sayfasında `meta/rehber` belgesinin `items`'ını (slug, baslik, tarih) güncelle,
+   `kullanilan`'a DOKUNMA. Ürün listesini de `/tmp/is/urunler.json`'a yaz (adım 1'deki `urun_listesi` çıktısı).
+2. `kayit.json`'a `"_rehberler": "/tmp/is/rehberler.json"`, `"_rehber_kullanilan"` (meta/rehber `kullanilan`) ekle. `uret.py taslak` yazıyı seçer
+   (kayıtta slug varsa o; "Otomatik"te mevsime uygun, kullanılmamış; kredi/hibe/dijital/aşure yazıları yalnızca elle seçilince), `rehber.json`'a yazının
+   bölümlerini yazar, yazıda geçen makineler için sitedeki sıfır ürünlerden fotoğraf indirir ve iskelet config kurar:
+   kapak (şablon 5, makine fotoğrafları) → başlık → her makine için foto sahnesi → `list` (4 madde) → kapanış "Devamı sitemizde".
+3. `rehber.json`'u OKU ve config'teki "YAZIDAN ..." yer tutucularını doldur. **Bütün bilgiler YALNIZCA yazıdan**; uydurma rakam/iddia YOK.
+   - Foto sahnesi: `name` makinenin işlevi, 2-3 kelime, tek satır (ör. "Toprağı çevirir", "Toprağı gevşetir"); `desc` yazıdan 1 kısa cümle; `chips` 2 kısa etiket.
+     Fiyat ve rozet YOK (`perks_yok: true`). `kontrol_<n>.png`'ye bakıp makineyi net gösteren yatay fotoğrafı seç.
+   - `headline.sub`: yazının girişinden 1 cümle. `list`: yazının en pratik bölümünden 3-4 kısa madde (her biri ≤ 45 karakter).
+   - Kapak başlığı kısa olsun (2-3 kelime, ör. "Hangisi [nerede?]"); uzun soru başlığı kapağa sığmaz.
+4. Açıklama: konu satırı → yazıdan 2-3 "✅" madde → 1 cümle sonuç → `👉 Devamı: <rehber_url>` → 📍/🌐/👤/🎵 satırları → hashtag'ler. Satış koşulu satırı YOK.
+   YouTube `category` "HOWTO_STYLE".
+5. Planlandıktan sonra `meta/rehber` → `kullanilan`'a slug ekle.
+Kredi/hibe yazıları elle seçilirse: yalnızca yazıdaki bilgiyi ver, tarih/oran/şart uydurma, "güncel şartlar için bize ulaşın" ekle.
 
 ### Kapak (videonun ilk 0,5 saniyesi — TikTok/YouTube profil ızgarasında görünen kare)
 `uret.py taslak` config.json'a `kapak` bölümü yazar; `uret` bunu `motor/kapak.py` ile çizip videonun başına 0,5 sn ekler.

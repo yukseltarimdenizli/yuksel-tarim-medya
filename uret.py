@@ -10,6 +10,7 @@ Adımlar (CLAUDE.md'deki çalışma talimatı bunları sırayla kullanır):
 
   python3 uret.py uret <is_klasoru> [--muzik dosya.mp4 --muzik-bas <sn>] [--son a,b]
   python3 uret.py muzik_sec <kayit.json> [--son a,b]   -> hangi müzik (dini mesajda müzik yok)
+  python3 uret.py blog_listesi <cikti.json>              -> sitedeki Yararlı Bilgiler yazıları (Usta ipucu rehber videoları için)
   python3 uret.py referans_listesi <cikti.json>          -> sitedeki tüm referanslar (Teslimat / müşteri videoları için)
   python3 uret.py referans_sec <kayit.json> <referanslar.json> [--kullanilan s1,s2] [--son-urun a,b] [--son-il a,b]
       config.json'a göre videoyu (format Video) ya da görseli (format Görsel) üretir.
@@ -185,6 +186,110 @@ def referans_listesi(cikti):
     print(len(slugs), "referans bulundu,", len(R), "tanesi fotoğraflı ve okunabildi ->", cikti)
 
 
+# ---------------------------------------------------------------- Yararlı Bilgiler (Usta ipucu rehber videoları)
+# Kullanıcı onayı 30.10.2026: usta ipucu videoları sitedeki blog yazılarından yapılır; maddeler YALNIZCA yazıdan alınır.
+REHBER_OTOMATIK_DISI = ("kredi", "hibe", "dijital", "asure")   # tarihli/finansal/dini yazılar "Otomatik"te seçilmez (elle seçilebilir)
+REHBER_MEVSIM = {  # ay -> yazı slug'ında aranan kelimeler (öncelik)
+    9: ["sonbahar", "tarla", "pulluk", "toprak"], 10: ["sonbahar", "tarla", "pulluk", "toprak", "traktor"],
+    11: ["pulluk", "sonbahar", "tarla", "toprak", "traktor"], 12: ["toprak-analizi", "traktor"],
+    1: ["toprak-analizi", "traktor"], 2: ["toprak-analizi", "traktor"], 3: ["nisan", "toprak", "traktor"],
+    4: ["nisan", "toprak"], 5: ["toprak", "traktor"], 6: ["traktor"], 7: ["traktor"], 8: ["sonbahar", "tarla", "traktor"]}
+REHBER_MAKINE = ["pulluk", "çizel", "rotovatör", "mibzer", "gübre", "traktör", "römork", "silaj", "yem karma", "tırmık", "kazayağı", "diskaro", "merdane"]
+
+
+def blog_oku(slug):
+    h = get(f"{SITE}/yararli-bilgiler/{slug}")
+    t = re.sub(r"<script.*?</script>|<style.*?</style>", "", h, flags=re.S)
+    def temiz(x):
+        return re.sub(r"\s+", " ", html.unescape(re.sub(r"<[^>]+>", " ", x))).strip()
+    m = re.search(r"<h1[^>]*>(.*?)</h1>", t, re.S)
+    baslik = temiz(m.group(1)) if m else slug
+    ipucu = [temiz(x) for x in re.findall(r"check_circle</span>(.*?)</li>", t, re.S)]
+    a = re.search(r"<article.*?</article>", t, re.S); b = a.group(0) if a else t
+    b = b.split("Yazar")[0]
+    bolum, cur = [], None
+    for tag, icerik in re.findall(r"<(h2|h3|p|li)[^>]*>(.*?)</\1>", b, re.S):
+        x = temiz(icerik)
+        if not x: continue
+        if tag in ("h2", "h3"):
+            cur = {"baslik": x, "metin": []}; bolum.append(cur)
+        elif cur is not None:
+            cur["metin"].append(x)
+    tarih = re.search(r"Yayın Tarihi\s*</[^>]+>\s*<[^>]+>\s*([^<]+)", h)
+    foto = re.findall(r'/api/uploads/blog/[^"\s&]+\.(?:webp|jpe?g|png)', h)
+    return {"slug": slug, "baslik": baslik, "tarih": tarih.group(1).strip() if tarih else "", "ipuclari": ipucu,
+            "bolumler": [x for x in bolum if x["metin"]], "foto": (SITE + foto[0]) if foto else "",
+            "url": f"{SITE}/yararli-bilgiler/{slug}", "kisa_url": f"www.yukseltarimdenizli.com.tr/yararli-bilgiler/{slug}"}
+
+
+def blog_listesi(cikti):
+    slugs = sorted(set(re.findall(r'href="/yararli-bilgiler/([^"?/#]+)"', get(f"{SITE}/yararli-bilgiler"))))
+    R = []
+    for x in slugs:
+        try:
+            r = blog_oku(x)
+            if r["bolumler"]: R.append(r)
+        except Exception as e:
+            print("okunamadı:", x, e, file=sys.stderr)
+    pathlib.Path(cikti).write_text(json.dumps(R, ensure_ascii=False, indent=1))
+    print(len(slugs), "yazı bulundu,", len(R), "tanesi okunabildi ->", cikti)
+
+
+def rehber_sec(kayit, rehberler, kullanilan=()):
+    """Kayıtta `rehber` slug'ı varsa o; "Otomatik"/boşsa: kullanılmamış, mevsime uygun, tarihli/finansal olmayan yazı."""
+    istenen = (kayit.get("rehber") or "").strip()
+    if istenen and istenen != "Otomatik":
+        return next((r for r in rehberler if r["slug"] == istenen), None) or blog_oku(istenen)
+    uygun = [r for r in rehberler if not any(k in r["slug"] for k in REHBER_OTOMATIK_DISI)]
+    aday = [r for r in uygun if r["slug"] not in kullanilan] or uygun or rehberler
+    ay = int((kayit.get("date") or "2026-11-01")[5:7])
+    kel = REHBER_MEVSIM.get(ay, [])
+    def puan(r):
+        return max([len(kel) - i for i, k in enumerate(kel) if k in r["slug"]] or [0])
+    return max(aday, key=puan) if aday else None
+
+
+def _rehber_taslak(kayit, klasor):
+    R = json.loads(pathlib.Path(kayit["_rehberler"]).read_text()) if kayit.get("_rehberler") else []
+    r = rehber_sec(kayit, R, kayit.get("_rehber_kullanilan", []))
+    if not r:
+        raise SystemExit("rehber yazısı bulunamadı")
+    (klasor / "rehber.json").write_text(json.dumps(r, ensure_ascii=False, indent=1))
+    # yazıda geçen makineler için sitedeki SIFIR ürünlerden fotoğraf (en fazla 3; fiyat/rozet gösterilmez)
+    metin = (r["baslik"] + " " + " ".join(" ".join(b["metin"]) for b in r["bolumler"])).lower()
+    gecen = sorted({m for m in REHBER_MAKINE if m in metin}, key=lambda m: metin.find(m))[:3]
+    U = []
+    up = pathlib.Path(kayit.get("_urunler") or "/tmp/is/urunler.json")
+    if up.exists():
+        d = json.loads(up.read_text()); U = d["items"] if isinstance(d, dict) else d
+    sahneler, kapak_urun = [], []
+    for n, m in enumerate(gecen):
+        u = next((x for x in U if m in x["name"].lower() and not x.get("ikinci_el")), None)
+        if not u: continue
+        try:
+            inf = urun_bilgisi(u.get("url") or f"{SITE}/urunler/{u['slug']}")
+            foto, _ = foto_indir(inf, klasor, n)
+        except Exception as e:
+            print("foto alınamadı:", m, e, file=sys.stderr); continue
+        if not foto: continue
+        sahneler.append({"type": "photo", "wipe": True, "label": f"{len(sahneler)+1} · {_ust(m)}", "name": "YAZIDAN KISA İŞLEV",
+                         "name_fs": 108, "image": foto, "frame_h": 620, "kb": [20, 0, 1.04, -30, -10, 1.18],
+                         "desc": "YAZIDAN 1 CÜMLE", "chips": [], "perks_yok": True, "dur": 120, "_urun": u["name"]})
+        kapak_urun.append({"ad": m.capitalize(), "foto": foto, "fiyat": None, "ikinci_el": False, "fiyat_etiket": ""})
+    baslik = kayit.get("title") or r["baslik"].split("?")[0] + ("?" if "?" in r["baslik"] else "")
+    cfg = {"format": "Video", "kayit_id": kayit.get("id"), "rehber_slug": r["slug"], "rehber_url": r["kisa_url"],
+           "scenes": [{"type": "intro", "overlap": 24},
+                      {"type": "headline", "kicker": "USTA REHBERİ", "title": baslik_vurgula(baslik), "sub": "YAZIDAN KISA GİRİŞ"}]
+           + sahneler +
+           [{"type": "list", "kicker": "USTA İPUCU", "title": "YAZIDAN BAŞLIK", "items": [x[:60] for x in r["ipuclari"][:4]]},
+            {"type": "outro", "cta": "Devamı sitemizde"}],
+           "kapak": {"tur": "urun", "sablon": "5" if kapak_urun else "auto", "ust": "USTA REHBERİ", "baslik": baslik_vurgula(baslik),
+                     "alt": "", "rozetler": False, "urunler": kapak_urun}}
+    (klasor / "config.json").write_text(json.dumps(cfg, ensure_ascii=False, indent=1))
+    print(json.dumps({"rehber": r["slug"], "baslik": r["baslik"], "makineler": gecen, "sahne": len(sahneler)}, ensure_ascii=False))
+    return cfg
+
+
 # Sitedeki bilinen yazım hataları (ürün adı başka türlü birebir korunur)
 YAZIM_DUZELT = {"Taışma": "Taşıma"}
 
@@ -291,6 +396,8 @@ def taslak(kayit_yolu, klasor):
     klasor = pathlib.Path(klasor); klasor.mkdir(parents=True, exist_ok=True)
     if kayit.get("type") == "Teslimat / müşteri" and not kayit.get("products"):
         return _referans_taslak(kayit, klasor)
+    if kayit.get("type") == "Usta ipucu" and not kayit.get("products") and kayit.get("_rehberler") and (kayit.get("rehber") or "Otomatik") != "Yok":
+        return _rehber_taslak(kayit, klasor)
     urunler = kayit.get("products") or ([{"name": kayit["product"], "url": kayit.get("productUrl", "")}] if kayit.get("product") else [])
     bilgiler = []
     for n, u in enumerate(urunler):
@@ -568,6 +675,7 @@ if __name__ == "__main__":
                            [x for x in (sys.argv[sys.argv.index("--son") + 1].split(",") if "--son" in sys.argv else []) if x],
                            float(sys.argv[sys.argv.index("--muzik-bas") + 1]) if "--muzik-bas" in sys.argv else None)
     elif k == "referans_listesi": referans_listesi(sys.argv[2])
+    elif k == "blog_listesi": blog_listesi(sys.argv[2])
     elif k == "referans_sec":
         al = lambda f: [x for x in (sys.argv[sys.argv.index(f) + 1].split(",") if f in sys.argv else []) if x]
         r = referans_sec(json.loads(pathlib.Path(sys.argv[2]).read_text()), json.loads(pathlib.Path(sys.argv[3]).read_text()),
