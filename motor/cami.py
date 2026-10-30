@@ -1,5 +1,8 @@
 # Özgün cami silüeti (SVG) — Yüksel Tarım altın tonlarında
 def cami_svg(w=1080, h=620, renk="#D4A445", renk2="#F5D58A", op=1.0):
+    import itertools
+    global _SAY
+    _SAY = globals().get("_SAY", 0) + 1; u = f"c{_SAY}"
     cx = w/2; zemin = h-10
     p = []
     def kubbe(x, y, r):  # yarım küre + alem
@@ -24,9 +27,9 @@ def cami_svg(w=1080, h=620, renk="#D4A445", renk2="#F5D58A", op=1.0):
     del_ = "".join(f'<path d="M{x-18},{zemin} L{x-18},{zemin-60} A18,22 0 0 1 {x+18},{zemin-60} L{x+18},{zemin} Z"/>' for x in (cx-150, cx-75, cx+75, cx+150))
     del_ += f'<path d="M{cx-34},{zemin} L{cx-34},{zemin-95} A34,40 0 0 1 {cx+34},{zemin-95} L{cx+34},{zemin} Z"/>'
     return (f'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {w} {h}" width="{w}" height="{h}" style="opacity:{op}">'
-            f'<defs><linearGradient id="cg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="{renk2}"/><stop offset="1" stop-color="{renk}"/></linearGradient>'
-            f'<mask id="cm"><rect width="{w}" height="{h}" fill="white"/><g fill="black">{del_}</g></mask></defs>'
-            f'<g fill="url(#cg)" mask="url(#cm)">{"".join(p)}</g>'
+            f'<defs><linearGradient id="g{u}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="{renk2}"/><stop offset="1" stop-color="{renk}"/></linearGradient>'
+            f'<mask id="m{u}"><rect width="{w}" height="{h}" fill="white"/><g fill="black">{del_}</g></mask></defs>'
+            f'<g fill="url(#g{u})" mask="url(#m{u})">{"".join(p)}</g>'
             f'<rect x="0" y="{zemin}" width="{w}" height="10" fill="{renk}"/></svg>')
 if __name__ == "__main__":
     open("cami.svg","w").write(cami_svg())
