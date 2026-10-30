@@ -186,6 +186,14 @@ const R={
    const n=$$('.wd',el).length; S($('.gline',el),{transform:`scaleX(${lerp(t,[20+n*4,36+n*4],[0,1],eo)})`});
    S($('.gsub',el),{opacity:lerp(t,[28+n*4,44+n*4],[0,1])});
    const c=spring(t-8,{damping:16,stiffness:55}); S($('.cami',el),{transform:`translateY(${(1-c)*420}px)`,opacity:Math.min(1,c*1.5)}); },
+ tamfoto(el,t,d){ const cfg=SCENES[el.dataset.i], kb=lerp(t,[0,d],[0,1]); const [x0,y0,s0,x1,y1,s1]=cfg.kb||[0,0,1.14,0,-40,1.02];
+   S($('.tfbg',el),{transform:`translate(${x0+(x1-x0)*kb}px,${y0+(y1-y0)*kb}px) scale(${s0+(s1-s0)*kb})`});
+   S($('.hdr',el),{opacity:lerp(t,[2,14],[0,1])});
+   const k=spring(t-6,{damping:14,stiffness:120}); S($('.kick',el),{transform:`scale(${k})`,opacity:Math.min(1,k*2)});
+   words(el,t-10); const n=$$('.wd',el).length;
+   S($('.tfsub',el),{opacity:lerp(t,[16+n*4,30+n*4],[0,1]),transform:`translateY(${lerp(t,[16+n*4,32+n*4],[30,0],eo)}px)`});
+   $$('.tfitem',el).forEach((x,i)=>{const s=spring(t-(26+n*4)-i*9,{damping:15,stiffness:120}); S(x,{transform:`translateX(${(1-s)*-700}px)`,opacity:Math.min(1,s*1.5)});});
+   pops(el,'.chip',t-(28+n*4),6); pops(el,'.perk',t-(40+n*4),7); S($('.foot',el),{transform:`translateY(${(1-spring(t-12,{damping:16}))*160}px)`}); },
  fotomesaj(el,t,d){ S(el,{opacity:lerp(t,[0,14],[0,1])});
    S($('.fmfoto',el),{transform:`scale(${lerp(t,[0,d],[1.08,1.0])})`});
    S($('.glogo',el),{opacity:lerp(t,[8,20],[0,1])}); S($('.hilal',el),{opacity:lerp(t,[10,24],[0,1]),transform:`rotate(${lerp(t,[0,d],[-15,5])}deg)`});
@@ -339,6 +347,29 @@ def build(cfg):
                          f'<div class="qtext" style="padding:0 90px;font-size:{qfs}px">' + " ".join(f"<span>{esc(c)}</span>" for c in cumleler) + '</div>'
                          f'<div class="qname" style="margin-top:26px">{esc(s["who"])}</div>'
                          f'<div class="qloc">📍 {esc(s.get("where",""))}</div></div>{FOOT}</div>')
+        elif t == "tamfoto":
+            # Dikey TAM EKRAN fotoğraf arka plan (kırpmadan, kullanıcı isteği 30.10.2026) + güvenli alanda yazı (y 285-1480).
+            s.setdefault("dur", 120)
+            im = uri(s["image"]); ty = s.get("text_y", 300)
+            gold = "".join(f'<div class="chip">{esc(c)}</div>' for c in s.get("chips", []))
+            perks = "".join(f'<div class="perk"><i>✓</i>{esc(c)}</div>' for c in s.get("perks", []))
+            items = "".join(f'<div class="tfitem" style="display:flex;align-items:center;gap:24px;padding:22px 28px;border-radius:26px;background:rgba(10,24,15,.72);'
+                            f'border:2px solid rgba(212,164,69,.6);font-size:42px;font-weight:700;color:#fff;box-shadow:0 14px 34px rgba(0,0,0,.4)">'
+                            f'<b style="flex:none;width:70px;height:70px;border-radius:50%;background:var(--au);color:var(--gd);display:grid;place-items:center;font-size:38px">{esc(ic)}</b>'
+                            f'<span>{esc(x)}</span></div>' for ic, x in [(it if isinstance(it, list) else ["✓", it]) for it in s.get("items", [])])
+            alt = s.get("alt_y", 1060)
+            parts.append(f'<div class="sc" data-i="{i}" style="background:#0f2014;overflow:hidden">'
+                         f'<div class="tfbg abs" style="inset:0;background-image:url({im});background-size:cover;background-position:{s.get("pos","center")};filter:saturate(1.05) brightness({s.get("parlak",1.05)})"></div>'
+                         f'<div class="abs" style="inset:0;background:linear-gradient(180deg,rgba(10,22,14,.75) 0%,rgba(10,22,14,.55) 28%,rgba(10,22,14,0) 46%,rgba(10,22,14,0) 58%,rgba(10,22,14,.4) 76%,rgba(10,22,14,.7) 100%)"></div>'
+                         f'{hdr(logo)}'
+                         f'<div class="abs" style="left:64px;right:120px;top:{ty}px;display:flex;flex-direction:column;align-items:flex-start;gap:22px">'
+                         + (f'<div class="kick">{esc(s["kicker"])}</div>' if s.get("kicker") else "")
+                         + f'<div class="gtitle" style="text-align:left;font-size:{s.get("fs",110)}px;text-shadow:0 6px 30px rgba(0,0,0,.7)">{title_html(s["title"])}</div>'
+                         + (f'<div class="tfsub" style="font-size:42px;line-height:1.4;font-weight:600;color:#fff;text-shadow:0 3px 18px rgba(0,0,0,.85)">{esc(s["sub"])}</div>' if s.get("sub") else "")
+                         + '</div>'
+                         + f'<div class="abs" style="left:64px;right:120px;top:{alt}px;display:flex;flex-direction:column;gap:20px">'
+                         + items + (f'<div class="chips" style="position:static">{gold}</div>' if gold else "")
+                         + (f'<div class="perks" style="position:static">{perks}</div>' if perks else "") + f'</div>{FOOT}</div>')
         elif t in ("gece", "fotomesaj"):
             # dini günler: "gece" = gece göğü + hilal + altın cami silüeti; "fotomesaj" = yumuşak kenarlı cami fotoğrafı üstünde mesaj
             sys.path.insert(0, str(ROOT)); from cami import cami_svg
