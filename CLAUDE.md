@@ -188,6 +188,10 @@ Sıfır ürünler, Yüksel Tarım güvencesiyle. Denizli'den tüm Türkiye'ye g�
 #alpler #pulluk #dönerlipulluk #tarım #traktör #denizli #yükseltarım #tarımmakineleri
 ```
 - Web adresini HER ZAMAN `www.yukseltarimdenizli.com.tr` olarak yaz.
+- **İşyeri sahibi etiketi (kullanıcı isteği 30.10.2026, HER paylaşımda):** `🌐 www.yukseltarimdenizli.com.tr` satırının hemen altına
+  `👤 Ahmet Yüksel: @AHMeT_YUKSeL_20 · facebook.com/ahmet.yuksell.9` satırını ekle (Metricool'da tek metin tüm ağlara gider).
+  Buffer'da her kanal ayrı gönderi olduğundan: TikTok metnine `👤 @AHMeT_YUKSeL_20`, Facebook metnine `👤 Ahmet Yüksel: facebook.com/ahmet.yuksell.9`,
+  YouTube metnine bu satırı EKLEME. (Facebook kişisel profili API ile etiketlenemiyor; link olarak yazılır.)
 - Fiyatı olmayan üründe "Fiyat için arayın" yaz. İkinci el ürünü "Sıfır" diye anma.
 - Uydurma özellik, telefon numarası, kampanya süresi yazma (kullanıcı notta vermediyse).
 - 6-9 ilgili hashtag; her zaman `#yükseltarım #denizli #tarım` olsun.
