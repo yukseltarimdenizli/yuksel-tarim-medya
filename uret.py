@@ -611,6 +611,12 @@ def uret(klasor, muzik=None, son=(), muzik_bas=None):
 def yukle(dosya, hedef_ad):
     dosya = pathlib.Path(dosya)
     alt = "videolar" if dosya.suffix == ".mp4" else "gorseller"
+    if alt == "gorseller" and dosya.suffix.lower() != ".jpg":
+        # Kullanıcı kararı 31.10.2026: fotoğraf paylaşımları HEP JPG (TikTok PNG'yi reddediyor).
+        from PIL import Image
+        hedef_ad = pathlib.Path(hedef_ad).with_suffix(".jpg").name
+        jpg = pathlib.Path("/tmp") / hedef_ad
+        Image.open(dosya).convert("RGB").save(jpg, quality=92); dosya = jpg
     hedef = REPO / alt / hedef_ad; hedef.parent.mkdir(exist_ok=True); shutil.copy(dosya, hedef)
     rel = f"{alt}/{hedef_ad}"
     g = lambda *a: subprocess.run(["git", "-C", str(REPO), *a], check=True, capture_output=True, text=True)
