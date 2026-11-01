@@ -109,8 +109,40 @@ def foto_indir(info, klasor, n, en_fazla=10):
     for a in adaylar:  # hepsini kaydet ki seçim değiştirilebilsin
         im = a["im"].resize((a["w"] * 2, a["h"] * 2), Image.LANCZOS).filter(ImageFilter.UnsharpMask(2, 80, 2))
         im.save(klasor / f"urun{n}_foto{a['sira']}.jpg", quality=93)
+    (klasor / f"urun{n}_adaylar.json").write_text(json.dumps([{k: a[k] for k in ("sira", "w", "h", "puan")} for a in adaylar]))
     en_iyi = max(adaylar, key=lambda a: a["puan"])
     return str(klasor / f"urun{n}_foto{en_iyi['sira']}.jpg"), [a["sira"] for a in adaylar]
+
+
+GALERI_STILLER = ["deste", "karusel", "polaroid"]
+
+
+def galeri_sahnesi(b, n, klasor, kayit):
+    """Kullanıcı kararı 01.11.2026: ürün sahnesi = tam ekran ürün fotoğrafı arka plan + önde ürünün diğer fotoğrafları döner.
+    Arka plan: en iyi DİKEY fotoğraf (yoksa en iyisi); kartlar: puanı iyi olan diğer fotoğraflar (afiş/havadan çekim elenir)."""
+    f = klasor / f"urun{n}_adaylar.json"
+    if not f.exists():
+        return None
+    A = json.loads(f.read_text())
+    dik = [a for a in A if a["h"] > a["w"] * 1.1 and a["puan"] > -1.5]
+    bg = max(dik or A, key=lambda a: a["puan"])
+    kart = sorted([a for a in A if a is not bg and a["puan"] > 0.5 and a["w"] >= a["h"]], key=lambda a: -a["puan"])[:5]
+    if len(kart) < 2:
+        return None
+    yol = lambda a: str(klasor / f"urun{n}_foto{a['sira']}.jpg")
+    stil = GALERI_STILLER[(sum(map(ord, (kayit.get("date") or "") + (kayit.get("time") or ""))) + n) % len(GALERI_STILLER)]
+    ad = kisa_ad(b["plan_adi"])
+    sc = {"type": "galeri", "stil": stil, "bg": yol(bg), "kartlar": [yol(a) for a in kart],
+          "kicker": etiket_ust(b["plan_adi"]), "title": ad, "fs": 110 if len(ad) <= 12 else max(64, int(110 * 12 / len(ad))),
+          "perks": odeme_secenekleri(b.get("ikinci_el")), "dur": 215}
+    if stil == "karusel":
+        sc.update(kart_w=640, kart_h=470)
+    if stil == "polaroid":
+        sc.update(kart_w=660, kart_h=470, kart_y=950, alt_y=1330, aralik=28)
+    if b.get("fiyat"):
+        sc["price"] = b["fiyat"]
+        sc["price_label"] = "KAMPANYA FİYATI" if kayit.get("type") == "Kampanya" else "FİYAT"
+    return sc
 
 
 def odeme_secenekleri(ikinci_el):
@@ -463,6 +495,10 @@ def taslak(kayit_yolu, klasor):
             if b["fiyat"]:
                 sc["price"] = b["fiyat"]; sc["dur"] = 120
                 sc["price_label"] = "KAMPANYA FİYATI" if kayit.get("type") == "Kampanya" else "FİYAT"
+            g = galeri_sahnesi(b, bilgiler.index(b), klasor, kayit)
+            if g:
+                g["price_label"] = sc.get("price_label", g.get("price_label", "FİYAT"))
+                sc = g
             cfg["scenes"].append(sc)
         cfg["scenes"].append({"type": "outro", "cta": "Kampanya için hemen arayın" if kayit.get("type") == "Kampanya" else "Bilgi için hemen arayın"})
     else:  # Görsel

@@ -157,6 +157,12 @@ Kredi/hibe yazıları elle seçilirse: yalnızca yazıdaki bilgiyi ver, tarih/or
 - `intro`: logo açılışı (her videoda ilk).
 - `headline`: krem zemin, `kicker`, `title` (altın vurgu için kelime `[ ]` içinde), `sub`.
 - `photo`: ürün fotoğrafı; `label`, `name`, `name_fs`, `image`, `frame_h`, `kb` (kamera hareketi), `desc`, `chips`, opsiyonel `price` + `price_label`, opsiyonel `inset` (köşe yakın çekim).
+- `galeri` (ÜRÜN SAHNESİNİN VARSAYILANI, kullanıcı kararı 01.11.2026 — "tek görsel hoş olmuyordu"): `bg` (tam ekran arka plan fotoğrafı, tercihen dikey),
+  önde `kartlar` (ürünün diğer fotoğrafları, 2-5 adet) döner; `stil` "deste" (kartlar sırayla fırlar) | "karusel" (3D döner) | "polaroid" (tek tek düşer),
+  `kicker`, `title`, `fs`, opsiyonel `sub`, `price`/`price_label`, `perks`, `chips`; ölçü: `kart_w`/`kart_h`/`kart_y`/`alt_y`. `uret.py taslak` ürün başına otomatik kurar
+  (stiller sırayla döner; uygun fotoğraf azsa eski `photo` sahnesine düşer). Kontrol: arka plan fotoğrafında büyük afiş/levha/filigran öne çıkıyorsa `bg`'yi
+  `urunN_fotoK.jpg` adaylarından değiştir; kartlarda afiş/havadan etkinlik fotoğrafı olmasın. Firma tanıtımı/usta ipucunda da kullanıcının fotoğraflarıyla kullanılabilir.
+- `tamfoto`: tam ekran dikey fotoğraf + yazı (kırpmadan); `image`, `kicker`, `title`, `sub`, `items` ([ikon, metin]), `chips`, `perks`.
 - `list`: krem zemin, numaralı maddeler; `kicker`, `title`, `items` (en fazla 4, her biri kısa). Usta ipucu ve firma tanıtımı için.
 - `greeting`: kutlama sahnesi; `kicker`, `title`, `sub`, opsiyonel `bg`/`bg2` renkleri (29 Ekim, Cumhuriyet vb. için kırmızı `#5E0A12`/`#C8102E`; Cuma, kandil, bayram için varsayılan yeşil). Satış içermez.
 - `outro`: kapanış; `cta` butonu metni. Kutlama/özel gün videolarında `cta: ""` (buton gösterilmez).
