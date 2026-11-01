@@ -1,0 +1,10 @@
+{"not": "İşyeri fotoğrafları (kullanıcı verdi, 30-31.10.2026). Firma tanıtımı galeri sahnelerinde kullanılır. Hepsi dikey 9:16.",
+ "fotolar": [
+  {"id": "saha_pulluklar", "dosya": "isletme/saha_pulluklar.jpg", "konu": "LS bayrakları, pulluklar, traktörler", "bg": true},
+  {"id": "saha_genis", "dosya": "isletme/saha_genis.jpg", "konu": "tepeden geniş saha, makine sıraları", "bg": true},
+  {"id": "saha_traktorler", "dosya": "isletme/saha_traktorler.jpg", "konu": "tepeden LS bahçe traktörleri ve saha", "bg": true},
+  {"id": "gun_batimi", "dosya": "isletme/gun_batimi.jpg", "konu": "gün batımı, LS bayrağı, traktör sırası", "bg": true},
+  {"id": "saha_yan", "dosya": "isletme/saha_yan.jpg", "konu": "tepeden saha, traktörler", "bg": false},
+  {"id": "semaver", "dosya": "isletme/semaver.jpg", "konu": "işyeri önünde yanan semaver (ikram)", "bg": false, "ikram": true},
+  {"id": "ahmet_mangal", "dosya": "isletme/ahmet_mangal.jpg", "konu": "işyeri sahibi Ahmet Bey mangal başında, misafirler sofrada", "bg": false, "ikram": true, "pos": "center 40%"}
+ ]}

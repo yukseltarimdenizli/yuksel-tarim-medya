@@ -468,6 +468,23 @@ def taslak(kayit_yolu, klasor):
         cfg["scenes"] = [{"type": "intro", "overlap": 24},
                          {"type": "greeting", "kicker": "YÜKSEL TARIM", "title": baslik_vurgula(title), "sub": ""},
                          {"type": "outro", "cta": ""}]
+    elif cfg["format"] == "Video" and tur == "Firma tanıtımı" and not bilgiler and (pathlib.Path(__file__).parent / "isletme/fotolar.json").exists():
+        # Kullanıcı kararı 01.11.2026: firma tanıtımı = işyeri fotoğrafları tam ekran arka plan + önde dönen fotoğraflar (galeri).
+        R = pathlib.Path(__file__).parent
+        F = json.loads((R / "isletme/fotolar.json").read_text())["fotolar"]
+        h = sum(map(ord, (kayit.get("date") or "") + (kayit.get("time") or "")))
+        bgs = [f for f in F if f.get("bg")]; bg = bgs[h % len(bgs)]
+        kart = [f for f in F if f is not bg]
+        kart = kart[h % len(kart):] + kart[:h % len(kart)]
+        stil = GALERI_STILLER[h % len(GALERI_STILLER)]
+        cfg["scenes"] = [{"type": "intro", "overlap": 24},
+                         {"type": "galeri", "stil": stil, "bg": str(R / bg["dosya"]), "kicker": "TRAKTÖR GALERİCİLER SİTESİ",
+                          "title": baslik_vurgula(kayit.get("title") or "Yüksel Tarım'a hoş geldiniz"), "fs": 92,
+                          "kartlar": [[str(R / f["dosya"]), f.get("pos", "center")] for f in kart[:5]],
+                          "kart_w": 520, "kart_h": 700, "kart_y": 1010, "alt_y": 1420, "chips": ["LS Tractor", "Alpler", "Fortis"], "dur": 230},
+                         {"type": "list", "kicker": "YÜKSEL TARIM · DENİZLİ", "title": "Neden Yüksel Tarım?", "items": satirlar[:4] or
+                          ["Traktörden pulluğa geniş ürün yelpazesi", "Sıfırda 5 yıl kredi, kartla taksit", "Her üründe takas imkânı", "Tüm Türkiye'ye gönderim"]},
+                         {"type": "outro", "cta": "Sizi bekliyoruz"}]
     elif cfg["format"] == "Video" and tur in ("Usta ipucu", "Firma tanıtımı"):
         cfg["scenes"] = [{"type": "intro", "overlap": 24},
                          {"type": "list", "kicker": "USTA İPUCU" if tur == "Usta ipucu" else "YÜKSEL TARIM · DENİZLİ", "title": title, "items": satirlar[:4]}]
@@ -507,6 +524,10 @@ def taslak(kayit_yolu, klasor):
                          "body": "" if bilgiler else kayit.get("note", ""), "bullets": madde[:5],
                          "photo": next((b["foto"] for b in bilgiler if b["foto"]), None)}
     cfg["kapak"] = kapak_taslagi(kayit, title, bilgiler, cfg)
+    g0 = next((sc for sc in cfg.get("scenes", []) if sc.get("type") == "galeri"), None)
+    if tur == "Firma tanıtımı" and g0 and not bilgiler and (kayit.get("kapak") or "Otomatik") == "Otomatik":
+        cfg["kapak"].update(sablon="1", baslik=g0["title"], ust="TRAKTÖR GALERİCİLER SİTESİ",
+                            urunler=[{"ad": "Yüksel Tarım", "foto": g0["bg"], "fiyat": None, "ikinci_el": False, "fiyat_etiket": ""}])
     (klasor / "config.json").write_text(json.dumps(cfg, ensure_ascii=False, indent=1))
     print(json.dumps({"config": str(klasor / "config.json"), "urunler": bilgiler}, ensure_ascii=False, indent=1))
 

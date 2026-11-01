@@ -141,6 +141,12 @@ Kayıt türü "Usta ipucu", ürün seçilmemiş ve `rehber` "Yok" değilse video
 5. Planlandıktan sonra `meta/rehber` → `kullanilan`'a slug ekle.
 Kredi/hibe yazıları elle seçilirse: yalnızca yazıdaki bilgiyi ver, tarih/oran/şart uydurma, "güncel şartlar için bize ulaşın" ekle.
 
+### Firma tanıtımı = işyeri fotoğraflı galeri (kullanıcı kararı 01.11.2026)
+Ürün seçilmemiş "Firma tanıtımı" kayıtlarında `uret.py taslak` depodaki `isletme/` fotoğraflarıyla (liste: `isletme/fotolar.json`; saha, LS bayrakları,
+semaver, Ahmet Bey mangal başında) kurar: kapak şablon 1 (saha fotoğrafı) → `galeri` (arka plan saha, önde diğer fotoğraflar döner) → "Neden Yüksel Tarım?"
+listesi (not boşsa yalnız talimattaki bilgiler) → kapanış "Sizi bekliyoruz". Konum adı: "Traktör Galericiler Sitesi". Kullanıcı yeni işyeri fotoğrafı verirse
+`isletme/`'ye JPG (≤1200 px genişlik) ekle ve `fotolar.json`'a yaz. Fotoğraflar asla yüz kırpılarak gösterilmez (`pos` ile yüz görünür tutulur).
+
 ### Kapak (videonun ilk 0,5 saniyesi — TikTok/YouTube profil ızgarasında görünen kare)
 `uret.py taslak` config.json'a `kapak` bölümü yazar; `uret` bunu `motor/kapak.py` ile çizip videonun başına 0,5 sn ekler.
 - Şablonlar: ürünler için `1` tam fotoğraf, `2` yeşil çerçeve, `3` krem dergi, `4` afiş, `5` sade yazı (3+ üründe yalnızca 3/4/5).
