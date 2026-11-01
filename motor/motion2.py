@@ -186,6 +186,26 @@ const R={
    const n=$$('.wd',el).length; S($('.gline',el),{transform:`scaleX(${lerp(t,[20+n*4,36+n*4],[0,1],eo)})`});
    S($('.gsub',el),{opacity:lerp(t,[28+n*4,44+n*4],[0,1])});
    const c=spring(t-8,{damping:16,stiffness:55}); S($('.cami',el),{transform:`translateY(${(1-c)*420}px)`,opacity:Math.min(1,c*1.5)}); },
+ galeri(el,t,d){ const cfg=SCENES[el.dataset.i], kb=lerp(t,[0,d],[0,1]), st=cfg.stil||'deste', P=cfg.periyot||42;
+   S($('.tfbg',el),{transform:`scale(${1.12-0.1*kb}) translateY(${-30*kb}px)`});
+   S($('.hdr',el),{opacity:lerp(t,[2,14],[0,1])});
+   const k=spring(t-6,{damping:14,stiffness:120}); S($('.kick',el),{transform:`scale(${k})`,opacity:Math.min(1,k*2)});
+   words(el,t-10);
+   S($('.tfsub',el),{opacity:lerp(t,[22,36],[0,1])});
+   const cards=$$('.gk',el), n=cards.length, ent=spring(t-8,{damping:15,stiffness:80});
+   cards.forEach((c,i)=>{ let tr='',op=1,z=0;
+     if(st==='deste'){ const tt=Math.max(0,t-30); let dd=((i*P-tt)%(n*P)+n*P)%(n*P)/P;  // 0 = öndeki
+       if(dd>n-0.35){ const f=(dd-(n-0.35))/0.35; tr=`translateX(${-1300*(1-f)}px) rotate(${-22*(1-f)}deg)`; z=200; op=1; }
+       else { const fl=Math.floor(dd), fr=dd-fl, e=fl+eio(fr); tr=`translateY(${-46*e}px) scale(${1-0.08*e}) rotate(${(i%2?3:-3)*Math.min(e,1)}deg)`; z=100-e*10; op=e>2.6?0:1; }
+       tr=`translateY(${(1-ent)*700}px) `+tr; }
+     else if(st==='karusel'){ const tt=Math.max(0,t-24)/P, fl=Math.floor(tt), stp=fl+eio(tt-fl); const a=(i-stp)*2*Math.PI/n, R=cfg.yaricap||430;
+       const x=Math.sin(a)*R, zz=Math.cos(a); tr=`translateX(${x}px) translateZ(${(zz-1)*R}px) rotateY(${a*180/Math.PI}deg) scale(${0.7+0.3*ent})`; z=Math.round(zz*100); op=(0.35+0.65*(zz+1)/2)*Math.min(1,ent*1.5); }
+     else { const t0=14+i*(cfg.aralik||26), s2=spring(t-t0,{damping:11,stiffness:120}); const r=((i*37)%17-8);
+       tr=`translate(${((i*53)%7-3)*28}px,${(1-s2)*-1400+((i*29)%5-2)*24}px) rotate(${r*(0.6+0.4*s2)}deg) scale(${1.25-0.25*s2})`; z=i; op=s2>0.01?1:0; }
+     S(c,{transform:tr,opacity:op,zIndex:z}); });
+   const pr=$('.price',el); if(pr){ const s=spring(t-30,{damping:10,stiffness:120}); S(pr,{transform:`scale(${s})`,opacity:Math.min(1,s*2)});
+     const v=+$('b',pr).dataset.v, kk=lerp(t,[32,60],[0,1],eo); $('b',pr).textContent=(Math.round(v*kk/1000)*1000).toLocaleString('tr-TR'); }
+   pops(el,'.perk',t-48,7); pops(el,'.chip',t-40,6); S($('.foot',el),{transform:`translateY(${(1-spring(t-12,{damping:16}))*160}px)`}); },
  tamfoto(el,t,d){ const cfg=SCENES[el.dataset.i], kb=lerp(t,[0,d],[0,1]); const [x0,y0,s0,x1,y1,s1]=cfg.kb||[0,0,1.14,0,-40,1.02];
    S($('.tfbg',el),{transform:`translate(${x0+(x1-x0)*kb}px,${y0+(y1-y0)*kb}px) scale(${s0+(s1-s0)*kb})`});
    S($('.hdr',el),{opacity:lerp(t,[2,14],[0,1])});
@@ -347,6 +367,31 @@ def build(cfg):
                          f'<div class="qtext" style="padding:0 90px;font-size:{qfs}px">' + " ".join(f"<span>{esc(c)}</span>" for c in cumleler) + '</div>'
                          f'<div class="qname" style="margin-top:26px">{esc(s["who"])}</div>'
                          f'<div class="qloc">📍 {esc(s.get("where",""))}</div></div>{FOOT}</div>')
+        elif t == "galeri":
+            # Tam ekran ürün fotoğrafı arka plan + önde diğer fotoğraflar döner (stil: deste | karusel | polaroid). Kullanıcı isteği 01.11.2026.
+            s.setdefault("dur", 210)
+            im = uri(s["bg"]); cw, ch = s.get("kart_w", 760), s.get("kart_h", 540); cy = s.get("kart_y", 1010)
+            kartlar = "".join(f'<div class="gk abs" style="left:50%;top:50%;width:{cw}px;height:{ch}px;margin:-{ch//2}px 0 0 -{cw//2}px;border-radius:26px;'
+                              f'border:10px solid #fff;background:#fff url({uri(x if isinstance(x,str) else x[0])}) {("center" if isinstance(x,str) else x[1])}/cover;'
+                              f'box-shadow:0 30px 70px rgba(0,0,0,.55)"></div>' for x in s["kartlar"])
+            price = (f'<div class="price" style="position:relative;transform-origin:left center"><small>{esc(s.get("price_label","KAMPANYA FİYATI"))}</small>'
+                     f'<b data-v="{int(s["price"])}">0</b><span>TL</span></div>') if s.get("price") else ""
+            perks = "".join(f'<div class="perk"><i>✓</i>{esc(c)}</div>' for c in s.get("perks", []))
+            chips = "".join(f'<div class="chip">{esc(c)}</div>' for c in s.get("chips", []))
+            alt_y = s.get("alt_y", cy + ch // 2 + 90)
+            parts.append(f'<div class="sc" data-i="{i}" style="background:#0f2014;overflow:hidden">'
+                         f'<div class="tfbg abs" style="inset:0;background:url({im}) {s.get("pos","center")}/cover;filter:brightness({s.get("parlak",.8)}) saturate(1.1) blur({s.get("bulanik",0)}px)"></div>'
+                         f'<div class="abs" style="inset:0;background:linear-gradient(180deg,rgba(10,22,14,.85) 0%,rgba(10,22,14,.5) 20%,rgba(10,22,14,.15) 40%,rgba(10,22,14,.15) 62%,rgba(10,22,14,.7) 80%,rgba(10,22,14,.92) 100%)"></div>'
+                         f'{hdr(logo)}'
+                         f'<div class="abs" style="left:64px;right:110px;top:{s.get("text_y",285)}px;display:flex;flex-direction:column;align-items:flex-start;gap:16px">'
+                         + (f'<div class="kick">{esc(s["kicker"])}</div>' if s.get("kicker") else "")
+                         + f'<div class="gtitle" style="text-align:left;font-size:{s.get("fs",96)}px;text-shadow:0 6px 30px rgba(0,0,0,.7)">{title_html(s["title"])}</div>'
+                         + (f'<div class="tfsub" style="font-size:38px;font-weight:600;color:#fff;text-shadow:0 3px 18px rgba(0,0,0,.85)">{esc(s["sub"])}</div>' if s.get("sub") else "")
+                         + '</div>'
+                         f'<div class="abs" style="left:0;right:0;top:{cy}px;height:0;perspective:1600px;transform-style:preserve-3d">{kartlar}</div>'
+                         f'<div class="abs" style="left:64px;right:110px;top:{alt_y}px;display:flex;flex-direction:column;gap:18px;align-items:flex-start">'
+                         + price + (f'<div class="chips" style="position:static">{chips}</div>' if chips else "")
+                         + (f'<div class="perks" style="position:static">{perks}</div>' if perks else "") + f'</div>{FOOT}</div>')
         elif t == "tamfoto":
             # Dikey TAM EKRAN fotoğraf arka plan (kırpmadan, kullanıcı isteği 30.10.2026) + güvenli alanda yazı (y 285-1480).
             s.setdefault("dur", 120)
