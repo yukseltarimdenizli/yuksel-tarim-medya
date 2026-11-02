@@ -146,7 +146,7 @@ const R={
    S($('.pdesc',el),{opacity:lerp(t,[22,36],[0,1]),transform:`translateY(${lerp(t,[22,38],[30,0],eo)}px)`});
    pops(el,'.chip',t-30,6); pops(el,'.perk',t-44,7); S($('.foot',el),{transform:`translateY(${(1-spring(t-12,{damping:16}))*160}px)`});
    const pr=$('.price',el); if(pr){ const s=spring(t-14,{damping:10,stiffness:120}); S(pr,{transform:`scale(${s}) rotate(${(1-s)*-6}deg)`,opacity:Math.min(1,s*2)});
-     const v=+$('b',pr).dataset.v, k=lerp(t,[18,46],[0,1],eo); $('b',pr).textContent=(Math.round(v*k/1000)*1000).toLocaleString('tr-TR'); }
+     const v=+$('b',pr).dataset.v, k=lerp(t,[18,46],[0,1],eo); $('b',pr).textContent=(k>=1?v:Math.round(v*k/1000)*1000).toLocaleString('tr-TR'); }
    const ins=$('.inset',el); if(ins){const s=spring(t-(cfg.inset_at||60),{damping:11,stiffness:110}); S(ins,{transform:`scale(${s}) rotate(${(1-s)*-25+4}deg)`,opacity:Math.min(1,s*2)});} },
  greeting(el,t,d){ field($('canvas',el),t,'#D4A445',.09); dust($('canvas',el),t,'#F5D58A');
    const up=lerp(t,[0,20],[0,1],eio); S(el,{clipPath:`circle(${up*140}% at 50% 50%)`});
@@ -204,7 +204,7 @@ const R={
        tr=`translate(${((i*53)%7-3)*28}px,${(1-s2)*-1400+((i*29)%5-2)*24}px) rotate(${r*(0.6+0.4*s2)}deg) scale(${1.25-0.25*s2})`; z=i; op=s2>0.01?1:0; }
      S(c,{transform:tr,opacity:op,zIndex:z}); });
    const pr=$('.price',el); if(pr){ const s=spring(t-30,{damping:10,stiffness:120}); S(pr,{transform:`scale(${s})`,opacity:Math.min(1,s*2)});
-     const v=+$('b',pr).dataset.v, kk=lerp(t,[32,60],[0,1],eo); $('b',pr).textContent=(Math.round(v*kk/1000)*1000).toLocaleString('tr-TR'); }
+     const v=+$('b',pr).dataset.v, kk=lerp(t,[32,60],[0,1],eo); $('b',pr).textContent=(kk>=1?v:Math.round(v*kk/1000)*1000).toLocaleString('tr-TR'); }
    pops(el,'.perk',t-48,7); pops(el,'.chip',t-40,6); S($('.foot',el),{transform:`translateY(${(1-spring(t-12,{damping:16}))*160}px)`}); },
  tamfoto(el,t,d){ const cfg=SCENES[el.dataset.i], kb=lerp(t,[0,d],[0,1]); const [x0,y0,s0,x1,y1,s1]=cfg.kb||[0,0,1.14,0,-40,1.02];
    S($('.tfbg',el),{transform:`translate(${x0+(x1-x0)*kb}px,${y0+(y1-y0)*kb}px) scale(${s0+(s1-s0)*kb})`});

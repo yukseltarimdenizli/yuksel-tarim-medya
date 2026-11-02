@@ -295,7 +295,9 @@ def urun_sablonu_sec(urun_sayisi, son_kullanilanlar=()):
 def referans_html(k, L):
     """{"tur":"referans","foto":..., "ad":"Yılmaz Aksoy","konum":"Antalya / Serik","urun":"Alpler 3'lü Dönerli Pulluk","ust":"MUTLU MÜŞTERİMİZ"}"""
     f = _u(k["foto"]); ad = _e(k.get("ad", "")); fs = 104 if len(k.get("ad", "")) <= 16 else (84 if len(k.get("ad", "")) <= 22 else 66)
-    return (f"<div class='a' style='inset:0;background:url({f}) {k.get('pos', 'center')}/cover'></div>"
+    # Kullanıcı kararı: referans fotoğrafı asla kırpılmaz; bulanık arka plan + tam fotoğraf.
+    return (f"<div class='a' style='inset:-40px;background:url({f}) center/cover;filter:blur(28px) brightness(.55)'></div>"
+            f"<div class='a' style='left:30px;right:30px;top:440px;height:500px;background:url({f}) center/contain no-repeat'></div>"
             "<div class='a' style='inset:0;background:linear-gradient(180deg,rgba(10,20,12,.55) 0%,rgba(10,20,12,0) 24%,rgba(10,20,12,0) 46%,rgba(10,20,12,.92) 68%,#0d1a10)'></div>"
             + _logo(L, w=120, kutu=True)
             + f"<div class='a' style='left:60px;top:960px;background:#D4A445;color:#14281A;font-weight:800;font-size:34px;padding:10px 28px;border-radius:14px;letter-spacing:1px'>{_e(k.get('ust', 'MUTLU MÜŞTERİMİZ'))}</div>"
