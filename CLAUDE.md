@@ -51,7 +51,11 @@ Türkçe ve kısa yaz.
 - **Fiyatı değişmiş:** `status` = "Planlandı", zamanı gelmemiş, ürünlerinden birinin sitedeki fiyatı (`meta/urunler`)
   hazırlarken kullandığından farklı (kayıttaki `caption`'da yazan fiyatla karşılaştır) ve not alanında o ürüne özel
   fiyat yok → yeniden üret ve güncelle.
-- **Yayınlanmış mı:** `status` = "Planlandı" ve zamanı geçmişse `getScheduledPosts` ile bak; listede yoksa yayınlanmıştır → "Paylaşıldı" yap.
+- **Yayınlanmış mı:** `status` = "Planlandı" ve zamanı geçmişse `getScheduledPosts` ile o saatin gönderisine bak (uuid = `metricoolUuid`).
+  DİKKAT: Metricool yayınlanan gönderiyi listeden ÇIKARMAZ; her ağın `providers[].status` alanına bak (03.11.2026'da doğrulandı):
+  hepsi `PUBLISHED` → `status` "Paylaşıldı", `linkler` {ağ: publicUrl}; biri `ERROR` → yayınlananlar için yine "Paylaşıldı", `uyari`'ya hangi ağın neden
+  gitmediğini yaz (detailedStatus) ve özette bildir; hâlâ `PENDING` ise dokunma. Gün içi kontrolü ayrıca "Yüksel Tarım paylaşım durumu" görevi yapar
+  (her gün 11:13 ve 20:13, yalnız durum günceller).
 - Paylaşım zamanına 20 dakikadan az kalmış ya da geçmiş "Taslak" kayıtları üretme; özette "kaçırıldı" diye belirt.
 - Değişmiş kayıtlar için de aynı 20 dakika kuralı: zamanına 20 dakikadan az kalmışsa yeniden üretme, özette "değişiklik yetişmedi" de.
 - Değişmiş kayıtta tarih/saat değiştiyse `publicationDate`'i, platform değiştiyse `providers`'ı (ve gerekli `youtubeData`/`tiktokData`) güncelle; yeni gönderi AÇMA, her zaman `updateScheduledPost` (id + uuid).
