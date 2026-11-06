@@ -229,6 +229,7 @@ const R={
    S($('.endlogo',el),{transform:`scale(${spring(t-10,{damping:10,stiffness:110})}) rotate(${(1-spring(t-10))*-20}deg)`});
    [['.brand',18],['.city',23]].forEach(([q,dl])=>{const s=spring(t-dl,{damping:14}); S($(q,el),{opacity:Math.min(1,s),transform:`translateY(${(1-s)*60}px)`});});
    const url=el.dataset.web, k=Math.floor(lerp(t,[28,54],[0,url.length])); $('.web',el).textContent=url.slice(0,k)+((k<url.length&&t>26&&t%10<5)?'|':'');
+   $$('.tel',el).forEach((x,i)=>{const s=spring(t-30-i*6,{damping:13,stiffness:120}); S(x,{opacity:Math.min(1,s*1.5),transform:`translateX(${(1-s)*(i?600:-600)}px)`});});
    if(!$('.cta',el)) return;
    const cs=spring(t-52,{damping:9,stiffness:140}); S($('.cta',el),{transform:`translateX(-50%) scale(${cs})`});
    const cr=$('.cta',el).getBoundingClientRect(), p=((t-60)%30)/30;
@@ -247,6 +248,9 @@ window.renderFrame=function(f){
 def esc(s): return html.escape(s)
 FOOT = (f'<div class="abs foot" style="left:0;right:0;bottom:0;height:150px;background:rgba(20,40,26,.92);border-top:6px solid var(--au);color:#fff;'
         f'display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:600;letter-spacing:1px">{WEB}</div>')
+
+TELEFONLAR = ["0543 509 19 01", "0535 601 99 17"]
+
 
 def title_html(t):
     # [ ... ] içindeki TÜM kelimeler altın olur (çok kelimeli vurgu destekli)
@@ -462,7 +466,19 @@ def build(cfg):
         elif t == "outro":
             s.setdefault("dur", 115)
             cta = s.get("cta", "Bilgi için hemen arayın")
-            parts.append(f'<div class="sc" data-web="{WEB}" style="background:var(--g)"><canvas width="1080" height="1920"></canvas>'
+            tel = s.get("tel", TELEFONLAR) if cta else []
+            if tel:
+                # Kullanıcı isteği 06.11.2026: kapanışta telefon numaraları (güvenli alan içinde, y ≤ 1480)
+                tels = "".join(f'<div class="tel" style="display:flex;align-items:center;justify-content:center;gap:18px;font-size:62px;font-weight:800;color:#fff;letter-spacing:1px">'
+                               f'<span style="width:74px;height:74px;border-radius:50%;background:var(--au);display:grid;place-items:center;font-size:40px">📞</span>{esc(n)}</div>' for n in tel)
+                parts.append(f'<div class="sc" data-web="{WEB}" style="background:var(--g)"><canvas width="1080" height="1920"></canvas>'
+                             f'<div class="endhalo abs" style="top:330px;transform-origin:center"></div><img class="endlogo abs" src="{logo}" style="left:50%;top:380px;width:250px;margin-left:-125px">'
+                             f'<div class="brand abs" style="top:805px;font-size:70px;letter-spacing:4px">YÜKSEL TARIM</div><div class="city abs" style="top:900px;letter-spacing:14px">DENİZLİ</div>'
+                             f'<div class="web abs" style="top:975px"></div>'
+                             f'<div class="ring abs" style="top:1075px"></div><div class="cta abs" style="top:1075px">{esc(cta)}</div>'
+                             f'<div class="tels abs" style="left:0;right:0;top:1225px;display:flex;flex-direction:column;gap:24px">{tels}</div></div>')
+            else:
+                parts.append(f'<div class="sc" data-web="{WEB}" style="background:var(--g)"><canvas width="1080" height="1920"></canvas>'
                          f'<div class="endhalo abs" style="top:500px"></div><img class="endlogo abs" src="{logo}" style="left:50%;top:565px;width:330px;margin-left:-165px">'
                          f'<div class="brand abs" style="top:1000px;font-size:74px;letter-spacing:4px">YÜKSEL TARIM</div><div class="city abs" style="top:1100px;letter-spacing:14px">DENİZLİ</div>'
                          f'<div class="web abs" style="top:1220px"></div>'
