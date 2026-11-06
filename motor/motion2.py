@@ -472,14 +472,14 @@ def build(cfg):
                 tels = "".join(f'<div class="tel" style="display:flex;align-items:center;justify-content:center;gap:18px;font-size:62px;font-weight:800;color:#fff;letter-spacing:1px">'
                                f'<span style="width:74px;height:74px;border-radius:50%;background:var(--au);display:grid;place-items:center;font-size:40px">📞</span>{esc(n)}</div>' for n in tel)
                 parts.append(f'<div class="sc" data-web="{WEB}" style="background:var(--g)"><canvas width="1080" height="1920"></canvas>'
-                             f'<div class="endhalo abs" style="top:330px;transform-origin:center"></div><img class="endlogo abs" src="{logo}" style="left:50%;top:380px;width:250px;margin-left:-125px">'
+                             f'<div class="endhalo abs" style="top:330px;transform-origin:center"></div><img class="endlogo abs" src="{logo}" style="left:50%;top:434px;width:300px;margin-left:-150px">'
                              f'<div class="brand abs" style="top:805px;font-size:70px;letter-spacing:4px">YÜKSEL TARIM</div><div class="city abs" style="top:900px;letter-spacing:14px">DENİZLİ</div>'
                              f'<div class="web abs" style="top:975px"></div>'
                              f'<div class="ring abs" style="top:1075px"></div><div class="cta abs" style="top:1075px">{esc(cta)}</div>'
                              f'<div class="tels abs" style="left:0;right:0;top:1225px;display:flex;flex-direction:column;gap:24px">{tels}</div></div>')
             else:
                 parts.append(f'<div class="sc" data-web="{WEB}" style="background:var(--g)"><canvas width="1080" height="1920"></canvas>'
-                         f'<div class="endhalo abs" style="top:500px"></div><img class="endlogo abs" src="{logo}" style="left:50%;top:565px;width:330px;margin-left:-165px">'
+                         f'<div class="endhalo abs" style="top:500px"></div><img class="endlogo abs" src="{logo}" style="left:50%;top:591px;width:330px;margin-left:-165px">'
                          f'<div class="brand abs" style="top:1000px;font-size:74px;letter-spacing:4px">YÜKSEL TARIM</div><div class="city abs" style="top:1100px;letter-spacing:14px">DENİZLİ</div>'
                          f'<div class="web abs" style="top:1220px"></div>'
                          + (f'<div class="ring abs" style="top:1340px"></div><div class="cta abs" style="top:1340px">{esc(cta)}</div>' if cta else '') + '</div>')
