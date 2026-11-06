@@ -323,8 +323,7 @@ def _rehber_taslak(kayit, klasor):
         kapak_urun.append({"ad": m.capitalize(), "foto": foto, "fiyat": None, "ikinci_el": False, "fiyat_etiket": ""})
     baslik = kayit.get("title") or r["baslik"].split("?")[0] + ("?" if "?" in r["baslik"] else "")
     cfg = {"format": "Video", "kayit_id": kayit.get("id"), "rehber_slug": r["slug"], "rehber_url": r["kisa_url"],
-           "scenes": [{"type": "intro", "overlap": 24},
-                      {"type": "headline", "kicker": "USTA REHBERİ", "title": baslik_vurgula(baslik), "sub": "YAZIDAN KISA GİRİŞ"}]
+           "scenes": [{"type": "headline", "kicker": "USTA REHBERİ", "title": baslik_vurgula(baslik), "sub": "YAZIDAN KISA GİRİŞ"}]
            + sahneler +
            [{"type": "list", "kicker": "USTA İPUCU", "title": "YAZIDAN BAŞLIK", "items": [x[:60] for x in r["ipuclari"][:4]]},
             {"type": "outro", "cta": "Devamı sitemizde"}],
