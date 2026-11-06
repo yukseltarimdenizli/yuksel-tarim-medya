@@ -114,6 +114,19 @@ def foto_indir(info, klasor, n, en_fazla=10):
     return str(klasor / f"urun{n}_foto{en_iyi['sira']}.jpg"), [a["sira"] for a in adaylar]
 
 
+def baslik_kisa(ad, kicker=""):
+    """Ürün sahnesi başlığı: tek satıra sığsın. "4 Lü 14 Numara Dönerli Pulluk" -> "4'lü 14 No [Dönerli]" (tür adı etikette zaten var)."""
+    t = re.sub(r"\b(\d+)\s*(L[üiıu])\b", lambda m: f"{m.group(1)}'{m.group(2).lower()}", ad)
+    t = re.sub(r"\bNumara\b", "No", t)
+    w = t.split()
+    ust = kicker.upper()
+    while len(w) > 2 and w[-1].upper().replace("İ", "I") in ust.replace("İ", "I"):
+        w = w[:-1]
+    if len(w) > 1 and not any("[" in x for x in w):
+        w[-1] = "[" + w[-1] + "]"
+    return " ".join(w)
+
+
 GALERI_STILLER = ["deste", "karusel", "polaroid"]
 
 
@@ -477,8 +490,7 @@ def taslak(kayit_yolu, klasor):
         kart = [f for f in F if f is not bg]
         kart = kart[h % len(kart):] + kart[:h % len(kart)]
         stil = GALERI_STILLER[h % len(GALERI_STILLER)]
-        cfg["scenes"] = [{"type": "intro", "overlap": 24},
-                         {"type": "galeri", "stil": stil, "bg": str(R / bg["dosya"]), "kicker": "TRAKTÖR GALERİCİLER SİTESİ",
+        cfg["scenes"] = [{"type": "galeri", "stil": stil, "anlik": True, "bg": str(R / bg["dosya"]), "kicker": "TRAKTÖR GALERİCİLER SİTESİ",
                           "title": baslik_vurgula(kayit.get("title") or "Yüksel Tarım'a hoş geldiniz"), "fs": 92,
                           "kartlar": [[str(R / f["dosya"]), f.get("pos", "center")] for f in kart[:5]],
                           "kart_w": 520, "kart_h": 700, "kart_y": 1010, "alt_y": 1420, "chips": ["LS Tractor", "Alpler", "Fortis"], "dur": 230},
@@ -498,26 +510,42 @@ def taslak(kayit_yolu, klasor):
                                       "perks": odeme_secenekleri(b.get("ikinci_el")), "dur": 110})
         cfg["scenes"].append({"type": "outro", "cta": "Bilgi için hemen arayın"})
     elif cfg["format"] == "Video":
-        cfg["scenes"].append({"type": "intro", "overlap": 24})
-        cfg["scenes"].append({"type": "headline", "kicker": KICKER.get(kayit.get("type"), "YÜKSEL TARIM"),
-                              "title": baslik_vurgula(title), "sub": "" if any(b["fiyat"] for b in bilgiler) else kayit.get("note", "")[:140]})
-        for b in bilgiler:
-            if not b["foto"]:
-                continue
+        # Kullanıcı kararı 06.11.2026 (FB istatistiği: ortalama izlenme 2-3 sn): video İLK KAREDEN ürünle açılır — logo animasyonu ve
+        # başlık ekranı yok, ayrı kapak yok (ilk kare kapaktır); logo sol üstte; en fazla 3 ürün; 15-20 sn; kapanışta telefonlar.
+        gorunen = [b for b in bilgiler if b["foto"]]
+        if len(gorunen) > 3:
+            cfg["kalan_urunler"] = [{"name": b["plan_adi"], "url": b.get("url", "")} for b in gorunen[3:]]
+            gorunen = gorunen[:3]
+        if not gorunen:
+            cfg["scenes"].append({"type": "intro", "overlap": 24})
+            cfg["scenes"].append({"type": "headline", "kicker": KICKER.get(kayit.get("type"), "YÜKSEL TARIM"),
+                                  "title": baslik_vurgula(title), "sub": kayit.get("note", "")[:140]})
+        for i, b in enumerate(gorunen):
             ad = kisa_ad(b["plan_adi"])
-            sc = {"type": "photo", "wipe": True, "label": etiket_ust(b["plan_adi"]), "name": ad,
+            ikinci = b.get("ikinci_el")
+            on = "TAKSİT · TAKAS · " if ikinci else "5 YIL KREDİ İLE · "
+            sc = {"type": "photo", "wipe": i > 0, "label": on + etiket_ust(b["plan_adi"]), "name": ad,
                   "name_fs": 130 if len(ad) <= 12 else max(64, int(130 * 12 / len(ad))), "image": b["foto"], "frame_h": 620,
-                  "kb": [20, 0, 1.04, -30, -10, 1.18], "desc": "Yüksel Tarım güvencesiyle.", "chips": (["2. El"] if b.get("ikinci_el") else ["Sıfır"]) + etiketler(b["plan_adi"])[:2], "dur": 115}
-            sc["perks"] = odeme_secenekleri(b.get("ikinci_el"))
+                  "kb": [20, 0, 1.04, -30, -10, 1.18], "desc": "Yüksel Tarım güvencesiyle.", "chips": (["2. El"] if ikinci else ["Sıfır"]) + etiketler(b["plan_adi"])[:2], "dur": 115}
+            sc["perks"] = odeme_secenekleri(ikinci)
             if b["fiyat"]:
                 sc["price"] = b["fiyat"]; sc["dur"] = 120
                 sc["price_label"] = "KAMPANYA FİYATI" if kayit.get("type") == "Kampanya" else "FİYAT"
             g = galeri_sahnesi(b, bilgiler.index(b), klasor, kayit)
             if g:
                 g["price_label"] = sc.get("price_label", g.get("price_label", "FİYAT"))
+                g["kicker"] = on + etiket_ust(b["plan_adi"])
+                g["title"] = baslik_kisa(ad, g["kicker"])
+                uz = len(g["title"].replace("[", "").replace("]", ""))
+                g["fs"] = max(60, min(104, int(906 / (0.53 * max(1, uz)))))
+                if i == 0:
+                    g["anlik"] = True; g["dur"] = 185
+                else:
+                    g["hizli"] = True; g["dur"] = 170
                 sc = g
             cfg["scenes"].append(sc)
-        cfg["scenes"].append({"type": "outro", "cta": "Kampanya için hemen arayın" if kayit.get("type") == "Kampanya" else "Bilgi için hemen arayın"})
+        cfg["scenes"].append({"type": "outro", "cta": "Kampanya için hemen arayın" if kayit.get("type") == "Kampanya" else "Bilgi için hemen arayın",
+                              "dur": 105 if gorunen else 115})
     else:  # Görsel
         madde = [f'{kisa_ad(b["plan_adi"])}' + (f' – {b["fiyat"]:,} TL'.replace(",", ".") if b["fiyat"] else "") for b in bilgiler]
         cfg["gorsel"] = {"slug": "gorsel", "kicker": KICKER.get(kayit.get("type"), "YÜKSEL TARIM"), "title": baslik_vurgula(title),
@@ -528,8 +556,13 @@ def taslak(kayit_yolu, klasor):
     if tur == "Firma tanıtımı" and g0 and not bilgiler and (kayit.get("kapak") or "Otomatik") == "Otomatik":
         cfg["kapak"].update(sablon="1", baslik=g0["title"], ust="TRAKTÖR GALERİCİLER SİTESİ",
                             urunler=[{"ad": "Yüksel Tarım", "foto": g0["bg"], "fiyat": None, "ikinci_el": False, "fiyat_etiket": ""}])
+    # İlk kare kapak olduğu için ürün/firma galerisiyle açılan videolarda ayrı kapak eklenmez (kullanıcı kararı 06.11.2026)
+    if cfg.get("scenes") and cfg["scenes"][0].get("type") in ("galeri", "photo"):
+        cfg["kapak"] = None
+    if tur == "Usta ipucu" and cfg.get("scenes") and cfg["scenes"][0].get("type") == "intro":
+        cfg["scenes"] = cfg["scenes"][1:]
     (klasor / "config.json").write_text(json.dumps(cfg, ensure_ascii=False, indent=1))
-    print(json.dumps({"config": str(klasor / "config.json"), "urunler": bilgiler}, ensure_ascii=False, indent=1))
+    print(json.dumps({"config": str(klasor / "config.json"), "urunler": bilgiler, "kalan_urunler": cfg.get("kalan_urunler", [])}, ensure_ascii=False, indent=1))
 
 
 KAPAK_UST = {"Kampanya": "KAMPANYA", "Ürün tanıtımı": "YÜKSEL TARIM'DA", "Firma tanıtımı": "YÜKSEL TARIM",

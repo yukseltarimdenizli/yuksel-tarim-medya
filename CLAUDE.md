@@ -92,6 +92,19 @@ Türkçe ve kısa yaz.
    **Görsel (tek resim) paylaşımı:** fotoğraf paylaşımları HEP JPG olur (kullanıcı kararı 31.10.2026; TikTok PNG'yi reddediyor). `uret.py yukle` PNG/WEBP'yi otomatik JPG'ye çevirir ve linki `.jpg` verir. YouTube'a görsel gönderilmez.
 7. Yükle: `python3 uret.py yukle <dosya> <YYYY-MM-DD>_<HHMM>_<kısa-slug>.<mp4|png>` → herkese açık linki verir.
 
+### Video yapısı: İLK KAREDEN ÜRÜN (kullanıcı kararı 06.11.2026 — FB istatistiği: ortalama izlenme 2-3 sn)
+- Ürünlü videolar (Ürün tanıtımı/Kampanya): logo animasyonu (`intro`), krem başlık (`headline`) ve ayrı 0,5 sn kapak YOK. Video doğrudan ilk ürünün
+  `galeri` sahnesiyle açılır (`anlik: true`: başlık, fiyat ve rozetler ilk karede hazır; bu kare TikTok/YouTube kapağı olur), logo sol üstte küçük.
+  Sonraki ürünler `hizli: true`. Kapanış (`outro`) kısa ve telefonlu. Hedef süre 15-20 sn. `uret.py taslak` bunu otomatik kurar.
+- Etiket (`kicker`): sıfırda "5 YIL KREDİ İLE · <MARKA · TÜR>", 2. elde "TAKSİT · TAKAS · <MARKA · TÜR>". Başlık (`title`) kısa ürün adı, TEK satır
+  (ör. "4'lü 14 No [Dönerli]"; `baslik_kisa` otomatik kısaltır, gerekirse elle kısalt). İlk karede (`ffmpeg -ss 0`) başlık, fiyat ve rozetler görünmeli.
+- **En fazla 3 ürün.** Kayıtta daha fazla ürün varsa `taslak` ilk 3'ünü (küçükten büyüğe) alır, kalanları `config.json` → `kalan_urunler`'e yazar.
+  Bu durumda plan sayfasına aynı tür ve saatte, bir sonraki günün boş saatine yeni bir "Taslak" kayıt ekle (`products` = kalanlar, başlık "<başlık> (2)",
+  not: "Seri devamı") ve özette belirt. Kullanıcının kendi kaydını silme.
+- Firma tanıtımı da galeriyle (anlık) açılır, kapak yok. Usta ipucu (rehber) logo animasyonu olmadan doğrudan soru başlığıyla açılır.
+  Dini/kutlama ve referans videoları kendi onaylı formatında kalır.
+- Kapanışta telefonlar: `motion2.py` → `TELEFONLAR` ("0543 509 19 01", "0535 601 99 17"); CTA'sı olan her kapanışta otomatik görünür.
+
 ### Teslimat / müşteri (referans) videoları
 Kayıt türü "Teslimat / müşteri" ve ürün seçilmemişse video sitedeki **Referanslar** bölümünden yapılır:
 1. `kayit.json`'a şunları ekle: `"_referanslar": "/tmp/is/referanslar.json"`, `"_kullanilan"`, `"_son_urun"`, `"_son_il"` (meta/referanslar'dan).
@@ -152,6 +165,7 @@ listesi (not boşsa yalnız talimattaki bilgiler) → kapanış "Sizi bekliyoruz
 `isletme/`'ye JPG (≤1200 px genişlik) ekle ve `fotolar.json`'a yaz. Fotoğraflar asla yüz kırpılarak gösterilmez (`pos` ile yüz görünür tutulur).
 
 ### Kapak (videonun ilk 0,5 saniyesi — TikTok/YouTube profil ızgarasında görünen kare)
+NOT (06.11.2026): Ürünlü ve firma tanıtımı videolarında ayrı kapak YOK (`config.kapak` = null; ilk kare kapaktır). Aşağıdakiler dini/kutlama, referans ve rehber videoları içindir.
 `uret.py taslak` config.json'a `kapak` bölümü yazar; `uret` bunu `motor/kapak.py` ile çizip videonun başına 0,5 sn ekler.
 - Şablonlar: ürünler için `1` tam fotoğraf, `2` yeşil çerçeve, `3` krem dergi, `4` afiş, `5` sade yazı (3+ üründe yalnızca 3/4/5).
   Kutlamalar (Özel gün) için büyük logolu `A` yeşil halka, `B` kırmızı milli bayram (`buyuk`: "103." gibi), `C` gece mavisi kandil, `D` kurdeleli bayram, `E` buğdaylı çiftçi.
@@ -224,12 +238,14 @@ Sıfır ürünler, Yüksel Tarım güvencesiyle. Denizli'den tüm Türkiye'ye g�
 #alpler #pulluk #dönerlipulluk #tarım #traktör #denizli #yükseltarım #tarımmakineleri
 ```
 - Web adresini HER ZAMAN `www.yukseltarimdenizli.com.tr` olarak yaz.
+- **Telefon satırı (kullanıcı isteği 06.11.2026):** `🌐 www.yukseltarimdenizli.com.tr` satırının hemen altına `📞 0543 509 19 01 · 0535 601 99 17`
+  ekle (dini/kutlama paylaşımları HARİÇ; Buffer'da her kanala). Bu numaralar kullanıcı tarafından verildi, başka numara yazma.
 - **İşyeri sahibi etiketi (kullanıcı isteği 30.10.2026, HER paylaşımda):** `🌐 www.yukseltarimdenizli.com.tr` satırının hemen altına
   `👤 Ahmet Yüksel: @AHMeT_YUKSeL_20 · facebook.com/ahmet.yuksell.9` satırını ekle (Metricool'da tek metin tüm ağlara gider).
   Buffer'da her kanal ayrı gönderi olduğundan: TikTok metnine `👤 @AHMeT_YUKSeL_20`, Facebook metnine `👤 Ahmet Yüksel: facebook.com/ahmet.yuksell.9`,
   YouTube metnine bu satırı EKLEME. (Facebook kişisel profili API ile etiketlenemiyor; link olarak yazılır.)
 - Fiyatı olmayan üründe "Fiyat için arayın" yaz. İkinci el ürünü "Sıfır" diye anma.
-- Uydurma özellik, telefon numarası, kampanya süresi yazma (kullanıcı notta vermediyse).
+- Uydurma özellik, kampanya süresi yazma (kullanıcı notta vermediyse); telefon olarak yalnız yukarıdaki iki numara.
 - 6-9 ilgili hashtag; her zaman `#yükseltarım #denizli #tarım` olsun.
 - Seçilen müziğin `kredi` alanı doluysa (CC BY lisans şartı) hashtag'lerden hemen önce ayrı satır olarak ekle, ör.
   `🎵 Müzik: The Corporate Upbeat – Soundrider/Dope (CC BY 3.0)`. Müziksiz videoda bu satır olmaz.
