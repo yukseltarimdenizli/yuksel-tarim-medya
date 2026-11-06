@@ -186,21 +186,24 @@ const R={
    const n=$$('.wd',el).length; S($('.gline',el),{transform:`scaleX(${lerp(t,[20+n*4,36+n*4],[0,1],eo)})`});
    S($('.gsub',el),{opacity:lerp(t,[28+n*4,44+n*4],[0,1])});
    const c=spring(t-8,{damping:16,stiffness:55}); S($('.cami',el),{transform:`translateY(${(1-c)*420}px)`,opacity:Math.min(1,c*1.5)}); },
- galeri(el,t,d){ const cfg=SCENES[el.dataset.i], kb=lerp(t,[0,d],[0,1]), st=cfg.stil||'deste', P=cfg.periyot||42;
-   S($('.tfbg',el),{transform:`scale(${1.12-0.1*kb}) translateY(${-30*kb}px)`});
+ galeri(el,t0,d){ const cfg=SCENES[el.dataset.i], kb=lerp(t0,[0,d],[0,1]), st=cfg.stil||'deste', P=cfg.periyot||42;
+   // anlik: videonun İLK sahnesi (kanca) — yazı, fiyat ve rozetler ilk karede hazır; kartlar hemen gelir (kullanıcı kararı 06.11.2026)
+   // hizli: sonraki ürün sahneleri — tüm gecikmeler kısalır
+   const t = cfg.anlik ? t0+80 : (cfg.hizli ? t0*1.8 : t0), tk = cfg.anlik ? t0+6 : (cfg.hizli ? t0*1.6 : t0);
+   S($('.tfbg',el),{transform:`scale(${1.12-0.1*kb}) translateY(${-30*kb}px)`}); if(cfg.anlik) S($('.tfbg',el),{transform:`scale(${1.18-0.16*kb}) translateY(${-30*kb}px)`});
    S($('.hdr',el),{opacity:lerp(t,[2,14],[0,1])});
    const k=spring(t-6,{damping:14,stiffness:120}); S($('.kick',el),{transform:`scale(${k})`,opacity:Math.min(1,k*2)});
    words(el,t-10);
    S($('.tfsub',el),{opacity:lerp(t,[22,36],[0,1])});
-   const cards=$$('.gk',el), n=cards.length, ent=spring(t-8,{damping:15,stiffness:80});
+   const cards=$$('.gk',el), n=cards.length, ent=spring(tk-8,{damping:15,stiffness:80});
    cards.forEach((c,i)=>{ let tr='',op=1,z=0;
-     if(st==='deste'){ const tt=Math.max(0,t-30); let dd=((i*P-tt)%(n*P)+n*P)%(n*P)/P;  // 0 = öndeki
+     if(st==='deste'){ const tt=Math.max(0,tk-30); let dd=((i*P-tt)%(n*P)+n*P)%(n*P)/P;  // 0 = öndeki
        if(dd>n-0.35){ const f=(dd-(n-0.35))/0.35; tr=`translateX(${-1300*(1-f)}px) rotate(${-22*(1-f)}deg)`; z=200; op=1; }
        else { const fl=Math.floor(dd), fr=dd-fl, e=fl+eio(fr); tr=`translateY(${-46*e}px) scale(${1-0.08*e}) rotate(${(i%2?3:-3)*Math.min(e,1)}deg)`; z=100-e*10; op=e>2.6?0:1; }
-       tr=`translateY(${(1-ent)*700}px) `+tr; }
-     else if(st==='karusel'){ const tt=Math.max(0,t-24)/P, fl=Math.floor(tt), stp=fl+eio(tt-fl); const a=(i-stp)*2*Math.PI/n, R=cfg.yaricap||430;
+       tr=`translateY(${(1-ent)*700}px) `+tr; op*=Math.min(1,ent*3); }
+     else if(st==='karusel'){ const tt=Math.max(0,tk-24)/P, fl=Math.floor(tt), stp=fl+eio(tt-fl); const a=(i-stp)*2*Math.PI/n, R=cfg.yaricap||430;
        const x=Math.sin(a)*R, zz=Math.cos(a); tr=`translateX(${x}px) translateZ(${(zz-1)*R}px) rotateY(${a*180/Math.PI}deg) scale(${0.7+0.3*ent})`; z=Math.round(zz*100); op=(0.35+0.65*(zz+1)/2)*Math.min(1,ent*1.5); }
-     else { const t0=14+i*(cfg.aralik||26), s2=spring(t-t0,{damping:11,stiffness:120}); const r=((i*37)%17-8);
+     else { const ts=14+i*(cfg.aralik||26), s2=spring(tk-ts,{damping:11,stiffness:120}); const r=((i*37)%17-8);
        tr=`translate(${((i*53)%7-3)*28}px,${(1-s2)*-1400+((i*29)%5-2)*24}px) rotate(${r*(0.6+0.4*s2)}deg) scale(${1.25-0.25*s2})`; z=i; op=s2>0.01?1:0; }
      S(c,{transform:tr,opacity:op,zIndex:z}); });
    const pr=$('.price',el); if(pr){ const s=spring(t-30,{damping:10,stiffness:120}); S(pr,{transform:`scale(${s})`,opacity:Math.min(1,s*2)});
@@ -246,7 +249,15 @@ FOOT = (f'<div class="abs foot" style="left:0;right:0;bottom:0;height:150px;back
         f'display:flex;align-items:center;justify-content:center;font-size:38px;font-weight:600;letter-spacing:1px">{WEB}</div>')
 
 def title_html(t):
-    return "".join(f'<span class="wd{" gold" if w.startswith("[") else ""}"><i>{esc(w.replace("[", "").replace("]", ""))}</i></span>' for w in t.split())
+    # [ ... ] içindeki TÜM kelimeler altın olur (çok kelimeli vurgu destekli)
+    out, ic = [], False
+    for w in t.split():
+        bas = w.startswith("[") or ic
+        if w.startswith("["): ic = True
+        g = bas
+        if "]" in w: ic = False
+        out.append(f'<span class="wd{" gold" if g else ""}"><i>{esc(w.replace("[", "").replace("]", ""))}</i></span>')
+    return "".join(out)
 
 def hdr(logo): return f'<div class="hdr abs"><img src="{logo}"><div><b>YÜKSEL TARIM</b><span>DENİZLİ</span></div></div>'
 
