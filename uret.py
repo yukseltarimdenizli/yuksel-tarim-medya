@@ -335,7 +335,7 @@ def _rehber_taslak(kayit, klasor):
 
 
 # Sitedeki bilinen yazım hataları (ürün adı başka türlü birebir korunur)
-YAZIM_DUZELT = {"Taışma": "Taşıma"}
+YAZIM_DUZELT = {"Taışma": "Taşıma", "Hububaz": "Hububat"}
 
 
 def urun_adi_duzelt(ad):
