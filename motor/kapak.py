@@ -294,7 +294,7 @@ def urun_sablonu_sec(urun_sayisi, son_kullanilanlar=()):
 # --------------------------------------------------------------------------- referans (mutlu müşteri) kapağı
 def referans_html(k, L):
     """{"tur":"referans","foto":..., "ad":"Yılmaz Aksoy","konum":"Antalya / Serik","urun":"Alpler 3'lü Dönerli Pulluk","ust":"MUTLU MÜŞTERİMİZ"}"""
-    f = _u(k["foto"]); ad = _e(k.get("ad", "")); fs = 104 if len(k.get("ad", "")) <= 16 else (84 if len(k.get("ad", "")) <= 22 else 66)
+    f = _u(k["foto"]); ad = _e(k.get("ad", "")); fs = 104 if len(k.get("ad", "")) <= 16 else (84 if len(k.get("ad", "")) <= 22 else (66 if len(k.get("ad", "")) <= 26 else 52))
     # Kullanıcı kararı: referans fotoğrafı asla kırpılmaz; bulanık arka plan + tam fotoğraf.
     return (f"<div class='a' style='inset:-40px;background:url({f}) center/cover;filter:blur(28px) brightness(.55)'></div>"
             f"<div class='a' style='left:30px;right:30px;top:440px;height:500px;background:url({f}) center/contain no-repeat'></div>"
