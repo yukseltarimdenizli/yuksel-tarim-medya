@@ -6,7 +6,7 @@ senaryo.json: {"bant": "USTA BİLGİSİ", "kural_t": 110, "parcalar": [{"sahne":
 Ses verilirse parça süreleri `sure` alanlarından okunur (ses senkronu için süreleri sese göre ayarlayın).
 Sahneler: kanca, secim, hiz, patinaj, yakit, kural, dogru, soru.
 """
-import base64, json, math, pathlib, shutil, subprocess, sys, tempfile
+import base64, json, math, pathlib, re, shutil, subprocess, sys, tempfile
 from playwright.sync_api import sync_playwright
 
 FPS, W, H = 30, 1080, 1920
@@ -582,7 +582,8 @@ window.renderFrame=function(f){
   let acc=0; const P=window.PARCALAR;
   for(let i=0;i<P.length;i++){ const d=Math.round(P[i].sure*FPS), el=document.getElementById('p'+i);
     if(f>=acc && f<acc+d){ el.style.opacity=1; const lt=f-acc; SAHNE[P[i].sahne](el.querySelector('svg'), (P[i].devam||0)+lt);
-      const ws=el.querySelectorAll('.alt .w'), n=ws.length, ilerleme=lt/(d*0.92); ws.forEach((w,k)=>{ w.classList.toggle('on', k < ilerleme*n); });
+      const ws=el.querySelectorAll('.alt .w'); let pr; if(P[i].konusma){ const sn=lt/FPS; let a=0,tp=0; P[i].konusma.forEach(([x,y])=>{ tp+=y-x; a+=cl(sn-x,0,y-x); }); pr=a/tp; } else pr=lt/(d*0.92);
+      ws.forEach(w=>{ w.classList.toggle('on', +w.dataset.c < pr); });
       el.querySelector('.alt').style.transform=`translateY(${(1-ease(lt/6))*30}px)`; el.querySelector('.alt').style.opacity=ease(lt/5);
     } else el.style.opacity=0;
     acc+=d; }
@@ -604,7 +605,10 @@ def html(sen):
     bant = sen.get("bant", "USTA BİLGİSİ")
     parts = []
     for i, p in enumerate(sen["parcalar"]):
-        kelimeler = "".join(f'<span class="w">{w}</span>' for w in p["metin"].split())
+        ws = p["metin"].split(); top = max(1, sum(len(_temiz(w)) for w in ws)); c = 0; kel = []
+        for w in ws:
+            n = len(_temiz(w)); kel.append(f'<span class="w" data-c="{c/top if n else -1:.4f}">{w}</span>'); c += n
+        kelimeler = "".join(kel)
         parts.append(f'<div class="p" id="p{i}"><svg viewBox="0 0 1080 1920" width="1080" height="1920" xmlns="http://www.w3.org/2000/svg" font-family="Poppins">{sahne_svg(p["sahne"])}</svg>'
                      f'<div class="bant"><img src="{logo}"><b>YÜKSEL TARIM</b><span>· {bant}</span></div><div class="alt">{kelimeler}</div></div>')
     return (f"<html><head><meta charset='utf-8'><style>{CSS}</style></head><body>{DEFS}{''.join(parts)}"
@@ -620,6 +624,61 @@ def devam_ayarla(sen):
         else:
             birikim = 0; p["devam"] = 0
         onceki, prev = p["sahne"], p["sure"]
+    return sen
+
+
+def _temiz(m):
+    return re.sub(r"[^\wçğıöşüÇĞİÖŞÜ ]", "", m).strip()
+
+
+def ses_hizala(sen, ses, kuyruk=1.0, esik=0.6):
+    """Seslendirmeyi cümle aralarındaki duraklamalardan böler; her parçanın `sure`'sini ve
+    `konusma` (parça içi konuşma aralıkları, sn) alanını yazar. Bölme noktaları, metin uzunluğuna
+    göre beklenen zamanlara en yakın duraklamalar arasından (sıra korunarak) seçilir."""
+    T = float(subprocess.run(["ffprobe", "-v", "error", "-show_entries", "format=duration", "-of", "csv=p=0", ses],
+                             capture_output=True, text=True).stdout)
+    log = subprocess.run(["ffmpeg", "-hide_banner", "-i", ses, "-af", "silencedetect=noise=-38dB:d=0.25", "-f", "null", "-"],
+                         capture_output=True, text=True).stderr
+    bas = [float(x) for x in re.findall(r"silence_start: ([\d.]+)", log)]
+    son = [float(x) for x in re.findall(r"silence_end: ([\d.]+)", log)]
+    sil = list(zip(bas, son + [T] * (len(bas) - len(son))))
+    P = sen["parcalar"]; n = len(P)
+    L = [max(1, len(_temiz(p["metin"]))) for p in P]
+    bek = [T * sum(L[:i + 1]) / sum(L) for i in range(n - 1)]
+    aday = [(a + b) / 2 for a, b in sil if b - a >= esik and a > 0.3 and b < T - 0.1]
+    if len(aday) < n - 1:
+        raise ValueError(f"{n-1} cümle arası gerekiyor, {len(aday)} duraklama bulundu (aralara duraklama ekleyin)")
+    INF = float("inf"); m = len(aday)
+    dp = [[INF] * (m + 1) for _ in range(n)]; geri = [[0] * (m + 1) for _ in range(n)]
+    dp[0] = [0.0] * (m + 1)
+    for i in range(1, n):
+        for j in range(i, m + 1):
+            yeni = dp[i - 1][j - 1] + abs(aday[j - 1] - bek[i - 1])
+            if yeni < dp[i][j - 1] if j > i else True:
+                dp[i][j], geri[i][j] = yeni, j - 1
+            else:
+                dp[i][j], geri[i][j] = dp[i][j - 1], geri[i][j - 1]
+    secim, j = [], m
+    for i in range(n - 1, 0, -1):
+        k = geri[i][j]; secim.append(aday[k]); j = k
+    sinir = [0.0] + secim[::-1] + [T + kuyruk]
+    for i, p in enumerate(P):
+        a, b = sinir[i], sinir[i + 1]
+        p["sure"] = round(b - a, 3)
+        kon, t = [], a
+        for s0, s1 in sil:
+            if s1 <= a or s0 >= b:
+                continue
+            if s0 > t:
+                kon.append([round(t - a, 3), round(s0 - a, 3)])
+            t = max(t, s1)
+        if t < min(b, T):
+            kon.append([round(t - a, 3), round(min(b, T) - a, 3)])
+        p["konusma"] = kon or [[0, p["sure"]]]
+    for i in range(n - 1):   # kural listesi ikinci kural parçasıyla açılsın
+        if P[i]["sahne"] == "kural" and P[i + 1]["sahne"] == "kural":
+            sen["kural_t"] = round(P[i]["sure"] * FPS) + 4
+            break
     return sen
 
 
@@ -642,15 +701,15 @@ def render(sen, out_mp4, ses=None, muzik=None, muzik_bas=0):
         cmd = ["ffmpeg", "-y", "-loglevel", "error", "-i", str(sessiz)]
         filt = []
         if ses:
-            cmd += ["-i", ses]; filt.append(f"[1:a]atrim=0:{dur},asetpts=PTS-STARTPTS,loudnorm=I=-14:TP=-1.5[v]")
+            cmd += ["-i", ses]; filt.append(f"[1:a]aresample=48000,loudnorm=I=-14:TP=-1.5,aresample=48000,apad=whole_dur={dur},atrim=0:{dur},asetpts=PTS-STARTPTS[v]")
         if muzik:
             cmd += ["-ss", str(muzik_bas), "-i", muzik]; mi = 2 if ses else 1
-            filt.append(f"[{mi}:a]atrim=0:{dur},asetpts=PTS-STARTPTS,volume={0.12 if ses else 0.8},afade=t=out:st={dur-1.5:.2f}:d=1.5[m]")
+            filt.append(f"[{mi}:a]aresample=48000,atrim=0:{dur},asetpts=PTS-STARTPTS,volume={0.14 if ses else 0.8},afade=t=out:st={dur-1.5:.2f}:d=1.5[m]")
         if ses and muzik:
-            filt.append("[v][m]amix=inputs=2:duration=first:normalize=0[a]")
+            filt.append("[v][m]amix=inputs=2:duration=longest:normalize=0[a]")
         else:
             filt[-1] = filt[-1].rsplit("[", 1)[0] + "[a]"
-        cmd += ["-filter_complex", ";".join(filt), "-map", "0:v", "-map", "[a]", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-shortest", str(out_mp4)]
+        cmd += ["-filter_complex", ";".join(filt), "-map", "0:v", "-map", "[a]", "-c:v", "copy", "-c:a", "aac", "-b:a", "192k", "-t", f"{dur}", str(out_mp4)]
         subprocess.run(cmd, check=True)
     else:
         shutil.copy(sessiz, out_mp4)
@@ -664,4 +723,8 @@ if __name__ == "__main__":
     ses = a[a.index("--ses") + 1] if "--ses" in a else None
     muz = a[a.index("--muzik") + 1] if "--muzik" in a else None
     mb = float(a[a.index("--muzik-bas") + 1]) if "--muzik-bas" in a else 0
+    if ses and "--hizalama-yok" not in a:
+        ses_hizala(sen, ses)
+        for p in sen["parcalar"]:
+            print(f'{p["sure"]:6.2f} sn  {p["konusma"]}  {p["metin"][:50]}')
     print(render(sen, a[1], ses, muz, mb))
