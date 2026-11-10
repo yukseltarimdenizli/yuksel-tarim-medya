@@ -5,7 +5,7 @@ Storyboard: python3 dayi.py <cikti_klasoru>
 """
 import pathlib, sys
 from playwright.sync_api import sync_playwright
-import cizim, usta
+import cizim, usta, arka
 from cizim import gok, tarla, traktor, etiket, on_toprak, YER
 
 EK_DEFS = """<svg width="0" height="0" style="position:absolute"><defs>
@@ -138,11 +138,11 @@ DAYI_AD, USTA_AD = "Hasan Dayı", "Usta Mert"
 def kareler():
     K = []
     # 1 kapak
-    g = gok() + tarla()
+    g = arka.manzara()
     g += kisi(300, 1440, .74, DAYI, "bel", "normal") + kisi(790, 1440, .74, USTA, "isaret", "mutlu")
     K.append(("Kapak (ilk 0,2 sn)", g, {"ust": "DAYI SORUYOR", "baslik": "Pulluk mu, [rotavatör mü?]", "alt": "Usta cevaplıyor 👇"}, None))
     # 2 dayı soruyor
-    g = gok() + tarla()
+    g = arka.manzara()
     g += kisi(860, 1290, .6, USTA, "duz", "normal")
     g += kisi(330, 2050, 1.42, DAYI, "bel", "endise")
     g += balon(70, 250, 940, 300, ["40 yıldır [pulluk] sürerim,", "rotavatör neyime yarar?"], 300, 640, 58)
@@ -152,7 +152,7 @@ def kareler():
     g += pip(925, 460, 110, USTA, "isaret", "mutlu", USTA_AD)
     K.append(("Usta: pulluk ne yapar? (5-14 sn)", g, None, ("toprağı derin", "çevirir,")))
     # 4 rotavatör
-    g = gok() + tarla()
+    g = arka.manzara()
     g += tarla_ince(0, 400, 1158, 104)
     g += f'<g transform="translate(690 {YER}) scale(.72)">{traktor("mutlu")}<g transform="translate(-235 -120)">{rotavator(1.0)}</g></g>' + on_toprak(60, 470, YER + 6, 40)
     g += '<g><rect x="250" y="210" width="580" height="100" rx="50" fill="#ef6c00" filter="url(#golge)"/><text x="540" y="278" text-anchor="middle" font-size="58" font-weight="900" fill="#fff">ROTAVATÖR</text></g>'
@@ -164,7 +164,7 @@ def kareler():
     g += pip(925, 460, 110, USTA, "isaret", "normal", USTA_AD)
     K.append(("Usta: hep aynı derinlik → sert taban (22-31 sn)", g, None, ("sert bir", "taban yapar.")))
     # 6 dayı tepki
-    g = gok() + tarla()
+    g = arka.manzara()
     g += kisi(300, 1700, 1.1, DAYI, "basparmak", "mutlu") + kisi(820, 1420, .8, USTA, "basparmak", "mutlu")
     g += balon(60, 230, 960, 280, ["Yani [ikisi de] lazımmış,", "hah! 😄"], 280, 600, 62)
     K.append(("Dayının tepkisi (31-37 sn)", g, None, ("ikisi de", "lazımmış,")))
@@ -197,8 +197,8 @@ def storyboard(klasor):
             if alt:
                 altyazi = f'<div class="alt"><span class="w">{alt[0].split()[0]}</span>' + "".join(f'<span class="w{" on" if k==0 else ""}">{w}</span>' for k, w in enumerate(" ".join([*alt[0].split()[1:], alt[1]]).split())) + '</div>'
                 altyazi = altyazi.replace('<span class="w">', '<span class="w goster">', 1).replace('class="w on"', 'class="w goster on"').replace('class="w"', 'class="w goster"')
-            html = (f"<html><head><meta charset='utf-8'><style>{css}</style></head><body>{cizim.DEFS}{usta.USTA_DEFS}{EK_DEFS}"
-                    f'<div class="{"kapak" if kapak else "p"}" style="opacity:1"><svg viewBox="0 0 1080 1920" width="1080" height="1920" font-family="Poppins">{svg}<rect width="1080" height="1920" fill="url(#vinyet)"/></svg>'
+            html = (f"<html><head><meta charset='utf-8'><style>{css}</style></head><body>{cizim.DEFS}{usta.USTA_DEFS}{EK_DEFS}{arka.ARKA_DEFS}"
+                    f'<div class="{"kapak" if kapak else "p"}" style="opacity:1"><svg viewBox="0 0 1080 1920" width="1080" height="1920" font-family="Poppins">{svg}{arka.isik()}<rect width="1080" height="1920" fill="url(#vinyet)"/></svg>'
                     f'{ust}<div class="bant"><img src="{logo}"><b>YÜKSEL TARIM</b><span>· DAYI SORUYOR</span></div>{altyazi}</div>'
                     "<script>document.querySelectorAll('.etk').forEach(e=>e.setAttribute('opacity',1))</script></body></html>")
             pg.set_content(html); pg.wait_for_timeout(250)

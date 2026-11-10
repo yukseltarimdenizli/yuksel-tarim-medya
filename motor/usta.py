@@ -57,6 +57,9 @@ def _kol(o, d, b, kumas, ten, kisa):
         g += f'<path d="{p}" stroke="{kumas}" stroke-width="62" fill="none" stroke-linecap="round" stroke-linejoin="round"/>'
         g += f'<circle cx="{b[0]}" cy="{b[1]}" r="31" fill="{kumas}" stroke="{CIZGI}" stroke-width="4"/>'
         g += f'<path d="M{(o[0]+d[0])/2-8} {(o[1]+d[1])/2+6} q10 12 22 4" stroke="#000" stroke-opacity=".25" stroke-width="5" fill="none"/>'
+    if o[0] > 0:
+        g += f'<path d="{p}" stroke="#000" stroke-opacity=".14" stroke-width="{58 if not kisa else 52}" fill="none" stroke-linecap="round" stroke-dasharray="0 0"/>'
+    g += f'<path d="M{o[0]-(14 if o[0]<0 else -4)} {o[1]+16} Q{d[0]-(16 if o[0]<0 else -2)} {d[1]} {b[0]-(12 if o[0]<0 else 0)} {b[1]-20}" stroke="#fff" stroke-opacity=".14" stroke-width="10" fill="none" stroke-linecap="round"/>'
     return g
 
 
@@ -143,14 +146,37 @@ def _bas(m, ifade):
     return g + '</g>'
 
 
-def usta(model="yelekli", poz="duz", ifade="mutlu"):
+def usta(model="yelekli", poz="duz", ifade="mutlu", stil="ince"):
+    """stil: "modern" (dış çizgisiz, yumuşak gölge) | "ince" (ince renkli çizgi) | "cizgili" (kalın çizgi)."""
+    svg = _usta(model, poz, ifade)
+    if stil == "modern":
+        svg = (svg.replace(f'stroke="{CIZGI}" stroke-width="4"', 'stroke="none"')
+                  .replace(f'stroke="{CIZGI}" stroke-width="3"', 'stroke="none"')
+                  .replace(f'stroke="{CIZGI}" stroke-width="72"', 'stroke="none" stroke-width="0"')
+                  .replace(f'stroke="{CIZGI}" stroke-width="80"', 'stroke="none" stroke-width="0"')
+                  .replace(f'stroke="{CIZGI}" stroke-width="30"', 'stroke="none" stroke-width="0"'))
+    elif stil == "ince":
+        svg = (svg.replace(f'stroke="{CIZGI}" stroke-width="4"', 'stroke="#5a3f2e" stroke-opacity=".55" stroke-width="2.5"')
+                  .replace(f'stroke="{CIZGI}" stroke-width="72"', 'stroke="#5a3f2e" stroke-opacity=".5" stroke-width="66"')
+                  .replace(f'stroke="{CIZGI}" stroke-width="80"', 'stroke="#5a3f2e" stroke-opacity=".5" stroke-width="74"'))
+    return svg
+
+
+def _usta(model="yelekli", poz="duz", ifade="mutlu"):
     m = MODELLER[model]
     s = f'stroke="{CIZGI}" stroke-width="4"'
-    g = '<ellipse cx="0" cy="6" rx="170" ry="22" fill="#000" opacity=".2"/>'
+    g = ('<ellipse cx="70" cy="8" rx="240" ry="26" fill="#2a1a0c" opacity=".26" filter="url(#a_yumusak)"/>'
+         '<ellipse cx="0" cy="4" rx="150" ry="16" fill="#1a0f06" opacity=".3"/>')
     # bacaklar + botlar
-    g += (f'<path d="M-112 -486 L112 -486 L108 -66 L16 -66 L6 -380 L-6 -380 L-16 -66 L-108 -66 Z" fill="{m["pantolon"]}" {s}/>'
-          '<path d="M-60 -300 q10 8 24 0 M40 -280 q10 8 24 0 M-64 -150 q12 6 26 -2 M36 -140 q12 6 26 -2" stroke="#000" stroke-opacity=".22" stroke-width="5" fill="none"/>'
-          '<path d="M-100 -470 L-96 -80" stroke="#fff" stroke-opacity=".12" stroke-width="10"/>')
+    # bacaklar: hafif açık duruş, dizden incelen paçalar, sağ tarafta gölge (ışık soldan)
+    g += f'<path d="M-116 -490 L116 -490 L112 -400 L-112 -400 Z" fill="{m["pantolon"]}" {s}/>'
+    for sx in (-1, 1):
+        g += (f'<path d="M{sx*4} -470 L{sx*116} -488 Q{sx*124} -380 {sx*112} -270 Q{sx*106} -170 {sx*110} -82 L{sx*24} -82 Q{sx*22} -170 {sx*20} -272 Q{sx*12} -380 {sx*4} -470 Z" fill="{m["pantolon"]}" {s}/>'
+              f'<path d="M{sx*(116 if sx>0 else 30)} -480 Q{sx*(124 if sx>0 else 36)} -380 {sx*(112 if sx>0 else 30)} -270 Q{sx*(106 if sx>0 else 26)} -170 {sx*(110 if sx>0 else 30)} -84 L{sx*(84 if sx>0 else 24)} -84 Q{sx*(80 if sx>0 else 22)} -170 {sx*(86 if sx>0 else 22)} -272 Q{sx*(96 if sx>0 else 14)} -380 {sx*(90 if sx>0 else 8)} -478 Z" fill="#000" opacity="{.2 if sx>0 else .12}"/>'
+              f'<path d="M{sx*44} -292 q{sx*18} 12 {sx*40} 2 M{sx*50} -262 q{sx*14} 8 {sx*30} 0" stroke="#000" stroke-opacity=".22" stroke-width="5" fill="none" stroke-linecap="round"/>'
+              f'<path d="M{sx*30} -420 Q{sx*40} -360 {sx*36} -300" stroke="#000" stroke-opacity=".12" stroke-width="5" fill="none"/>'
+              f'<path d="M{sx*26} -100 L{sx*108} -100" stroke="#000" stroke-opacity=".25" stroke-width="5"/>')
+    g += '<path d="M-100 -470 Q-108 -380 -98 -280" stroke="#fff" stroke-opacity=".14" stroke-width="10" fill="none" stroke-linecap="round"/>'
     for sx in (-1, 1):
         g += (f'<path d="M{sx*14} -80 L{sx*108} -80 Q{sx*112} -40 {sx*140} -24 Q{sx*150} -4 {sx*126} 0 L{sx*16} 0 Q{sx*8} -30 {sx*14} -80 Z" fill="{m["bot"]}" {s}/>'
               f'<path d="M{sx*14} -8 L{sx*140} -8 L{sx*136} 0 L{sx*16} 0 Z" fill="#1d130c"/>'
@@ -159,7 +185,9 @@ def usta(model="yelekli", poz="duz", ifade="mutlu"):
     # gövde (gömlek)
     gov = "M-122 -690 Q-138 -600 -114 -470 L114 -470 Q138 -600 122 -690 Q60 -716 0 -712 Q-60 -716 -122 -690 Z"
     g += f'<path d="{gov}" fill="{m["gomlek"]}" {s}/>'
-    g += '<path d="M-114 -680 Q-130 -600 -108 -476 L-80 -476 Q-100 -590 -90 -684 Z" fill="#000" opacity=".15"/>'
+    g += '<path d="M114 -680 Q132 -600 108 -476 L70 -476 Q94 -590 84 -688 Z" fill="#000" opacity=".2"/>'
+    g += '<path d="M-110 -670 Q-126 -600 -106 -490" stroke="#fff" stroke-opacity=".16" stroke-width="12" fill="none" stroke-linecap="round"/>'
+    g += '<path d="M-60 -500 q16 -14 30 -2 M30 -506 q16 -12 30 0 M-20 -640 q10 20 4 44" stroke="#000" stroke-opacity=".16" stroke-width="5" fill="none" stroke-linecap="round"/>'
     ust = m["ust"]
     if ust == "yelek":
         for sx in (-1, 1):
