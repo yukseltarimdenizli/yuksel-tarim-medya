@@ -140,6 +140,13 @@ Kayıt türü "Teslimat / müşteri" ve ürün seçilmemişse video sitedeki **R
    (Ürün sayfası linki DEĞİL, referans linki konur — kullanıcı kararı.) YouTube: `category` "AUTOS_VEHICLES".
 7. Planlandıktan sonra `meta/referanslar`: `kullanilan`'a slug, `son_urun`'a ürün türü, `son_il`'e il eklenir (son ikisi en fazla 6).
 
+### Dayı Soruyor (çizimli soru-cevap serisi; kullanıcı onayı 10.11.2026)
+- Motor: `motor/dayi_video.py` (sahneler: dayi_soru, pulluk, rotavator, taban, tepki, kapanis), karakterler `motor/usta.py` (dayı = "kasketli", usta = "genc"), arka plan `motor/arka.py`.
+- Seslendirme SpeechGen (tr-TR): **Dayı (Hasan Dayı) = "Aydın" (HD)**, **Usta (Usta Mert) = "Remy TR" (PRO)**; hız 1.0, ses perdesi 0, ses %100.
+  Web editöründe duraklama etiketi yok: her cümle ayrı satıra yazılır. Kullanıcı dayı ve usta için iki ayrı MP3 verir;
+  `motor/dayi_ses_kur.py` satırları böler, parçalara yerleştirir (önce plan listesi kesim noktalarıyla güncellenir), sonra `dayi_video.py ... --ses birlesik.wav --hazir`.
+- Kalite kuralı (kullanıcı isteği): her sahne önce ayrıntılı planlanır; render öncesi tüm video saniye saniye, kritik sahneler yarım saniyede bir karelenip incelenir; sorunlar düzeltilmeden gönderilmez.
+
 ### Usta ipucu = rehber videosu (sitedeki "Yararlı Bilgiler" yazıları; kullanıcı onayı 30.10.2026)
 Kayıt türü "Usta ipucu", ürün seçilmemiş ve `rehber` "Yok" değilse video sitedeki bir blog yazısından yapılır:
 1. `python3 uret.py blog_listesi /tmp/is/rehberler.json` çalıştır; plan sayfasında `meta/rehber` belgesinin `items`'ını (slug, baslik, tarih) güncelle,
