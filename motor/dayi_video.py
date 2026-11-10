@@ -46,6 +46,7 @@ def s_dayi_soru(p):
 
 
 def s_pulluk(p):
+    A = p.get('_a', {})
     Y, D = 820, 190
     g = ('<rect width="1080" height="1920" fill="url(#a_gok)"/>' + arka._bulut(800, 420, .7) +
          f'<defs><linearGradient id="v_alt" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#a98060"/><stop offset="1" stop-color="#7d5a3f"/></linearGradient>'
@@ -68,24 +69,26 @@ def s_pulluk(p):
           f'<path d="M620 {Y} L620 {Y+D}" stroke="#3e2816" stroke-width="4"/>')
     g += (f'<g transform="translate(900 {Y})"><rect x="-22" y="0" width="44" height="{D}" rx="6" fill="#fff8e1" stroke="#8d6e63" stroke-width="3"/>'
           + "".join(f'<path d="M-22 {k*D/4:.0f} h20" stroke="#5d4037" stroke-width="4"/>' for k in range(5)) + '</g>')
-    g += etiket(360, 560, 430, 760, "Toprağı ters çevirir", 30, "#c62828") + etiket(370, 1130, 260, 1050, "Anız alta gömülür", 100, "#2e7d32") + etiket(720, 760, 900, 900, "Derin sürüm", 120, "#14281A")
+    g += etiket(360, 560, 430, 760, "Toprağı ters çevirir", A.get("flip", 30), "#c62828") + etiket(370, 1130, 260, 1050, "Anız alta gömülür", A.get("aniz", 100), "#2e7d32") + etiket(720, 760, 900, 900, "Derin sürüm", A.get("derin", 120), "#14281A")
     g += '<text x="540" y="470" text-anchor="middle" font-size="44" font-weight="800" fill="#455a64" letter-spacing="3">TOPRAK KESİTİ</text>'
     g += '<!--UST-->' + baslik("PULLUK", "#c62828") + pip(925, 460, 110)
     return g, (560, 860, 1.12, 1.18)
 
 
 def s_rotavator(p):
+    A = p.get('_a', {})
     g = arka.manzara()
     g += ('<defs><clipPath id="inceKes"><rect class="incerect" x="0" y="1100" width="300" height="300"/></clipPath></defs>'
           '<g clip-path="url(#inceKes)">' + dayi.tarla_ince(0, 1080, 1158, 104) + '</g>')
     g += (f'<g class="hareket" data-x0="520" transform="translate(520 {YER}) scale(.72)">{traktor("mutlu")}<g transform="translate(-235 -120)">{dayi.rotavator(1.0)}</g></g>')
     g += '<g class="toz"></g>'
-    g += etiket(300, 560, 150, 1185, "Toprağı inceltir", 40, "#ef6c00") + etiket(400, 690, 330, 1190, "Ekim yatağı hazırlar", 90, "#2e7d32")
+    g += etiket(300, 560, 150, 1185, "Toprağı inceltir", A.get("incel", 40), "#ef6c00") + etiket(400, 690, 330, 1190, "Ekim yatağı hazırlar", A.get("ekim", 90), "#2e7d32")
     g += '<!--UST-->' + baslik("ROTAVATÖR", "#ef6c00") + pip(925, 460, 110)
     return g, (540, 1000, 1.0, 1.07)
 
 
 def s_taban(p):
+    A = p.get('_a', {})
     Y, T = 880, 1080
     g = ('<rect width="1080" height="1920" fill="url(#a_gok)"/>' + arka._bulut(220, 700, .6) +
          f'<rect x="0" y="{Y}" width="1080" height="{T-Y}" fill="#6f4b2e"/>' + doku(0, Y, 1080, T - Y, .8)
@@ -105,8 +108,8 @@ def s_taban(p):
           '<g class="toz"></g>')
     ust = ('<g class="yil"><rect x="50" y="360" width="250" height="84" rx="42" fill="#c62828" filter="url(#golge)"/>'
           '<text class="yiltxt" x="175" y="417" text-anchor="middle" font-size="46" font-weight="900" fill="#fff">1. YIL</text></g>')
-    g += (etiket(300, 1215, 200, T, "Her yıl aynı derinlik", 15, "#c62828") + etiket(800, 1215, 860, T + 40, "SERT TABAN", 110, "#14281A")
-          + etiket(540, 975, 540, T - 10, "Su birikir, kök inemez", 210, "#1565c0"))
+    g += (etiket(300, 1215, 200, T, "Her yıl aynı derinlik", A.get("gs", 15), "#c62828") + etiket(800, 1215, 860, T + 40, "SERT TABAN", A.get("sert", 110), "#14281A")
+          + etiket(540, 975, 540, T - 10, "Su birikir, kök inemez", A.get("su", 210), "#1565c0"))
     g += '<!--UST-->' + ust + baslik("⚠ DİKKAT", "#14281A", "#FFD54F", 420) + pip(925, 460, 110, "isaret", "normal")
     return g, (540, 900, 1.0, 1.05)
 
@@ -156,23 +159,23 @@ Object.assign(SAHNE,{
  dayi_soru(el,t){ clouds(el,t); sallan(el,t); balon(el,t); },
  tepki(el,t){ clouds(el,t); balon(el,t); $$('.kisi-dayi',el).forEach(g=>{ const x=+g.dataset.x,y=+g.dataset.y,s=+g.dataset.s; const b=Math.abs(Math.sin(t*0.5))*-10; g.setAttribute('transform',`translate(${x} ${y+b}) scale(${s})`); });
    $$('.kisi-usta',el).forEach(g=>{ const x=+g.dataset.x,y=+g.dataset.y,s=+g.dataset.s; g.setAttribute('transform',`translate(${x} ${y+Math.sin(t*0.1)*4}) scale(${s})`); }); },
- pulluk(el,t){ clouds(el,t); pipf(el,t); bslk(el,t); const d=$('.donen',el); const e=ease((t-62)/48); d.setAttribute('transform',`translate(490 1010) rotate(${-120*e})`); $('.ok',el).setAttribute('opacity', ease((t-52)/10)*(1-ease((t-118)/10))); },
+ pulluk(el,t){ clouds(el,t); pipf(el,t); bslk(el,t); const d=$('.donen',el); const A=JSON.parse(el.dataset.a||'{}'), F=A.flip??62; const e=ease((t-F)/45); d.setAttribute('transform',`translate(490 1010) rotate(${-120*e})`); $('.ok',el).setAttribute('opacity', ease((t-F+10)/10)*(1-ease((t-F-60)/10))); },
  rotavator(el,t){ clouds(el,t); pipf(el,t); bslk(el,t); wheels(el,t,1.6); beacon(el,t); const x=520+t*1.2; $('.hareket',el).setAttribute('transform',`translate(${x} 1222) scale(.72)`);
    $('.incerect',el).setAttribute('width', Math.max(0,x-150));
    $$('.rotor',el).forEach(r=>r.setAttribute('transform',`translate(-230 92) rotate(${t*14})`)); puffs($('.duman',el),t,312,-570,4,'#9e9e9e',.8);
    let s=''; for(let i=0;i<12;i++){ const p=((t*1.5+i*9)%40)/40; s+=`<circle cx="${x-200-p*140}" cy="${1205-Math.sin(p*Math.PI)*60}" r="${4+i%3*2}" fill="#8a6440" opacity="${(1-p).toFixed(2)}"/>`; } $('.toz',el).innerHTML=s; },
  taban(el,t){ clouds(el,t); pipf(el,t); bslk(el,t); wheels(el,t,2.4); beacon(el,t);
-   const GS=5, GL=40, k=Math.floor((t-GS)/GL), gp=((t-GS)%GL)/GL, aktif=t>=GS && k<3;
+   const A=JSON.parse(el.dataset.a||'{}'), GS=A.gs??5, GL=A.gl??40, k=Math.floor((t-GS)/GL), gp=((t-GS)%GL)/GL, aktif=t>=GS && k<3;
    const x=aktif? -400+gp*1900 : 1700; $('.gecis',el).setAttribute('transform',`translate(${x} 880) scale(.58)`);
    $$('.rotor',el).forEach(r=>r.setAttribute('transform',`translate(-230 92) rotate(${t*16})`));
    let s=''; if(aktif){ for(let i=0;i<14;i++){ const p=((t*1.6+i*7)%30)/30; s+=`<circle cx="${x-150-p*120}" cy="${890-Math.sin(p*Math.PI)*50}" r="${4+i%3*2}" fill="#6f4b2c" opacity="${(1-p).toFixed(2)}"/>`; } } $('.toz',el).innerHTML=s;
-   const yil=Math.min(3, Math.max(1, k+1)); $('.yiltxt',el).textContent=yil+'. YIL'; $('.yil',el).setAttribute('opacity', t<GS+3*GL+5 ? 1 : (1-ease((t-GS-3*GL-5)/10)).toFixed(2));
+   const yil=Math.min(3, Math.max(1, k+1)); $('.yiltxt',el).textContent=yil+'. YIL'; $('.yil',el).setAttribute('opacity', t<GS+3*GL+3 ? 1 : (1-ease((t-GS-3*GL-3)/8)).toFixed(2));
    const tamam=Math.min(3, Math.max(0,(t-GS)/GL)); $('.tabanb',el).setAttribute('opacity', (0.15+0.85*tamam/3).toFixed(2));
-   $$('.bitki',el).forEach((b,i)=>{ const e=ease((t-128-i*4)/22), bx=+b.dataset.x, by=+b.dataset.y; b.setAttribute('transform',`translate(${bx} ${by}) scale(1 ${Math.max(0.001,e)}) translate(${-bx} ${-by})`); b.setAttribute('opacity', e>0?1:0); });
-   $$('.kok',el).forEach((kk,i)=>kk.setAttribute('stroke-dashoffset', (1-ease((t-148-i*3)/55)).toFixed(3)));
-   $('.su',el).setAttribute('opacity', ease((t-205)/20)); },
- kapanis(el,t){ balon(el,t); sallan(el,t); const tap=t-60, bas=tap>0&&tap<8, ya=tap>=4; const elx=$('.el',el);
-   elx.setAttribute('transform',`translate(${(1-ease((t-30)/18))*200} ${(1-ease((t-30)/18))*160 + (bas?-12:0)})`); elx.setAttribute('opacity', ease((t-28)/6));
+   $$('.bitki',el).forEach((b,i)=>{ const e=ease((t-(A.bitki??128)-i*4)/18), bx=+b.dataset.x, by=+b.dataset.y; b.setAttribute('transform',`translate(${bx} ${by}) scale(1 ${Math.max(0.001,e)}) translate(${-bx} ${-by})`); b.setAttribute('opacity', e>0?1:0); });
+   $$('.kok',el).forEach((kk,i)=>kk.setAttribute('stroke-dashoffset', (1-ease((t-(A.kok0??148)-i*3)/(A.kokd??55))).toFixed(3)));
+   $('.su',el).setAttribute('opacity', ease((t-(A.su??205))/18)); },
+ kapanis(el,t){ balon(el,t); sallan(el,t); const A=JSON.parse(el.dataset.a||'{}'), TP=A.tap??60, tap=t-TP, bas=tap>0&&tap<8, ya=tap>=4; const elx=$('.el',el);
+   elx.setAttribute('transform',`translate(${(1-ease((t-TP+30)/22))*-160} ${(1-ease((t-TP+30)/22))*220 + (bas?-12:0)})`); elx.setAttribute('opacity', ease((t-TP+32)/6));
    $('.btn',el).setAttribute('fill', ya?'#43a047':'#FE2C55'); $('.btnyazi',el).textContent = ya?'✓ Takip edildi':'+ Takip et'; },
 });
 const _rf=window.renderFrame;
@@ -191,6 +194,30 @@ def rotor_sinifi(svg):
     return svg.replace('<g transform="translate(-230 92)"><circle r="30" fill="#455a64"/>', '<g class="rotor" transform="translate(-230 92)"><circle r="30" fill="#455a64"/>')
 
 
+def anim(p, kz):
+    """Animasyon anlarını (kare) seslendirmedeki kelimelere bağla."""
+    def kt(kok, vars=None):
+        for w, t in kz:
+            if re.sub(r"[^\wçğıöşü]", "", w.lower()).startswith(kok):
+                return int(round(t * FPS))
+        return vars
+    n = round(p["sure"] * FPS); a = {}
+    if p["sahne"] == "pulluk":
+        a = {"flip": kt("pulluk", 62), "derin": kt("derin", 120), "aniz": kt("anızı", 100)}
+    elif p["sahne"] == "rotavator":
+        a = {"incel": kt("incelt", 40), "ekim": kt("ekim", 90)}
+    elif p["sahne"] == "taban":
+        gs = (kt("her", 47) or 47) - 6
+        ge = (kt("oluşur", 150) or 150) + 12
+        su = kt("su", ge + 12) or ge + 12
+        inemez = kt("inemez", n - 30) or n - 30
+        a = {"gs": gs, "gl": max(24, (ge - gs) / 3), "sert": kt("sert", 110), "bitki": ge, "su": su,
+             "kok0": ge + 8, "kokd": max(20, inemez + 10 - (ge + 8))}
+    elif p["sahne"] == "kapanis":
+        a = {"tap": kt("takip", 60)}
+    return a
+
+
 def html(sen):
     logo = cizim.logo_uri()
     bant = sen.get("bant", "DAYI SORUYOR")
@@ -198,11 +225,12 @@ def html(sen):
     for i, p in enumerate(sen["parcalar"]):
         kz = cizim.kelime_zamanlari(p)
         kel = "".join(f'<span class="w" data-ch="{k}" data-ts="{t:.3f}">{w}</span>' for k, ob in enumerate(cizim.obekler(kz)) for w, t in ob)
+        p["_a"] = anim(p, kz)
         icerik, kam = SAHNELER[p["sahne"]](p)
         icerik = rotor_sinifi(icerik).replace('href="LOGO"', f'href="{logo}"')
         kon = p.get("konusan")
         etk = f'<div class="konusan {kon}">{DAYI_AD if kon=="dayi" else USTA_AD}</div>' if kon else ""
-        parts.append(f'<div class="p" id="p{i}"><svg viewBox="0 0 1080 1920" width="1080" height="1920" font-family="Poppins">'
+        parts.append(f'<div class="p" id="p{i}"><svg data-a=\'{json.dumps(p["_a"])}\' viewBox="0 0 1080 1920" width="1080" height="1920" font-family="Poppins">'
                      f'<g class="kam" data-k="{",".join(map(str, kam))}">{icerik.split("<!--UST-->")[0]}</g>{arka.isik()}<rect width="1080" height="1920" fill="url(#vinyet)"/>'
                      f'{"".join(icerik.split("<!--UST-->")[1:])}</svg>'
                      f'<div class="bant"><img src="{logo}"><b>YÜKSEL TARIM</b><span>· {bant}</span></div>{etk}<div class="alt">{kel}</div></div>')
@@ -236,9 +264,12 @@ def ses_zarfi(sen, ses):
     sen["_zarf"] = z
 
 
-def render(sen, out, ses=None, muzik=None, muzik_bas=0):
+def render(sen, out, ses=None, muzik=None, muzik_bas=0, hizala=True):
+    """hizala=False: parça süreleri/konuşma aralıkları senaryoda hazır (ses zaten parçalara göre kurulmuş)."""
     if ses:
-        cizim.ses_hizala(sen, ses); ses_zarfi(sen, ses)
+        if hizala:
+            cizim.ses_hizala(sen, ses)
+        ses_zarfi(sen, ses)
     total = sum(round(p["sure"] * FPS) for p in sen["parcalar"])
     tmp = pathlib.Path(tempfile.mkdtemp())
     (tmp / "v.html").write_text(html(sen))
@@ -279,4 +310,4 @@ if __name__ == "__main__":
     ses = a[a.index("--ses") + 1] if "--ses" in a else None
     muz = a[a.index("--muzik") + 1] if "--muzik" in a else None
     mb = float(a[a.index("--muzik-bas") + 1]) if "--muzik-bas" in a else 0
-    print(render(sen, a[1], ses, muz, mb))
+    print(render(sen, a[1], ses, muz, mb, hizala="--hazir" not in a))

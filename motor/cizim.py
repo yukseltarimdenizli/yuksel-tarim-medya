@@ -729,6 +729,21 @@ def kelime_zamanlari(p):
     L = [len(_temiz(w)) + 1 for w in ws]; top = sum(L) or 1
     kon = p.get("konusma") or [[0.15, p["sure"] * 0.9]]
     tp = sum(b - a for a, b in kon) or 1
+    # noktalamayla biten cümle parçaları konuşma aralıklarıyla birebir eşleşiyorsa her parçayı kendi aralığına yerleştir
+    parca, cur = [], []
+    for w in ws:
+        cur.append(w)
+        if re.search(r"[,.!?:;]$", w):
+            parca.append(cur); cur = []
+    if cur:
+        parca.append(cur)
+    if len(parca) == len(kon) and len(kon) > 1:
+        out = []
+        for grup, (a0, b0) in zip(parca, kon):
+            Lg = [len(_temiz(w)) + 1 for w in grup]; tg = sum(Lg) or 1; c = 0
+            for w, l in zip(grup, Lg):
+                out.append((w, a0 + (b0 - a0) * c / tg)); c += l
+        return out
 
     def zaman(fr):
         h = fr * tp

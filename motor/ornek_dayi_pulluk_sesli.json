@@ -1,0 +1,123 @@
+{
+ "bant": "DAYI SORUYOR",
+ "kapak": {
+  "ust": "DAYI SORUYOR",
+  "baslik": "Pulluk mu, [rotavatör mü?]",
+  "alt": "Usta cevaplıyor 👇",
+  "sure": 0.2
+ },
+ "parcalar": [
+  {
+   "sahne": "dayi_soru",
+   "konusan": "dayi",
+   "metin": "Kırk yıldır pulluk sürerim, rotavatör neyime yarar?",
+   "sure": 3.59,
+   "konusma": [
+    [
+     0.267,
+     2.931
+    ]
+   ]
+  },
+  {
+   "sahne": "pulluk",
+   "konusan": "usta",
+   "metin": "Dayı, ikisinin işi farklı. Pulluk toprağı derin çevirir, anızı alta gömer.",
+   "sure": 6.4,
+   "konusma": [
+    [
+     0.238,
+     0.62
+    ],
+    [
+     1.148,
+     2.385
+    ],
+    [
+     2.735,
+     4.291
+    ],
+    [
+     4.811,
+     5.908
+    ]
+   ]
+  },
+  {
+   "sahne": "rotavator",
+   "konusan": "usta",
+   "metin": "Rotavatör ise toprağı inceltir, ekim yatağını hazırlar.",
+   "sure": 4.7,
+   "konusma": [
+    [
+     0.394,
+     2.437
+    ],
+    [
+     2.93,
+     4.214
+    ]
+   ]
+  },
+  {
+   "sahne": "taban",
+   "konusan": "usta",
+   "metin": "Ama dikkat! Her yıl aynı derinlikte sürersen, altta sert bir taban oluşur. Su birikir, kök aşağı inemez.",
+   "sure": 8.75,
+   "konusma": [
+    [
+     0.394,
+     1.219
+    ],
+    [
+     1.576,
+     3.521
+    ],
+    [
+     4.001,
+     5.542
+    ],
+    [
+     5.924,
+     6.654
+    ],
+    [
+     7.114,
+     8.282
+    ]
+   ]
+  },
+  {
+   "sahne": "tepki",
+   "konusan": "dayi",
+   "metin": "Yani ikisi de lazımmış, hah!",
+   "sure": 2.516,
+   "konusma": [
+    [
+     0.366,
+     1.829
+    ]
+   ]
+  },
+  {
+   "sahne": "kapanis",
+   "konusan": "usta",
+   "metin": "Sorunu yorumlara yaz, sıradaki videoda cevaplayalım. Takip etmeyi unutma!",
+   "sure": 6.524,
+   "konusma": [
+    [
+     0.382,
+     1.671
+    ],
+    [
+     2.052,
+     3.706
+    ],
+    [
+     4.089,
+     5.444
+    ]
+   ]
+  }
+ ]
+}
