@@ -631,7 +631,7 @@ def _temiz(m):
     return re.sub(r"[^\wçğıöşüÇĞİÖŞÜ ]", "", m).strip()
 
 
-def ses_hizala(sen, ses, kuyruk=1.0, esik=0.6):
+def ses_hizala(sen, ses, kuyruk=1.0, esik=None):
     """Seslendirmeyi cümle aralarındaki duraklamalardan böler; her parçanın `sure`'sini ve
     `konusma` (parça içi konuşma aralıkları, sn) alanını yazar. Bölme noktaları, metin uzunluğuna
     göre beklenen zamanlara en yakın duraklamalar arasından (sıra korunarak) seçilir."""
@@ -643,9 +643,13 @@ def ses_hizala(sen, ses, kuyruk=1.0, esik=0.6):
     son = [float(x) for x in re.findall(r"silence_end: ([\d.]+)", log)]
     sil = list(zip(bas, son + [T] * (len(bas) - len(son))))
     P = sen["parcalar"]; n = len(P)
-    L = [max(1, len(_temiz(p["metin"]))) for p in P]
+    L = [max(1, len(re.findall("[aeıioöuüAEIİOÖUÜ]", p["metin"]))) for p in P]
     bek = [T * sum(L[:i + 1]) / sum(L) for i in range(n - 1)]
-    aday = [(a + b) / 2 for a, b in sil if b - a >= esik and a > 0.3 and b < T - 0.1]
+    # duraklama eşiği: önce uzun (eklenmiş) duraklamalar; yetmezse doğal nefes araları
+    for e in ([esik] if esik else [0.6, 0.45, 0.3, 0.25]):
+        aday = [(a + b) / 2 for a, b in sil if b - a >= e and a > 0.3 and b < T - 0.1]
+        if len(aday) >= n - 1:
+            break
     if len(aday) < n - 1:
         raise ValueError(f"{n-1} cümle arası gerekiyor, {len(aday)} duraklama bulundu (aralara duraklama ekleyin)")
     INF = float("inf"); m = len(aday)
