@@ -690,7 +690,11 @@ const SAHNE={
 };
 function etiketler(el,lt){ $$('.etk',el).forEach(g=>{ const e=spring(lt-(+g.dataset.g),0.2), x=+g.dataset.x, y=+g.dataset.y; g.setAttribute('opacity',Math.min(1,e*1.6).toFixed(2)); g.setAttribute('transform',`translate(${x} ${y}) scale(${Math.min(e,1.1)}) translate(${-x} ${-y})`); }); }
 window.renderFrame=function(f){
-  let acc=0; const P=window.PARCALAR;
+  let acc=0; const P=window.PARCALAR, K=window.KAPAK, kd=document.getElementById('kapak');
+  if(K && kd){ const kf=Math.round((K.sure||0.2)*FPS);
+    if(f<kf){ kd.style.opacity=1; const svg=kd.querySelector('svg'); SAHNE[K.sahne||'kanca'](svg, K.t||45); etiketler(svg, 999);
+      P.forEach((_,i)=>document.getElementById('p'+i).style.opacity=0); return; }
+    kd.style.opacity=0; }
   for(let i=0;i<P.length;i++){ const d=Math.round(P[i].sure*FPS), el=document.getElementById('p'+i);
     if(f>=acc && f<acc+d){ el.style.opacity=1; const lt=f-acc, sn=lt/FPS, svg=el.querySelector('svg');
       SAHNE[P[i].sahne](svg, (P[i].devam||0)+lt); etiketler(svg, lt);
@@ -708,6 +712,12 @@ CSS = """*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:192
 .bant{position:absolute;left:50%;top:84px;transform:translateX(-50%);display:flex;align-items:center;gap:14px;background:rgba(20,40,26,.92);padding:10px 26px 10px 12px;border-radius:50px;border:3px solid #E2B654;white-space:nowrap;box-shadow:0 6px 18px rgba(0,0,0,.25)}
 .bant img{width:58px;height:58px;border-radius:50%;background:#F7F1E3;padding:4px}.bant b{color:#fff;font-size:30px;letter-spacing:1px}.bant span{color:#E2B654;font-size:26px;font-weight:800;margin-left:6px}
 .alt{position:absolute;left:30px;right:30px;top:1365px;height:250px;display:flex;flex-wrap:wrap;justify-content:center;align-content:center;font-size:84px;line-height:1.12;font-weight:900;color:#fff;transform-origin:50% 50%}
+.kapak{position:absolute;inset:0;opacity:0}.kapak svg{position:absolute;inset:0}
+.kapak .kk{position:absolute;inset:0;background:linear-gradient(180deg,rgba(14,32,20,.92) 0%,rgba(14,32,20,.78) 30%,rgba(14,32,20,0) 52%)}
+.kapak .ust{position:absolute;left:50%;top:290px;transform:translateX(-50%);background:#E2B654;color:#14281A;font-size:46px;font-weight:900;padding:10px 36px;border-radius:40px;letter-spacing:2px;white-space:nowrap;box-shadow:0 8px 20px rgba(0,0,0,.3)}
+.kapak h1{position:absolute;left:40px;right:40px;top:390px;text-align:center;font-size:124px;line-height:1.04;font-weight:900;color:#fff;-webkit-text-stroke:10px #0b1a10;paint-order:stroke fill;text-shadow:0 10px 28px rgba(0,0,0,.5)}
+.kapak h1 i{font-style:normal;color:#FFD54F}
+.kapak .altp{position:absolute;left:50%;top:1478px;transform:translateX(-50%);background:#c62828;color:#fff;font-size:54px;font-weight:900;padding:14px 44px;border-radius:50px;white-space:nowrap;border:5px solid #fff;box-shadow:0 10px 24px rgba(0,0,0,.4)}
 .alt .w{display:none;margin:6px 8px;padding:2px 18px 8px;border-radius:22px;-webkit-text-stroke:12px #000;paint-order:stroke fill;text-shadow:0 8px 20px rgba(0,0,0,.45)}
 .alt .w.goster{display:inline-block}.alt .w.on{background:#FFD54F;color:#14281A;-webkit-text-stroke:0;text-shadow:none;box-shadow:0 6px 0 #c9a227,0 10px 22px rgba(0,0,0,.35)}
 """
@@ -764,8 +774,17 @@ def html(sen):
         parts.append(f'<div class="p" id="p{i}"><svg viewBox="0 0 1080 1920" width="1080" height="1920" xmlns="http://www.w3.org/2000/svg" font-family="Poppins">{svg}'
                      f'<rect width="1080" height="1920" fill="url(#vinyet)"/></svg>'
                      f'<div class="bant"><img src="{logo}"><b>YÜKSEL TARIM</b><span>· {bant}</span></div><div class="alt">{kel}</div></div>')
+    kp = sen.get("kapak")
+    if kp:
+        bas = re.sub(r"\[(.+?)\]", r"<i>\1</i>", kp.get("baslik", ""))
+        parts.append(f'<div class="kapak" id="kapak"><svg viewBox="0 0 1080 1920" width="1080" height="1920" xmlns="http://www.w3.org/2000/svg" font-family="Poppins">'
+                     f'<rect width="1080" height="1920" fill="#cfe6f7"/><g transform="translate(0 {kp.get("kaydir", 210)})">{sahne_svg(kp.get("sahne", "kanca"), {})}</g>'
+                     f'<rect width="1080" height="1920" fill="url(#vinyet)"/></svg><div class="kk"></div>'
+                     f'<div class="bant"><img src="{logo}"><b>YÜKSEL TARIM</b><span>· {bant}</span></div>'
+                     + (f'<div class="ust">{kp["ust"]}</div>' if kp.get("ust") else "") + f'<h1>{bas}</h1>'
+                     + (f'<div class="altp">{kp["alt"]}</div>' if kp.get("alt") else "") + '</div>')
     return (f"<html><head><meta charset='utf-8'><style>{CSS}</style></head><body>{DEFS}{''.join(parts)}"
-            f"<script>window.PARCALAR={json.dumps(sen['parcalar'], ensure_ascii=False)};window.KURAL_T={sen.get('kural_t', 99999)};{JS}</script></body></html>")
+            f"<script>window.PARCALAR={json.dumps(sen['parcalar'], ensure_ascii=False)};window.KAPAK={json.dumps(sen.get('kapak'), ensure_ascii=False)};window.KURAL_T={sen.get('kural_t', 99999)};{JS}</script></body></html>")
 
 
 def devam_ayarla(sen):
