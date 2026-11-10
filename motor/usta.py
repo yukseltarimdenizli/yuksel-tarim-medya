@@ -89,8 +89,8 @@ def _bas(m, ifade):
     g += '<path d="M-84 -20 Q-84 60 -42 98 Q-70 50 -66 -20 Z" fill="#c98552" opacity=".35"/>'
     g += '<circle cx="-50" cy="38" r="20" fill="#ef8a7a" opacity=".35"/><circle cx="50" cy="38" r="20" fill="#ef8a7a" opacity=".35"/>'
     if m.get("sakal"):
-        g += '<path d="M-82 10 Q-84 72 -40 104 Q0 124 40 104 Q84 72 82 10 Q70 70 40 82 Q0 96 -40 82 Q-70 70 -82 10 Z" fill="#2b2420" opacity=".55"/>'
-        g += "".join(f'<circle cx="{x}" cy="{y}" r="1.8" fill="#2b2420" opacity=".6"/>' for x, y in [(-70 + (k*37) % 141, 20 + (k*53) % 80) for k in range(170)] if (x*x)/(78*78) + ((y-20)*(y-20))/(90*90) < 1 and y > 18 + abs(x) * 0.05)
+        g += '<path d="M-82 10 Q-84 72 -40 104 Q0 124 40 104 Q84 72 82 10 Q70 70 40 82 Q0 96 -40 82 Q-70 70 -82 10 Z" fill="#3b2f28" opacity=".38"/><path d="M-30 96 Q0 110 30 96" stroke="#3b2f28" stroke-opacity=".3" stroke-width="10" fill="none"/>'
+        pass
     # kaşlar
     kalin = 14 if m["yas"] < 2 else 12
     kas_renk = m["biyik"] or m["sac"]
