@@ -117,13 +117,16 @@ def _bas(m, ifade):
     g += ('<path d="M-4 -6 Q-10 22 -16 34 Q0 48 16 34 Q10 22 4 -6" fill="#e9a878"/>'
           '<ellipse cx="0" cy="34" rx="20" ry="15" fill="#eaa676" stroke="#b97a4e" stroke-width="3"/><ellipse cx="-4" cy="29" rx="7" ry="4" fill="#fff" opacity=".45"/>'
           '<path d="M-12 40 q4 4 8 0 M4 40 q4 4 8 0" stroke="#8a5233" stroke-width="3" fill="none"/>')
-    # ağız + bıyık
+    # ağız + bıyık (agiz1: kapalı/ifade, agiz2: konuşurken açık — JS ile değiştirilir)
+    g += '<g class="agiz1">'
     if ifade == "mutlu":
         g += '<path d="M-34 66 Q0 104 34 66 Q0 80 -34 66 Z" fill="#7a2e22" stroke="#3b2a1f" stroke-width="3"/><path d="M-26 68 Q0 78 26 68 L24 74 Q0 82 -24 74 Z" fill="#fff"/>'
     elif ifade == "endise":
         g += '<path d="M-22 80 Q-11 70 0 80 Q11 90 22 80" stroke="#5b2a1e" stroke-width="5" fill="none" stroke-linecap="round"/>'
     else:
         g += '<path d="M-22 76 Q0 88 22 76" stroke="#5b2a1e" stroke-width="5" fill="none" stroke-linecap="round"/>'
+    g += ('</g><g class="agiz2" opacity="0"><path d="M-28 68 Q0 64 28 68 Q26 102 0 106 Q-26 102 -28 68 Z" fill="#5a1d16" stroke="#3b2a1f" stroke-width="3"/>'
+          '<path d="M-24 69 Q0 66 24 69 L22 76 Q0 74 -22 76 Z" fill="#fff"/><ellipse cx="0" cy="96" rx="14" ry="7" fill="#d9665a"/></g>')
     if m["biyik"]:
         g += (f'<path d="M0 46 Q-24 40 -50 52 Q-66 60 -70 74 Q-50 68 -34 70 Q-14 70 0 60 Q14 70 34 70 Q50 68 70 74 Q66 60 50 52 Q24 40 0 46 Z" fill="{m["biyik"]}" {s}/>'
               + "".join(f'<path d="M{sx*k} {50+k*0.15} q{sx*6} 8 {sx*12} 12" stroke="{m["biyik_ac"]}" stroke-width="2.5" fill="none" opacity=".8"/>' for sx in (-1, 1) for k in (10, 24, 38, 52)))
