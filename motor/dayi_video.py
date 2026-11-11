@@ -194,6 +194,9 @@ def rotor_sinifi(svg):
     return svg.replace('<g transform="translate(-230 92)"><circle r="30" fill="#455a64"/>', '<g class="rotor" transform="translate(-230 92)"><circle r="30" fill="#455a64"/>')
 
 
+ANIM_EK = {}   # ek sahne modülleri: sahne adı -> f(p, kt, n) -> {anahtar: kare}
+
+
 def anim(p, kz):
     """Animasyon anlarını (kare) seslendirmedeki kelimelere bağla."""
     def kt(kok, vars=None):
@@ -215,6 +218,8 @@ def anim(p, kz):
              "kok0": ge + 8, "kokd": max(20, inemez + 10 - (ge + 8))}
     elif p["sahne"] == "kapanis":
         a = {"tap": kt("takip", 60)}
+    if p["sahne"] in ANIM_EK:
+        a = ANIM_EK[p["sahne"]](p, kt, n)
     return a
 
 

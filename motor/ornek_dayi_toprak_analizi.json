@@ -1,0 +1,378 @@
+{
+ "bant": "DAYI SORUYOR",
+ "kapak": {
+  "ust": "DAYI SORUYOR",
+  "baslik": "Toprak analizi [şart mı?]",
+  "alt": "Usta cevaplıyor 👇",
+  "sure": 0.2
+ },
+ "parcalar": [
+  {
+   "sahne": "dayi",
+   "konusan": "dayi",
+   "metin": "Usta, bu toprak dedemden kalma. Ne istediğini ben bilirim, tahlil mi yaptıracağım şimdi?",
+   "sure": 6.93,
+   "konusma": [
+    [
+     0.286,
+     0.66
+    ],
+    [
+     1.512,
+     3.274
+    ],
+    [
+     3.579,
+     6.238
+    ]
+   ],
+   "balon": [
+    "Bu toprak dedemden kalma,",
+    "[tahlil] mi yaptıracağım?"
+   ]
+  },
+  {
+   "sahne": "lab",
+   "konusan": "usta",
+   "metin": "Dayı, toprak konuşmaz ama analiz konuşur. Laboratuvarda pH, tuz, kireç, organik madde, fosfor ve potasyum gibi değerlere bakılır.",
+   "sure": 9.77,
+   "konusma": [
+    [
+     0.234,
+     0.633
+    ],
+    [
+     0.824,
+     2.832
+    ],
+    [
+     3.228,
+     4.591
+    ],
+    [
+     4.801,
+     6.634
+    ],
+    [
+     6.847,
+     9.106
+    ]
+   ]
+  },
+  {
+   "sahne": "rapor",
+   "konusan": "usta",
+   "metin": "Böylece hangi besin eksik, hangisi zaten fazla, net görürsün.",
+   "sure": 4.85,
+   "konusma": [
+    [
+     0.506,
+     1.942
+    ],
+    [
+     2.211,
+     4.362
+    ]
+   ]
+  },
+  {
+   "sahne": "dayi",
+   "konusan": "dayi",
+   "metin": "Ben her yıl aynı gübreyi atarım, kaybım ne?",
+   "sure": 4.65,
+   "konusma": [
+    [
+     0.397,
+     2.354
+    ],
+    [
+     3.342,
+     4.004
+    ]
+   ],
+   "balon": [
+    "Ben her yıl aynı gübreyi atarım,",
+    "[kaybım] ne?"
+   ],
+   "prop": "gubre"
+  },
+  {
+   "sahne": "karsilastir",
+   "konusan": "usta",
+   "metin": "Eksik olanı vermezsin, fazla olana boşuna para verirsin. Analizle doğru gübreyi doğru miktarda verirsin; masraf düşer, verim artar.",
+   "sure": 9.15,
+   "konusma": [
+    [
+     0.35,
+     1.658
+    ],
+    [
+     1.871,
+     3.598
+    ],
+    [
+     3.98,
+     6.527
+    ],
+    [
+     6.714,
+     7.571
+    ],
+    [
+     7.746,
+     8.491
+    ]
+   ]
+  },
+  {
+   "sahne": "dayi",
+   "konusan": "dayi",
+   "metin": "Peki bu numuneyi nasıl alacağız?",
+   "sure": 3.47,
+   "konusma": [
+    [
+     0.357,
+     2.831
+    ]
+   ],
+   "balon": [
+    "Peki bu [numuneyi]",
+    "nasıl alacağız?"
+   ],
+   "prop": "kurek"
+  },
+  {
+   "sahne": "zaman",
+   "konusan": "usta",
+   "metin": "Numuneyi hasattan sonra ya da ekimden önce al. Toprak çok ıslak, çok kuru ya da donmuş olmasın.",
+   "sure": 6.85,
+   "konusma": [
+    [
+     0.505,
+     3.17
+    ],
+    [
+     3.426,
+     4.407
+    ],
+    [
+     4.66,
+     6.182
+    ]
+   ]
+  },
+  {
+   "sahne": "harita",
+   "konusan": "usta",
+   "metin": "Tarlanın on, on beş farklı noktasından, yaklaşık yirmi otuz santim derinden toprak al.",
+   "sure": 6.12,
+   "konusma": [
+    [
+     0.521,
+     1.345
+    ],
+    [
+     1.511,
+     2.933
+    ],
+    [
+     3.178,
+     5.695
+    ]
+   ]
+  },
+  {
+   "sahne": "kacin",
+   "konusan": "usta",
+   "metin": "Tarla kenarından, ağaç altından, gübre yığılan yerlerden alma.",
+   "sure": 4.53,
+   "konusma": [
+    [
+     0.267,
+     1.14
+    ],
+    [
+     1.333,
+     2.182
+    ],
+    [
+     2.333,
+     3.848
+    ]
+   ]
+  },
+  {
+   "sahne": "karistir",
+   "konusan": "usta",
+   "metin": "Hepsini temiz bir plastik kovada karıştır, taşı, keseği ayıkla. Bir kilosunu poşete koy, üstüne adını, yerini ve ekeceğin ürünü yaz.",
+   "sure": 9.6,
+   "konusma": [
+    [
+     0.528,
+     2.911
+    ],
+    [
+     3.118,
+     4.39
+    ],
+    [
+     4.761,
+     6.135
+    ],
+    [
+     6.364,
+     7.116
+    ],
+    [
+     7.279,
+     8.956
+    ]
+   ]
+  },
+  {
+   "sahne": "teslim",
+   "konusan": "usta",
+   "metin": "Sonra tarım müdürlüğüne ya da bir toprak analiz laboratuvarına götür.",
+   "sure": 4.57,
+   "konusma": [
+    [
+     0.493,
+     4.041
+    ]
+   ]
+  },
+  {
+   "sahne": "dayi",
+   "konusan": "dayi",
+   "metin": "Eee, sonuç gelince ne olacak?",
+   "sure": 3.02,
+   "konusma": [
+    [
+     0.346,
+     2.358
+    ]
+   ],
+   "balon": [
+    "Eee, sonuç gelince",
+    "[ne olacak?]"
+   ],
+   "prop": "rapor"
+  },
+  {
+   "sahne": "muhendis",
+   "konusan": "usta",
+   "metin": "Rapor gelince bir ziraat mühendisine yorumlat, gübre planını ona göre yap. Eksik olanı ver, fazla olanı boşuna atma.",
+   "sure": 8.19,
+   "konusma": [
+    [
+     0.388,
+     2.853
+    ],
+    [
+     3.052,
+     4.409
+    ],
+    [
+     5.229,
+     6.128
+    ],
+    [
+     6.384,
+     7.696
+    ]
+   ]
+  },
+  {
+   "sahne": "takvim",
+   "konusan": "usta",
+   "metin": "Bu işi bir kere yapıp bırakma. Tarla bitkilerinde her ekimden önce, bağ ve bahçede dört beş yılda bir tekrarlaman öneriliyor.",
+   "sure": 8.27,
+   "konusma": [
+    [
+     0.336,
+     1.913
+    ],
+    [
+     2.325,
+     4.291
+    ],
+    [
+     4.469,
+     7.57
+    ]
+   ]
+  },
+  {
+   "sahne": "ozet",
+   "konusan": "usta",
+   "metin": "Özetle: doğru zamanda al, doğru yerden al, iyi karıştır, laboratuvara götür, sonuca göre gübrele.",
+   "sure": 7.59,
+   "konusma": [
+    [
+     0.549,
+     1.104
+    ],
+    [
+     1.263,
+     2.259
+    ],
+    [
+     2.483,
+     3.396
+    ],
+    [
+     3.584,
+     4.344
+    ],
+    [
+     4.563,
+     5.583
+    ],
+    [
+     5.784,
+     6.937
+    ]
+   ]
+  },
+  {
+   "sahne": "tepki",
+   "konusan": "dayi",
+   "metin": "Vay be! Kırk yıl gübreyi göz kararı atmışız yani, hah!",
+   "sure": 4.62,
+   "konusma": [
+    [
+     0.355,
+     0.886
+    ],
+    [
+     1.164,
+     3.908
+    ]
+   ],
+   "balon": [
+    "Kırk yıl gübreyi [göz kararı]",
+    "atmışız yani, hah! 😄"
+   ]
+  },
+  {
+   "sahne": "kapanis",
+   "konusan": "usta",
+   "metin": "Sorunu yorumlara yaz, sıradaki videoda cevaplayalım. Takip etmeyi unutma!",
+   "sure": 6.266,
+   "konusma": [
+    [
+     0.512,
+     1.679
+    ],
+    [
+     1.84,
+     3.381
+    ],
+    [
+     3.801,
+     4.977
+    ]
+   ]
+  }
+ ]
+}

@@ -34,6 +34,8 @@ MODELLER = {
                      sapka="kasket", sapka_renk="url(#u_tvid)", sac="#cfcfcf", biyik="#ececec", biyik_ac="#ffffff", yas=2, kol="uzun"),
     "genc":     dict(gomlek="url(#u_polo)", ust="polo", pantolon="url(#u_haki)", bot="#5d4037",
                      sapka="kep", sapka_renk="#2F5737", sac="#2b2420", biyik=None, sakal=True, yas=0, kol="kisa"),
+    "muhendis": dict(gomlek="#9fb8cf", ust="onluk", pantolon="url(#u_gri)", bot="#3e2f28",
+                     sapka="yok", sapka_renk="none", sac="#4a3426", biyik=None, yas=1, kol="uzun", gozluk=True),
 }
 
 KOLLAR = {  # (omuz, dirsek, bilek) — sağ kol için; sol kol x aynalanır
@@ -130,6 +132,14 @@ def _bas(m, ifade):
     if m["biyik"]:
         g += (f'<path d="M0 46 Q-24 40 -50 52 Q-66 60 -70 74 Q-50 68 -34 70 Q-14 70 0 60 Q14 70 34 70 Q50 68 70 74 Q66 60 50 52 Q24 40 0 46 Z" fill="{m["biyik"]}" {s}/>'
               + "".join(f'<path d="M{sx*k} {50+k*0.15} q{sx*6} 8 {sx*12} 12" stroke="{m["biyik_ac"]}" stroke-width="2.5" fill="none" opacity=".8"/>' for sx in (-1, 1) for k in (10, 24, 38, 52)))
+    if m.get("gozluk"):
+        g += ('<circle cx="-34" cy="-4" r="25" fill="#cfe8ff" fill-opacity=".18" stroke="#2b2b2b" stroke-width="5"/>'
+              '<circle cx="34" cy="-4" r="25" fill="#cfe8ff" fill-opacity=".18" stroke="#2b2b2b" stroke-width="5"/>'
+              '<path d="M-9 -6 Q0 -12 9 -6 M-59 -8 L-84 -14 M59 -8 L84 -14" stroke="#2b2b2b" stroke-width="5" fill="none"/>')
+    if m["sapka"] == "yok":
+        g += (f'<path d="M-88 -10 Q-96 -112 0 -116 Q96 -112 88 -10 Q80 -64 34 -70 Q10 -50 -20 -62 Q-70 -70 -88 -10 Z" fill="{m["sac"]}" stroke="#3b2a1f" stroke-width="4"/>'
+              '<path d="M-60 -96 Q-20 -112 30 -104" stroke="#fff" stroke-opacity=".18" stroke-width="8" fill="none" stroke-linecap="round"/>')
+        return g
     # şapka
     g += '<g transform="translate(0 -18)">'
     if m["sapka"] == "kep":
@@ -208,15 +218,22 @@ def _usta(model="yelekli", poz="duz", ifade="mutlu"):
         g += (f'<path d="M-118 -684 Q-132 -600 -112 -470 L112 -470 Q132 -600 118 -684 Q80 -700 46 -700 L0 -590 L-46 -700 Q-80 -700 -118 -684 Z" fill="url(#u_orgu)" {s}/>'
               '<path d="M-46 -700 L0 -590 L46 -700" stroke="#4d1a24" stroke-width="10" fill="none"/>'
               + "".join(f'<path d="M{x} -490 v20" stroke="#4d1a24" stroke-width="4"/>' for x in range(-104, 110, 14)))
+    elif ust == "onluk":
+        for sx in (-1, 1):
+            g += (f'<path d="M{sx*124} -690 Q{sx*142} -600 {sx*124} -470 L{sx*130} -300 L{sx*20} -300 L{sx*24} -560 L{sx*40} -696 Q{sx*84} -706 {sx*124} -690 Z" fill="url(#u_beyaz)" {s}/>'
+                  f'<rect x="{sx*70 - 26}" y="-420" width="52" height="40" rx="6" fill="#eef1f3" stroke="#9aa5ad" stroke-width="2"/>')
+        g += ('<rect x="-94" y="-612" width="40" height="46" rx="5" fill="#eef1f3" stroke="#9aa5ad" stroke-width="2"/>'
+              '<path d="M-84 -628 v30 M-72 -630 v30" stroke="#1565c0" stroke-width="5" stroke-linecap="round"/>'
+              '<rect x="50" y="-640" width="70" height="26" rx="5" fill="#2F5737"/><text x="85" y="-621" text-anchor="middle" font-size="16" font-weight="800" fill="#fff">ZİRAAT</text>')
     elif ust == "polo":
         g += ('<path d="M-12 -700 L-12 -620 L12 -620 L12 -700" fill="#2b5e36" stroke="#1d3f25" stroke-width="3"/><circle cx="0" cy="-680" r="4" fill="#E2B654"/><circle cx="0" cy="-650" r="4" fill="#E2B654"/>'
               '<circle cx="62" cy="-620" r="24" fill="#F7F1E3" stroke="#E2B654" stroke-width="3"/><image href="LOGO" x="42" y="-640" width="40" height="40"/>')
     # kemer (tulum hariç)
-    if ust != "tulum":
+    if ust not in ("tulum", "onluk"):
         g += f'<rect x="-114" y="-492" width="228" height="26" rx="6" fill="#4e342e" {s}/><rect x="-18" y="-496" width="36" height="34" rx="6" fill="none" stroke="#E2B654" stroke-width="6"/>'
     # boyun + yaka
     g += f'<path d="M-36 -770 L36 -770 L40 -700 L-40 -700 Z" fill="#e3a676" {s}/><path d="M-36 -730 Q0 -712 36 -730 L38 -706 L-38 -706 Z" fill="#c98552" opacity=".5"/>'
-    yaka = {"yelek": "#a93226", "tulum": "#2f5d8a", "orgu": "#f4f4f4", "polo": "#2b5e36"}[ust]
+    yaka = {"yelek": "#a93226", "tulum": "#2f5d8a", "orgu": "#f4f4f4", "polo": "#2b5e36", "onluk": "#7f9bb5"}[ust]
     g += (f'<path d="M-44 -712 L-6 -676 L-30 -650 L-62 -700 Z" fill="{yaka}" {s}/><path d="M44 -712 L6 -676 L30 -650 L62 -700 Z" fill="{yaka}" {s}/>')
     # kollar + eller
     kisa = m["kol"] == "kisa"
