@@ -1,0 +1,390 @@
+{
+ "bant": "DAYI SORUYOR",
+ "kapak": {
+  "ust": "DAYI SORUYOR",
+  "baslik": "Toprak analizi [şart mı?]",
+  "alt": "Usta cevaplıyor 👇",
+  "sure": 0.2
+ },
+ "parcalar": [
+  {
+   "sahne": "dayi",
+   "konusan": "dayi",
+   "metin": "Usta, bu toprak dedemden kalma. Ne istediğini ben bilirim, tahlil mi yaptıracağım şimdi?",
+   "sure": 6.48,
+   "konusma": [
+    [
+     0.339,
+     0.798
+    ],
+    [
+     1.027,
+     2.497
+    ],
+    [
+     2.872,
+     4.097
+    ],
+    [
+     4.437,
+     5.775
+    ]
+   ],
+   "balon": [
+    "Bu toprak dedemden kalma,",
+    "[tahlil] mi yaptıracağım?"
+   ]
+  },
+  {
+   "sahne": "lab",
+   "konusan": "usta",
+   "metin": "Dayı, toprak konuşmaz ama analiz konuşur. Laboratuvarda pH, tuz, kireç, organik madde, fosfor ve potasyum gibi değerlere bakılır.",
+   "sure": 11.5,
+   "konusma": [
+    [
+     0.205,
+     0.551
+    ],
+    [
+     0.835,
+     1.899
+    ],
+    [
+     2.117,
+     3.474
+    ],
+    [
+     3.945,
+     4.828
+    ],
+    [
+     5.004,
+     5.579
+    ],
+    [
+     5.877,
+     7.049
+    ],
+    [
+     7.241,
+     10.97
+    ]
+   ]
+  },
+  {
+   "sahne": "rapor",
+   "konusan": "usta",
+   "metin": "Böylece hangi besin eksik, hangisi zaten fazla, net görürsün.",
+   "sure": 5.12,
+   "konusma": [
+    [
+     0.391,
+     2.088
+    ],
+    [
+     2.26,
+     3.719
+    ],
+    [
+     3.884,
+     4.618
+    ]
+   ]
+  },
+  {
+   "sahne": "dayi",
+   "konusan": "dayi",
+   "metin": "Ben her yıl aynı gübreyi atarım, kaybım ne?",
+   "sure": 3.79,
+   "konusma": [
+    [
+     0.395,
+     2.242
+    ],
+    [
+     2.515,
+     3.08
+    ]
+   ],
+   "balon": [
+    "Ben her yıl aynı gübreyi atarım,",
+    "[kaybım] ne?"
+   ],
+   "prop": "gubre"
+  },
+  {
+   "sahne": "karsilastir",
+   "konusan": "usta",
+   "metin": "Eksik olanı vermezsin, fazla olana boşuna para verirsin. Analizle doğru gübreyi doğru miktarda verirsin; masraf düşer, verim artar.",
+   "sure": 9.98,
+   "konusma": [
+    [
+     0.35,
+     1.58
+    ],
+    [
+     1.88,
+     3.816
+    ],
+    [
+     4.284,
+     7.188
+    ],
+    [
+     7.556,
+     8.438
+    ],
+    [
+     8.648,
+     9.419
+    ]
+   ]
+  },
+  {
+   "sahne": "dayi",
+   "konusan": "dayi",
+   "metin": "Peki bu numuneyi nasıl alacağız?",
+   "sure": 3.02,
+   "konusma": [
+    [
+     0.409,
+     2.38
+    ]
+   ],
+   "balon": [
+    "Peki bu [numuneyi]",
+    "nasıl alacağız?"
+   ],
+   "prop": "kurek"
+  },
+  {
+   "sahne": "zaman",
+   "konusan": "usta",
+   "metin": "Numuneyi hasattan sonra ya da ekimden önce al. Toprak çok ıslak, çok kuru ya da donmuş olmasın.",
+   "sure": 7.79,
+   "konusma": [
+    [
+     0.414,
+     3.392
+    ],
+    [
+     3.863,
+     4.951
+    ],
+    [
+     5.155,
+     7.197
+    ]
+   ]
+  },
+  {
+   "sahne": "harita",
+   "konusan": "usta",
+   "metin": "Tarlanın on, on beş farklı noktasından, yaklaşık yirmi otuz santim derinden toprak al.",
+   "sure": 6.6,
+   "konusma": [
+    [
+     0.438,
+     6.022
+    ]
+   ]
+  },
+  {
+   "sahne": "kacin",
+   "konusan": "usta",
+   "metin": "Tarla kenarından, ağaç altından, gübre yığılan yerlerden alma.",
+   "sure": 5.21,
+   "konusma": [
+    [
+     0.433,
+     1.48
+    ],
+    [
+     1.666,
+     2.694
+    ],
+    [
+     2.862,
+     4.64
+    ]
+   ]
+  },
+  {
+   "sahne": "karistir",
+   "konusan": "usta",
+   "metin": "Hepsini temiz bir plastik kovada karıştır, taşı, keseği ayıkla. Bir kilosunu poşete koy, üstüne adını, yerini ve ekeceğin ürünü yaz.",
+   "sure": 11.15,
+   "konusma": [
+    [
+     0.408,
+     2.983
+    ],
+    [
+     3.258,
+     3.685
+    ],
+    [
+     3.959,
+     4.853
+    ],
+    [
+     5.346,
+     6.719
+    ],
+    [
+     7.142,
+     8.171
+    ],
+    [
+     8.34,
+     10.597
+    ]
+   ]
+  },
+  {
+   "sahne": "teslim",
+   "konusan": "usta",
+   "metin": "Sonra tarım müdürlüğüne ya da bir toprak analiz laboratuvarına götür.",
+   "sure": 5.06,
+   "konusma": [
+    [
+     0.384,
+     4.528
+    ]
+   ]
+  },
+  {
+   "sahne": "dayi",
+   "konusan": "dayi",
+   "metin": "Eee, sonuç gelince ne olacak?",
+   "sure": 4.04,
+   "konusma": [
+    [
+     0.341,
+     0.75
+    ],
+    [
+     0.968,
+     2.213
+    ],
+    [
+     2.701,
+     3.406
+    ]
+   ],
+   "balon": [
+    "Eee, sonuç gelince",
+    "[ne olacak?]"
+   ],
+   "prop": "rapor"
+  },
+  {
+   "sahne": "muhendis",
+   "konusan": "usta",
+   "metin": "Rapor gelince bir ziraat mühendisine yorumlat, gübre planını ona göre yap. Eksik olanı ver, fazla olanı boşuna atma.",
+   "sure": 8.84,
+   "konusma": [
+    [
+     0.384,
+     3.158
+    ],
+    [
+     3.405,
+     5.088
+    ],
+    [
+     5.513,
+     6.495
+    ],
+    [
+     6.702,
+     8.294
+    ]
+   ]
+  },
+  {
+   "sahne": "takvim",
+   "konusan": "usta",
+   "metin": "Bu işi bir kere yapıp bırakma. Tarla bitkilerinde her ekimden önce, bağ ve bahçede dört beş yılda bir tekrarlaman öneriliyor.",
+   "sure": 9.33,
+   "konusma": [
+    [
+     0.432,
+     2.163
+    ],
+    [
+     2.628,
+     8.713
+    ]
+   ]
+  },
+  {
+   "sahne": "ozet",
+   "konusan": "usta",
+   "metin": "Özetle: doğru zamanda al, doğru yerden al, iyi karıştır, laboratuvara götür, sonuca göre gübrele.",
+   "sure": 8.52,
+   "konusma": [
+    [
+     0.478,
+     0.978
+    ],
+    [
+     1.389,
+     2.506
+    ],
+    [
+     2.822,
+     3.848
+    ],
+    [
+     4.242,
+     5.06
+    ],
+    [
+     5.348,
+     6.427
+    ],
+    [
+     6.724,
+     7.958
+    ]
+   ]
+  },
+  {
+   "sahne": "tepki",
+   "konusan": "dayi",
+   "metin": "Vay be! Kırk yıl gübreyi göz kararı atmışız yani, hah!",
+   "sure": 3.971,
+   "konusma": [
+    [
+     0.323,
+     3.098
+    ]
+   ],
+   "balon": [
+    "Kırk yıl gübreyi [göz kararı]",
+    "atmışız yani, hah! 😄"
+   ]
+  },
+  {
+   "sahne": "kapanis",
+   "konusan": "usta",
+   "metin": "Sorunu yorumlara yaz, sıradaki videoda cevaplayalım. Takip etmeyi unutma!",
+   "sure": 6.234,
+   "konusma": [
+    [
+     0.414,
+     1.747
+    ],
+    [
+     1.902,
+     3.487
+    ],
+    [
+     3.905,
+     5.042
+    ]
+   ]
+  }
+ ]
+}
