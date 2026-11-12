@@ -142,8 +142,9 @@ Kayıt türü "Teslimat / müşteri" ve ürün seçilmemişse video sitedeki **R
 
 ### Dayı Soruyor (çizimli soru-cevap serisi; kullanıcı onayı 10.11.2026)
 - Motor: `motor/dayi_video.py` (sahneler: dayi_soru, pulluk, rotavator, taban, tepki, kapanis), karakterler `motor/usta.py` (dayı = "kasketli", usta = "genc"), arka plan `motor/arka.py`.
-- Seslendirme SpeechGen (tr-TR): **Dayı (Hasan Dayı) = "Aydın" (HD)**, **Usta (Usta Mert) = "Remy TR" (PRO)**; hız 1.0, ses perdesi 0, ses %100.
-  Web editöründe duraklama etiketi yok: her cümle ayrı satıra yazılır. Kullanıcı dayı ve usta için iki ayrı MP3 verir;
+- Seslendirme (kullanıcı kararı 12.11.2026): **ElevenLabs v4** — **Dayı (Hasan Dayı) = "Seyfullah Kartal – Deep and Muffled"**,
+  **Usta (Usta Mert) = "Fatih Yıldırım – Deep, Clear and Rich"** (dosya adındaki ayarlar: stability 50, similarity 75). Deneme/çoklu çekim yok, tek üretim.
+  Eski yedek: SpeechGen "Aydın" (HD) / "Remy TR" (PRO). Her cümle ayrı satıra yazılır. Kullanıcı dayı ve usta için iki ayrı MP3 verir;
   `motor/dayi_ses_kur.py` satırları böler, parçalara yerleştirir (önce plan listesi kesim noktalarıyla güncellenir), sonra `dayi_video.py ... --ses birlesik.wav --hazir`.
 - Kalite kuralı (kullanıcı isteği): her sahne önce ayrıntılı planlanır; render öncesi tüm video saniye saniye, kritik sahneler yarım saniyede bir karelenip incelenir; sorunlar düzeltilmeden gönderilmez.
 
