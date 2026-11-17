@@ -269,7 +269,7 @@ def ses_zarfi(sen, ses):
     sen["_zarf"] = z
 
 
-def render(sen, out, ses=None, muzik=None, muzik_bas=0, hizala=True):
+def render(sen, out, ses=None, muzik=None, muzik_bas=0, hizala=True, muzik_ses=0.8):
     """hizala=False: parça süreleri/konuşma aralıkları senaryoda hazır (ses zaten parçalara göre kurulmuş)."""
     if ses:
         if hizala:
@@ -296,7 +296,7 @@ def render(sen, out, ses=None, muzik=None, muzik_bas=0, hizala=True):
             cmd += ["-i", ses]; filt.append(f"[1:a]aresample=48000,loudnorm=I=-14:TP=-1.5,aresample=48000,apad=whole_dur={dur},atrim=0:{dur},asetpts=PTS-STARTPTS[v]")
         if muzik:
             cmd += ["-ss", str(muzik_bas), "-i", muzik]; mi = 2 if ses else 1
-            filt.append(f"[{mi}:a]aresample=48000,atrim=0:{dur},asetpts=PTS-STARTPTS,volume={0.14 if ses else 0.8},afade=t=out:st={dur-1.5:.2f}:d=1.5[m]")
+            filt.append(f"[{mi}:a]aresample=48000,atrim=0:{dur},asetpts=PTS-STARTPTS,volume={0.14 if ses else muzik_ses},afade=t=out:st={dur-1.5:.2f}:d=1.5[m]")
         if ses and muzik:
             filt.append("[v][m]amix=inputs=2:duration=longest:normalize=0[a]")
         else:
@@ -315,4 +315,5 @@ if __name__ == "__main__":
     ses = a[a.index("--ses") + 1] if "--ses" in a else None
     muz = a[a.index("--muzik") + 1] if "--muzik" in a else None
     mb = float(a[a.index("--muzik-bas") + 1]) if "--muzik-bas" in a else 0
-    print(render(sen, a[1], ses, muz, mb, hizala="--hazir" not in a))
+    ms = float(a[a.index("--muzik-ses") + 1]) if "--muzik-ses" in a else 0.8
+    print(render(sen, a[1], ses, muz, mb, hizala="--hazir" not in a, muzik_ses=ms))
