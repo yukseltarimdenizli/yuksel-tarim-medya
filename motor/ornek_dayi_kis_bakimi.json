@@ -1,0 +1,230 @@
+{
+ "bant": "DAYI SORUYOR",
+ "kapak": {
+  "ust": "DAYI SORUYOR",
+  "baslik": "Traktör [kışa hazır mı?]",
+  "alt": "Usta cevaplıyor 👇",
+  "sure": 0.2
+ },
+ "parcalar": [
+  {
+   "sahne": "kdayi",
+   "konusan": "dayi",
+   "metin": "Kış geldi, traktörü ahıra çektim. Bahara kadar bir şey olmaz, değil mi?",
+   "balon": [
+    "Kış geldi, traktörü [ahıra] çektim.",
+    "Bahara kadar bir şey olmaz,",
+    "değil mi?"
+   ],
+   "sure": 6.85
+  },
+  {
+   "sahne": "kgiris",
+   "konusan": "usta",
+   "metin": "Olur dayı! Soğuk; aküyü, motoru, lastiği zorlar. Kışa girmeden altı şeyi kontrol et.",
+   "sure": 7.31
+  },
+  {
+   "sahne": "kkontrol",
+   "konusan": "usta",
+   "no": 1,
+   "baslik": "ANTİFRİZ",
+   "renk": "#00897b",
+   "prop": "antifriz",
+   "metin": "Bir: Radyatördeki antifrizi kontrol et. Su donarsa motor bloğu çatlayabilir.",
+   "etiketler": [
+    [
+     "Antifriz seviyesi",
+     "antifrizi",
+     "#00897b",
+     780,
+     700,
+     680,
+     994
+    ],
+    [
+     "Donarsa blok çatlar",
+     "donarsa",
+     "#c62828",
+     780,
+     800,
+     546,
+     1073
+    ]
+   ],
+   "sure": 5.95
+  },
+  {
+   "sahne": "kkontrol",
+   "konusan": "usta",
+   "no": 2,
+   "baslik": "AKÜ",
+   "renk": "#c62828",
+   "prop": "aku",
+   "metin": "İki: Akü soğukta güçten düşer. Kutup başlarını temizle, şarjını kontrol et.",
+   "etiketler": [
+    [
+     "Kutupları temizle",
+     "kutup",
+     "#c62828",
+     780,
+     700,
+     640,
+     1041
+    ],
+    [
+     "Şarjı kontrol et",
+     "şarjını",
+     "#2e7d32",
+     780,
+     800,
+     626,
+     1057
+    ]
+   ],
+   "sure": 6.4
+  },
+  {
+   "sahne": "kkontrol",
+   "konusan": "usta",
+   "no": 3,
+   "baslik": "YAKIT",
+   "renk": "#1565c0",
+   "prop": "yakit",
+   "metin": "Üç: Depoyu dolu bırak. Boş depoda nem yoğuşur, yakıta su karışır.",
+   "etiketler": [
+    [
+     "Depo dolu kalsın",
+     "dolu",
+     "#2e7d32",
+     780,
+     700,
+     409,
+     1030
+    ],
+    [
+     "Boşsa nem yoğuşur",
+     "nem",
+     "#1565c0",
+     780,
+     800,
+     415,
+     1044
+    ]
+   ],
+   "sure": 6.4
+  },
+  {
+   "sahne": "kkontrol",
+   "konusan": "usta",
+   "no": 4,
+   "baslik": "YAĞ VE FİLTRE",
+   "renk": "#ef6c00",
+   "prop": "yag",
+   "metin": "Dört: Yağ ve filtre değişimi yaklaştıysa kıştan önce yap. Eski yağ, beklerken motoru yıpratır.",
+   "etiketler": [
+    [
+     "Yağ ve filtre",
+     "yağ",
+     "#ef6c00",
+     780,
+     700,
+     546,
+     1073
+    ],
+    [
+     "Eski yağ yıpratır",
+     "eski",
+     "#c62828",
+     780,
+     800,
+     562,
+     1083
+    ]
+   ],
+   "sure": 7.76
+  },
+  {
+   "sahne": "kkontrol",
+   "konusan": "usta",
+   "no": 5,
+   "baslik": "LASTİK VE GRES",
+   "renk": "#37474f",
+   "prop": "lastik",
+   "metin": "Beş: Lastik basıncına bak, gres noktalarını yağla.",
+   "etiketler": [
+    [
+     "Lastik basıncı",
+     "lastik",
+     "#14281A",
+     780,
+     700,
+     330,
+     1091
+    ],
+    [
+     "Gres noktaları",
+     "gres",
+     "#ef6c00",
+     780,
+     800,
+     611,
+     1138
+    ]
+   ],
+   "sure": 4.6
+  },
+  {
+   "sahne": "kkontrol",
+   "konusan": "usta",
+   "no": 6,
+   "baslik": "KAPALI PARK",
+   "renk": "#5d2b20",
+   "prop": "park",
+   "metin": "Altı: Traktörü kuru, kapalı bir yerde park et. Ekipmanları da temizleyip yağla.",
+   "etiketler": [
+    [
+     "Kuru, kapalı yer",
+     "kuru",
+     "#5d2b20",
+     320,
+     700,
+     250,
+     640
+    ],
+    [
+     "Ekipmanı da yağla",
+     "ekipmanları",
+     "#2e7d32",
+     420,
+     800,
+     161,
+     1124
+    ]
+   ],
+   "sure": 6.85
+  },
+  {
+   "sahne": "kozet",
+   "konusan": "usta",
+   "metin": "Özetle: antifriz, akü, yakıt, yağ, lastik ve kapalı park. Değerler için kullanım kılavuzuna bak.",
+   "sure": 7.76
+  },
+  {
+   "sahne": "ktepki",
+   "konusan": "dayi",
+   "metin": "Demek traktörün de kışlığı varmış, hah!",
+   "balon": [
+    "Demek traktörün de",
+    "[kışlığı] varmış, hah! 😄"
+   ],
+   "sure": 4.6
+  },
+  {
+   "sahne": "kapanis",
+   "konusan": "usta",
+   "metin": "Sorunu yorumlara yaz, sıradaki videoda cevaplayalım. Takip etmeyi unutma!",
+   "sure": 5.49
+  }
+ ]
+}

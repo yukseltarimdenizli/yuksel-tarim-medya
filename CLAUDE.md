@@ -146,6 +146,8 @@ Kayıt türü "Teslimat / müşteri" ve ürün seçilmemişse video sitedeki **R
   **Usta (Usta Mert) = "Fatih Yıldırım – Deep, Clear and Rich"** (dosya adındaki ayarlar: stability 50, similarity 75). Deneme/çoklu çekim yok, tek üretim.
   Eski yedek: SpeechGen "Aydın" (HD) / "Remy TR" (PRO). Her cümle ayrı satıra yazılır. Kullanıcı dayı ve usta için iki ayrı MP3 verir;
   `motor/dayi_ses_kur.py` satırları böler, parçalara yerleştirir (önce plan listesi kesim noktalarıyla güncellenir), sonra `dayi_video.py ... --ses birlesik.wav --hazir`.
+- **Seslendirmesiz mod (kullanıcı kararı 17.11.2026, ElevenLabs kredisi alınana kadar):** ses yok, konuşmalar balon + karaoke altyazıyla akar, altta hafif müzik (`dayi_video.py ... --muzik <dosya> --muzik-bas <sn> --muzik-ses 0.45`, ≈ -20 LUFS). Süre: sesli sürüm varsa süreler ×1.15-1.2 (+0,3 sn), yoksa parça başına kelime/2,2 + 1,4 sn (en az 4,6 sn).
+- Kış bakımı sahneleri: `motor/kis_sahneler.py` (kdayi, kgiris, kkontrol, kozet, ktepki), örnek `motor/ornek_dayi_kis_bakimi.json`.
 - Kalite kuralı (kullanıcı isteği): her sahne önce ayrıntılı planlanır; render öncesi tüm video saniye saniye, kritik sahneler yarım saniyede bir karelenip incelenir; sorunlar düzeltilmeden gönderilmez.
 
 ### Usta ipucu = rehber videosu (sitedeki "Yararlı Bilgiler" yazıları; kullanıcı onayı 30.10.2026)
