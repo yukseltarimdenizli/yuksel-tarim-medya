@@ -132,7 +132,7 @@ def kisi(x, y, s, model, poz, ifade):
 
 
 # ---------------------------------------------------------------- storyboard
-DAYI_AD, USTA_AD = "Hasan Dayı", "Usta Mert"
+DAYI_AD, USTA_AD = "Hasan Dayı", "Ahmet Usta"
 
 
 def kareler():
