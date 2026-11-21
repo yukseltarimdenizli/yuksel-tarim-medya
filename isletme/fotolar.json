@@ -1,10 +1,89 @@
-{"not": "İşyeri fotoğrafları (kullanıcı verdi, 30-31.10.2026). Firma tanıtımı galeri sahnelerinde kullanılır. Hepsi dikey 9:16.",
+{
+ "not": "İşyeri fotoğrafları (kullanıcı verdi). Firma tanıtımı galeri sahnelerinde kullanılır. bg: true = dikey, tam ekran arka plan olabilir. oncelik: true = kartlarda önce bunlar (21.11.2026'da verilen yeni fotoğraflar). Mangallı fotoğraf kullanıcı isteğiyle kaldırıldı (21.11.2026), tekrar ekleme.",
  "fotolar": [
-  {"id": "saha_pulluklar", "dosya": "isletme/saha_pulluklar.jpg", "konu": "LS bayrakları, pulluklar, traktörler", "bg": true},
-  {"id": "saha_genis", "dosya": "isletme/saha_genis.jpg", "konu": "tepeden geniş saha, makine sıraları", "bg": true},
-  {"id": "saha_traktorler", "dosya": "isletme/saha_traktorler.jpg", "konu": "tepeden LS bahçe traktörleri ve saha", "bg": true},
-  {"id": "gun_batimi", "dosya": "isletme/gun_batimi.jpg", "konu": "gün batımı, LS bayrağı, traktör sırası", "bg": true},
-  {"id": "saha_yan", "dosya": "isletme/saha_yan.jpg", "konu": "tepeden saha, traktörler", "bg": false},
-  {"id": "semaver", "dosya": "isletme/semaver.jpg", "konu": "işyeri önünde yanan semaver (ikram)", "bg": false, "ikram": true},
-  {"id": "ahmet_mangal", "dosya": "isletme/ahmet_mangal.jpg", "konu": "işyeri sahibi Ahmet Bey mangal başında, misafirler sofrada", "bg": false, "ikram": true, "pos": "center 40%"}
- ]}
+  {
+   "id": "konum_otoyol",
+   "dosya": "isletme/konum_otoyol.jpg",
+   "konu": "havadan işyeri, 'Denizli-Aydın Otoyolu' ve 'Yüksel Tarım' konum işaretleri (arka planda işaret yazısı başlığa biniyor, yalnız kart olarak kullan)",
+   "bg": false,
+   "oncelik": true,
+   "pos": "center 40%"
+  },
+  {
+   "id": "saha_pulluklar",
+   "dosya": "isletme/saha_pulluklar.jpg",
+   "konu": "LS bayrakları, pulluklar, traktörler",
+   "bg": true
+  },
+  {
+   "id": "saha_genis",
+   "dosya": "isletme/saha_genis.jpg",
+   "konu": "tepeden geniş saha, makine sıraları",
+   "bg": true
+  },
+  {
+   "id": "saha_traktorler",
+   "dosya": "isletme/saha_traktorler.jpg",
+   "konu": "tepeden LS bahçe traktörleri ve saha",
+   "bg": true
+  },
+  {
+   "id": "gun_batimi",
+   "dosya": "isletme/gun_batimi.jpg",
+   "konu": "gün batımı, LS bayrağı, traktör sırası",
+   "bg": true
+  },
+  {
+   "id": "saha_panorama",
+   "dosya": "isletme/saha_panorama.jpg",
+   "konu": "panorama: karlı dağlar önünde renkli pulluk/çizel sıraları",
+   "bg": false,
+   "oncelik": true,
+   "pos": "50% 70%"
+  },
+  {
+   "id": "ls_traktorler",
+   "dosya": "isletme/ls_traktorler.jpg",
+   "konu": "panorama: kurdeleli yeni LS traktörler, silaj makineleri, otoyol köprüsü",
+   "bg": false,
+   "oncelik": true,
+   "pos": "75% 55%"
+  },
+  {
+   "id": "sevkiyat",
+   "dosya": "isletme/sevkiyat.jpg",
+   "konu": "makine yüklü kamyonlar, Yüksel Tarım bayrağı, İzelmak yem karma",
+   "bg": false,
+   "oncelik": true,
+   "pos": "center 40%"
+  },
+  {
+   "id": "ls_etkinlik",
+   "dosya": "isletme/ls_etkinlik.jpg",
+   "konu": "LS Tractor 'Şehrine Geliyor' etkinliği, sahada mavi LS traktör ve misafirler",
+   "bg": false,
+   "oncelik": true
+  },
+  {
+   "id": "saha_panorama2",
+   "dosya": "isletme/saha_panorama2.jpg",
+   "konu": "panorama: dağlar önünde pulluk ve çizel sıraları, işyeri binası",
+   "bg": false,
+   "oncelik": true,
+   "pos": "45% 70%"
+  },
+  {
+   "id": "saha_yan",
+   "dosya": "isletme/saha_yan.jpg",
+   "konu": "tepeden saha, traktörler",
+   "bg": false
+  },
+  {
+   "id": "semaver",
+   "dosya": "isletme/semaver.jpg",
+   "konu": "işyeri önünde yanan semaver (ikram)",
+   "bg": false,
+   "ikram": true
+  }
+ ]
+}

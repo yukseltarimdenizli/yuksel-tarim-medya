@@ -175,9 +175,12 @@ Kredi/hibe yazıları elle seçilirse: yalnızca yazıdaki bilgiyi ver, tarih/or
 
 ### Firma tanıtımı = işyeri fotoğraflı galeri (kullanıcı kararı 01.11.2026)
 Ürün seçilmemiş "Firma tanıtımı" kayıtlarında `uret.py taslak` depodaki `isletme/` fotoğraflarıyla (liste: `isletme/fotolar.json`; saha, LS bayrakları,
-semaver, Ahmet Bey mangal başında) kurar: kapak şablon 1 (saha fotoğrafı) → `galeri` (arka plan saha, önde diğer fotoğraflar döner) → "Neden Yüksel Tarım?"
-listesi (not boşsa yalnız talimattaki bilgiler) → kapanış "Sizi bekliyoruz". Konum adı: "Traktör Galericiler Sitesi". Kullanıcı yeni işyeri fotoğrafı verirse
-`isletme/`'ye JPG (≤1200 px genişlik) ekle ve `fotolar.json`'a yaz. Fotoğraflar asla yüz kırpılarak gösterilmez (`pos` ile yüz görünür tutulur).
+semaver, konum işaretli drone, panoramalar, sevkiyat kamyonları, LS etkinliği) kurar: `galeri` (arka plan dikey saha fotoğrafı, önde YATAY kartlarla
+21.11.2026'da verilen fotoğraflar döner; `oncelik: true` olanlar önce) → "Neden Yüksel Tarım?" listesi (not boşsa yalnız talimattaki bilgiler) → kapanış
+"Sizi bekliyoruz". Konum adı: "Traktör Galericiler Sitesi". **Mangallı fotoğraf (Ahmet Bey mangal başında) firma tanıtımında KULLANILMAZ** (kullanıcı
+kararı 21.11.2026; dosya depodan kaldırıldı). Afiş/reklam görselleri (logolu, telefonlu kare afiş) galeri kartı yapılmaz, yazısı kırpılıyor. Kullanıcı yeni işyeri
+fotoğrafı verirse `isletme/`'ye JPG (dikeyde ≤1200 px genişlik, yatayda uzun kenar ≤2000 px) ekle ve `fotolar.json`'a yaz; yapay zekâ filigranı varsa kırp.
+Fotoğraflar asla yüz kırpılarak gösterilmez (`pos` ile yüz görünür tutulur).
 
 ### Kapak (videonun ilk 0,5 saniyesi — TikTok/YouTube profil ızgarasında görünen kare)
 NOT (06.11.2026): Ürünlü ve firma tanıtımı videolarında ayrı kapak YOK (`config.kapak` = null; ilk kare kapaktır). Aşağıdakiler dini/kutlama, referans ve rehber videoları içindir.

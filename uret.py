@@ -486,13 +486,14 @@ def taslak(kayit_yolu, klasor):
         F = json.loads((R / "isletme/fotolar.json").read_text())["fotolar"]
         h = sum(map(ord, (kayit.get("date") or "") + (kayit.get("time") or "")))
         bgs = [f for f in F if f.get("bg")]; bg = bgs[h % len(bgs)]
-        kart = [f for f in F if f is not bg]
-        kart = kart[h % len(kart):] + kart[:h % len(kart)]
+        # Kartlar yatay (21.11.2026 fotoğrafları çoğunlukla panorama); önce 'oncelik' fotoğrafları, kendi içinde sırayla döner.
+        def _don(L): return L[h % len(L):] + L[:h % len(L)] if L else L
+        kart = _don([f for f in F if f is not bg and f.get("oncelik")]) + _don([f for f in F if f is not bg and not f.get("oncelik")])
         stil = GALERI_STILLER[h % len(GALERI_STILLER)]
         cfg["scenes"] = [{"type": "galeri", "stil": stil, "anlik": True, "bg": str(R / bg["dosya"]), "kicker": "TRAKTÖR GALERİCİLER SİTESİ",
                           "title": baslik_vurgula(kayit.get("title") or "Yüksel Tarım'a hoş geldiniz"), "fs": 92,
                           "kartlar": [[str(R / f["dosya"]), f.get("pos", "center")] for f in kart[:5]],
-                          "kart_w": 520, "kart_h": 700, "kart_y": 1010, "alt_y": 1420, "chips": ["LS Tractor", "Alpler", "Fortis"], "dur": 230},
+                          "kart_w": 760, "kart_h": 500, "kart_y": bg.get("kart_y", 1060), "alt_y": 1440, "chips": ["LS Tractor", "Alpler", "Fortis"], "dur": 230},
                          {"type": "list", "kicker": "YÜKSEL TARIM · DENİZLİ", "title": "Neden Yüksel Tarım?", "items": satirlar[:4] or
                           ["Traktörden pulluğa geniş ürün yelpazesi", "Sıfırda 5 yıl kredi, kartla taksit", "Her üründe takas imkânı", "Tüm Türkiye'ye gönderim"]},
                          {"type": "outro", "cta": "Sizi bekliyoruz"}]
