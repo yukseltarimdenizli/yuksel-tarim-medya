@@ -44,6 +44,9 @@ Türkçe ve kısa yaz.
 
 ### 2. İşlenecek kayıtları seç
 `posts` koleksiyonunu oku. İşlenecekler (`example` true olanları HİÇBİR ZAMAN işleme):
+- **Onay bekleyenleri ATLA (kullanıcı kararı 21.11.2026):** `bekle: true` olan kayıtlar için video üretme, planlama; özette "onay bekliyor" diye say.
+  Kullanıcı sohbette onay verince `bekle` alanı silinir. **"Dayı Soruyor" türündeki kayıtları sabah görevi HİÇ üretmez**; bunlar sohbette,
+  senaryo kullanıcıya gösterildikten sonra ElevenLabs ile sesli üretilir (özette yalnız "Dayı bölümü sohbette hazırlanacak" de).
 - **Yeni:** `status` = "Taslak", tarih bugün ile bugün+7 gün arası.
 - **Değişmiş:** `status` = "Planlandı", paylaşım zamanı henüz gelmemiş ve `updatedAt` > `preparedAt`
   (kullanıcı hazırlandıktan sonra kaydı değiştirmiş). Bunları yeniden üret, Metricool'daki gönderiyi
