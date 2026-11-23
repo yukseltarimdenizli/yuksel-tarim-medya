@@ -1,0 +1,663 @@
+{
+ "bant": "DAYI SORUYOR #3",
+ "kapak": {
+  "ust": "DAYI SORUYOR #3",
+  "baslik": "Soğukta [geç çalışıyor?]",
+  "alt": "Usta cevaplıyor 👇",
+  "sure": 0.2
+ },
+ "parcalar": [
+  {
+   "sahne": "sdayi",
+   "konusan": "dayi",
+   "metin": "Ahmet Usta, sabah traktörü çalıştırana kadar çayım soğuyor! Çalışınca da bembeyaz duman atıyor.",
+   "sure": 7.7,
+   "konusma": [
+    [
+     0.341,
+     1.11
+    ],
+    [
+     1.384,
+     4.076
+    ],
+    [
+     4.454,
+     7.249
+    ]
+   ],
+   "balon": [
+    "Sabah traktör çalışana kadar",
+    "[çayım] soğuyor! ☕",
+    "Bir de [bembeyaz] duman atıyor!"
+   ],
+   "kanca": "4 sebep · sonuncusu sürpriz 👇"
+  },
+  {
+   "sahne": "sdort",
+   "konusan": "usta",
+   "metin": "Dayı, bunun dört sebebi var. Sonuncusunu çoğu kişi bilmiyor.",
+   "sure": 4.48,
+   "konusma": [
+    [
+     0.17,
+     2.006
+    ],
+    [
+     2.327,
+     4.18
+    ]
+   ]
+  },
+  {
+   "sahne": "ssilindir",
+   "konusan": "usta",
+   "metin": "Önce şunu bil: Dizel motor, sıkıştırdığı havanın sıcaklığıyla ateşler.",
+   "sure": 5.13,
+   "konusma": [
+    [
+     0.154,
+     0.879
+    ],
+    [
+     1.317,
+     2.104
+    ],
+    [
+     2.327,
+     4.828
+    ]
+   ]
+  },
+  {
+   "sahne": "sduman",
+   "konusan": "usta",
+   "metin": "Soğukta motor da hava da soğuk olunca yakıt tam yanmaz. Yanmayan yakıt, egzozdan beyaz duman olarak çıkar.",
+   "sure": 8.39,
+   "konusma": [
+    [
+     0.151,
+     2.954
+    ],
+    [
+     3.196,
+     4.449
+    ],
+    [
+     4.886,
+     8.086
+    ]
+   ]
+  },
+  {
+   "sahne": "smadde",
+   "konusan": "usta",
+   "metin": "İlk bir iki dakikada kaybolan beyaz duman normaldir. Asıl dert, geç çalışmasıdır.",
+   "sure": 5.71,
+   "konusma": [
+    [
+     0.15,
+     3.148
+    ],
+    [
+     3.509,
+     5.406
+    ]
+   ],
+   "baslik": "NORMAL Mİ?",
+   "renk": "#2F5737",
+   "maddeler": [
+    [
+     "⏱️",
+     "İlk 1-2 dakika beyaz duman",
+     "ilk",
+     "ok"
+    ],
+    [
+     "✅",
+     "Kaybolursa normal",
+     "normaldir",
+     "ok"
+    ],
+    [
+     "🐢",
+     "Geç çalışıyorsa asıl dert bu",
+     "asıl",
+     "x"
+    ]
+   ]
+  },
+  {
+   "sahne": "ktepki",
+   "konusan": "dayi",
+   "metin": "Yani benim traktör hasta değil, üşüyor öyle mi?",
+   "sure": 4.68,
+   "konusma": [
+    [
+     0.15,
+     3.028
+    ],
+    [
+     3.331,
+     4.18
+    ]
+   ],
+   "balon": [
+    "Yani traktör hasta değil,",
+    "[üşüyor] öyle mi? 😄"
+   ]
+  },
+  {
+   "sahne": "skontrol",
+   "konusan": "usta",
+   "metin": "Aynen dayı. Birinci sebep akü. Soğukta akünün gücü düşer, marş ağır döner.",
+   "sure": 6.3,
+   "konusma": [
+    [
+     0.154,
+     0.96
+    ],
+    [
+     1.252,
+     2.461
+    ],
+    [
+     2.824,
+     4.684
+    ],
+    [
+     4.877,
+     5.996
+    ]
+   ],
+   "no": 1,
+   "toplam": 4,
+   "baslik": "AKÜ",
+   "renk": "#c62828",
+   "prop": "aku",
+   "sarj_yok": true,
+   "etiketler": [
+    [
+     "Soğukta güç düşer",
+     "gücü",
+     "#c62828",
+     780,
+     700,
+     640,
+     1041
+    ],
+    [
+     "Marş ağır döner",
+     "marş",
+     "#ef6c00",
+     780,
+     800,
+     546,
+     1073
+    ]
+   ]
+  },
+  {
+   "sahne": "skontrol",
+   "konusan": "usta",
+   "metin": "Kutup başlarını temizle, şarjını ölçtür. Zayıfsa kış ortasında değil, şimdiden değiştir.",
+   "sure": 6.68,
+   "konusma": [
+    [
+     0.155,
+     1.487
+    ],
+    [
+     1.693,
+     2.676
+    ],
+    [
+     2.902,
+     3.699
+    ],
+    [
+     3.939,
+     5.04
+    ],
+    [
+     5.196,
+     6.378
+    ]
+   ],
+   "no": 1,
+   "toplam": 4,
+   "baslik": "AKÜ",
+   "renk": "#c62828",
+   "prop": "aku",
+   "hap": [
+    "Zayıfsa şimdiden değiştir",
+    "zayıfsa",
+    "#c62828"
+   ],
+   "etiketler": [
+    [
+     "Kutupları temizle",
+     "kutup",
+     "#c62828",
+     780,
+     700,
+     640,
+     1041
+    ],
+    [
+     "Şarjı ölçtür",
+     "şarjını",
+     "#2e7d32",
+     780,
+     800,
+     626,
+     1057
+    ]
+   ]
+  },
+  {
+   "sahne": "skizdirma",
+   "konusan": "usta",
+   "metin": "İkinci sebep kızdırma bujileri. Kontağı açınca kızdırma lambası yanar. O sönmeden marşa basma.",
+   "sure": 7.05,
+   "konusma": [
+    [
+     0.153,
+     2.017
+    ],
+    [
+     2.559,
+     4.756
+    ],
+    [
+     5.178,
+     6.747
+    ]
+   ]
+  },
+  {
+   "sahne": "ktepki",
+   "konusan": "dayi",
+   "metin": "Vay! Ben kırk yıldır kontağı açar açmaz marşa basarım.",
+   "sure": 5.36,
+   "konusma": [
+    [
+     0.152,
+     1.654
+    ],
+    [
+     2.028,
+     4.86
+    ]
+   ],
+   "balon": [
+    "Ben kırk yıldır kontağı",
+    "açar açmaz [marşa]",
+    "basarım! 😅"
+   ]
+  },
+  {
+   "sahne": "skaydet",
+   "konusan": "usta",
+   "metin": "Bu videoyu kaydet dayı, kış boyu lazım olur.",
+   "sure": 3.22,
+   "konusma": [
+    [
+     0.151,
+     1.446
+    ],
+    [
+     1.676,
+     2.82
+    ]
+   ]
+  },
+  {
+   "sahne": "skontrol",
+   "konusan": "usta",
+   "metin": "Üçüncü sebep yakıt. Soğukta yazlık motorin mum bağlar, filtreyi tıkar.",
+   "sure": 5.48,
+   "konusma": [
+    [
+     0.151,
+     1.48
+    ],
+    [
+     2.001,
+     4.116
+    ],
+    [
+     4.31,
+     5.179
+    ]
+   ],
+   "no": 3,
+   "toplam": 4,
+   "baslik": "YAKIT",
+   "renk": "#1565c0",
+   "prop": "mum",
+   "etiketler": [
+    [
+     "Yazlık mazot mum bağlar",
+     "mum",
+     "#1565c0",
+     717,
+     700,
+     409,
+     1030
+    ],
+    [
+     "Filtre tıkanır",
+     "filtreyi",
+     "#c62828",
+     780,
+     800,
+     546,
+     1073
+    ]
+   ]
+  },
+  {
+   "sahne": "smadde",
+   "konusan": "usta",
+   "metin": "Kasımdan itibaren istasyonda satılan motorin zaten kışlıktır. Yazdan kalan mazotu kışa bırakma. Yakıt filtresini değiştir, filtredeki suyu boşalt, depoyu akşamdan doldur.",
+   "sure": 12.51,
+   "konusma": [
+    [
+     0.156,
+     4.214
+    ],
+    [
+     4.717,
+     6.731
+    ],
+    [
+     7.025,
+     10.406
+    ],
+    [
+     10.661,
+     12.21
+    ]
+   ],
+   "baslik": "YAKITTA DİKKAT",
+   "renk": "#1565c0",
+   "maddeler": [
+    [
+     "⛽",
+     "Kasımdan sonra motorin kışlık",
+     "kasımdan",
+     "ok"
+    ],
+    [
+     "🛢️",
+     "Yazdan kalan mazotu bırakma",
+     "yazdan",
+     "x"
+    ],
+    [
+     "🔧",
+     "Yakıt filtresini değiştir",
+     "filtresini",
+     "ok"
+    ],
+    [
+     "💧",
+     "Filtredeki suyu boşalt",
+     "filtredeki",
+     "ok"
+    ],
+    [
+     "🌙",
+     "Depoyu akşamdan doldur",
+     "depoyu",
+     "ok"
+    ]
+   ]
+  },
+  {
+   "sahne": "skontrol",
+   "konusan": "usta",
+   "metin": "Dördüncüsü, çoğu kişinin atladığı: motor yağı. Soğukta yağ koyulaşır, motor zor döner. Kılavuzda kış için yazan yağı kullan.",
+   "sure": 9.44,
+   "konusma": [
+    [
+     0.154,
+     2.314
+    ],
+    [
+     2.628,
+     3.334
+    ],
+    [
+     3.815,
+     5.364
+    ],
+    [
+     5.531,
+     6.551
+    ],
+    [
+     6.863,
+     9.135
+    ]
+   ],
+   "no": 4,
+   "toplam": 4,
+   "baslik": "MOTOR YAĞI",
+   "renk": "#ef6c00",
+   "prop": "yag",
+   "hap": [
+    "Çoğu kişi bunu atlıyor!",
+    "atladığı",
+    "#c62828"
+   ],
+   "etiketler": [
+    [
+     "Soğukta koyulaşır",
+     "koyulaşır",
+     "#ef6c00",
+     780,
+     700,
+     546,
+     1073
+    ],
+    [
+     "Kılavuzdaki kış yağı",
+     "kılavuzda",
+     "#2e7d32",
+     780,
+     800,
+     562,
+     1083
+    ]
+   ]
+  },
+  {
+   "sahne": "sdayi",
+   "konusan": "dayi",
+   "metin": "Bizim köyde deponun altına ateş yakan var, ona ne dersin?",
+   "sure": 5.63,
+   "konusma": [
+    [
+     0.152,
+     2.528
+    ],
+    [
+     2.762,
+     3.493
+    ],
+    [
+     3.782,
+     4.232
+    ],
+    [
+     4.386,
+     5.175
+    ]
+   ],
+   "balon": [
+    "Bizim köyde deponun altına",
+    "[ateş] yakan var,",
+    "ona ne dersin?"
+   ],
+   "duman": false
+  },
+  {
+   "sahne": "sates",
+   "konusan": "usta",
+   "metin": "Sakın dayı! Yakıtın yanında ateş, can kaybı demek. Marşa da uzun uzun basma; çalışmazsa biraz bekle, öyle dene.",
+   "sure": 8.86,
+   "konusma": [
+    [
+     0.154,
+     0.903
+    ],
+    [
+     1.095,
+     3.806
+    ],
+    [
+     4.109,
+     5.84
+    ],
+    [
+     6.196,
+     7.77
+    ],
+    [
+     7.988,
+     8.557
+    ]
+   ]
+  },
+  {
+   "sahne": "smadde",
+   "konusan": "usta",
+   "metin": "Bir de dikkat: Motor ısındıktan sonra da beyaz duman sürüyor, antifriz eksiliyorsa iş başka. Contadan su kaçıyor olabilir, hemen servise göster.",
+   "sure": 10.26,
+   "konusma": [
+    [
+     0.15,
+     0.884
+    ],
+    [
+     1.248,
+     3.837
+    ],
+    [
+     4.175,
+     6.291
+    ],
+    [
+     6.579,
+     8.432
+    ],
+    [
+     8.703,
+     9.956
+    ]
+   ],
+   "baslik": "⚠ DİKKAT",
+   "renk": "#ef6c00",
+   "maddeler": [
+    [
+     "🌫️",
+     "Isınınca da duman sürüyorsa",
+     "ısındıktan",
+     "uyari"
+    ],
+    [
+     "🧊",
+     "Antifriz eksiliyorsa",
+     "antifriz",
+     "uyari"
+    ],
+    [
+     "🔧",
+     "Conta olabilir: servise göster",
+     "contadan",
+     "uyari"
+    ]
+   ]
+  },
+  {
+   "sahne": "smadde",
+   "konusan": "usta",
+   "metin": "Çalışınca da hemen yüklenme. Birkaç dakika ısıt, sonra işe koyul.",
+   "sure": 5.15,
+   "konusma": [
+    [
+     0.154,
+     1.878
+    ],
+    [
+     2.253,
+     3.463
+    ],
+    [
+     3.676,
+     4.662
+    ]
+   ],
+   "baslik": "ÇALIŞINCA",
+   "renk": "#2F5737",
+   "maddeler": [
+    [
+     "🚜",
+     "Hemen yüklenme",
+     "hemen",
+     "x"
+    ],
+    [
+     "⏱️",
+     "Birkaç dakika ısıt",
+     "birkaç",
+     "ok"
+    ],
+    [
+     "💪",
+     "Sonra işe koyul",
+     "sonra",
+     "ok"
+    ]
+   ]
+  },
+  {
+   "sahne": "ktepki",
+   "konusan": "dayi",
+   "metin": "Desene, traktör ilk marşta çalışacak, çayım da sıcak kalacak!",
+   "sure": 3.88,
+   "konusma": [
+    [
+     0.15,
+     1.919
+    ],
+    [
+     2.127,
+     3.38
+    ]
+   ],
+   "balon": [
+    "Traktör ilk marşta çalışacak,",
+    "[çayım] da sıcak kalacak! ☕"
+   ]
+  },
+  {
+   "sahne": "skapanis",
+   "konusan": "dayi",
+   "metin": "Serinin devamı için takip etmeyi unutmayın.",
+   "sure": 4.5,
+   "konusma": [
+    [
+     0.15,
+     1.545
+    ],
+    [
+     1.696,
+     3.097
+    ]
+   ]
+  }
+ ]
+}
