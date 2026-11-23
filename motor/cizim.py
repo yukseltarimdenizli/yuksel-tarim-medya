@@ -726,6 +726,8 @@ CSS = """*{margin:0;padding:0;box-sizing:border-box}body{width:1080px;height:192
 def kelime_zamanlari(p):
     """Her kelimenin parça içindeki başlama saniyesi (konuşma aralıklarına harf sayısıyla dağıtılır)."""
     ws = [w for w in p["metin"].split() if _temiz(w)]
+    if p.get("kelime_t") and len(p["kelime_t"]) == len(ws):   # sesten hizalanmış kelime başlangıçları (motor/hizala.py)
+        return list(zip(ws, p["kelime_t"]))
     L = [len(_temiz(w)) + 1 for w in ws]; top = sum(L) or 1
     kon = p.get("konusma") or [[0.15, p["sure"] * 0.9]]
     tp = sum(b - a for a, b in kon) or 1
