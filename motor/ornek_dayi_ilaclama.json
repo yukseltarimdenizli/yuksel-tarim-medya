@@ -1,0 +1,968 @@
+{
+ "bant": "DAYI SORUYOR #4",
+ "kapak": {
+  "ust": "DAYI SORUYOR #4",
+  "baslik": "Pompa [çatlamasın!]",
+  "alt": "Usta cevaplıyor 👇",
+  "sure": 0.2
+ },
+ "parcalar": [
+  {
+   "sahne": "idayi",
+   "konusan": "dayi",
+   "metin": "Ahmet Usta, ilaçlamayı bitirdim, makineyi ahırın yanına çektim. Bahara kadar dinlensin bari!",
+   "sure": 7.58,
+   "konusma": [
+    [
+     0.359,
+     1.033
+    ],
+    [
+     1.379,
+     2.434
+    ],
+    [
+     2.834,
+     4.388
+    ],
+    [
+     4.802,
+     6.377
+    ],
+    [
+     6.612,
+     7.078
+    ]
+   ],
+   "balon": [
+    "İlaçlamayı bitirdim,",
+    "makine bahara kadar",
+    "[dinlensin] bari! 😄"
+   ],
+   "kanca": "5 adım · sonuncusu sürpriz 👇",
+   "kelime_t": [
+    0.359,
+    0.696,
+    1.379,
+    2.038,
+    2.834,
+    3.352,
+    3.741,
+    4.129,
+    4.802,
+    5.274,
+    5.589,
+    6.062
+   ]
+  },
+  {
+   "sahne": "ibes",
+   "konusan": "usta",
+   "metin": "Dur dayı! Öyle bırakırsan baharda pompayı çatlak bulursun. Beş adım var, sonuncusunu çoğu kişi bilmiyor.",
+   "sure": 7.55,
+   "konusma": [
+    [
+     0.185,
+     0.831
+    ],
+    [
+     1.288,
+     3.408
+    ],
+    [
+     3.476,
+     3.891
+    ],
+    [
+     4.345,
+     5.071
+    ],
+    [
+     5.39,
+     7.195
+    ]
+   ],
+   "kelime_t": [
+    0.185,
+    0.4,
+    1.288,
+    1.591,
+    2.197,
+    2.651,
+    3.105,
+    3.476,
+    4.345,
+    4.526,
+    4.889,
+    5.39,
+    6.142,
+    6.443,
+    6.744
+   ]
+  },
+  {
+   "sahne": "icalkala",
+   "konusan": "usta",
+   "metin": "Birinci adım: Depoyu boşalt, temiz suyla en az üç kere çalkala. Eldivenini, maskeni tak.",
+   "sure": 7.5,
+   "konusma": [
+    [
+     0.203,
+     0.916
+    ],
+    [
+     1.326,
+     2.311
+    ],
+    [
+     2.707,
+     3.437
+    ],
+    [
+     3.573,
+     3.962
+    ],
+    [
+     4.04,
+     5.026
+    ],
+    [
+     5.441,
+     6.216
+    ],
+    [
+     6.345,
+     7.149
+    ]
+   ],
+   "kelime_t": [
+    0.203,
+    0.631,
+    1.326,
+    1.917,
+    2.707,
+    3.072,
+    3.573,
+    3.767,
+    4.04,
+    4.204,
+    4.533,
+    5.441,
+    6.345,
+    6.948
+   ]
+  },
+  {
+   "sahne": "idok",
+   "konusan": "usta",
+   "metin": "Çalkalama suyunu ilaçladığın tarlaya sık. Çeşme başına, dereye, kanala asla dökme.",
+   "sure": 6.33,
+   "konusma": [
+    [
+     0.198,
+     1.224
+    ],
+    [
+     1.287,
+     2.683
+    ],
+    [
+     3.07,
+     4.484
+    ],
+    [
+     4.581,
+     5.013
+    ],
+    [
+     5.096,
+     5.975
+    ]
+   ],
+   "kelime_t": [
+    0.198,
+    0.784,
+    1.287,
+    2.062,
+    2.527,
+    3.07,
+    3.423,
+    3.953,
+    4.581,
+    5.096,
+    5.536
+   ]
+  },
+  {
+   "sahne": "ktepki",
+   "konusan": "dayi",
+   "metin": "Vay! Ben depoyu çeşme başında yıkardım, bütün mahalle ilaç kokardı!",
+   "sure": 6.75,
+   "konusma": [
+    [
+     0.198,
+     0.844
+    ],
+    [
+     0.962,
+     1.163
+    ],
+    [
+     1.237,
+     1.927
+    ],
+    [
+     2.301,
+     4.307
+    ],
+    [
+     4.512,
+     6.199
+    ]
+   ],
+   "balon": [
+    "Ben depoyu [çeşme] başında",
+    "yıkardım! 😅 Bütün mahalle",
+    "ilaç kokardı!"
+   ],
+   "kelime_t": [
+    1.707,
+    2.301,
+    2.468,
+    2.97,
+    3.304,
+    3.806,
+    4.512,
+    4.849,
+    5.356,
+    5.693
+   ]
+  },
+  {
+   "sahne": "smadde",
+   "konusan": "usta",
+   "metin": "Bir daha yapma dayı! O su, içme suyunu da hayvanı da zehirler.",
+   "sure": 4.72,
+   "konusma": [
+    [
+     0.201,
+     0.781
+    ],
+    [
+     0.844,
+     1.276
+    ],
+    [
+     1.692,
+     2.109
+    ],
+    [
+     2.228,
+     4.358
+    ]
+   ],
+   "baslik": "BİR DAHA YAPMA!",
+   "renk": "#c62828",
+   "maddeler": [
+    [
+     "🚰",
+     "İçme suyunu zehirler",
+     "içme",
+     "x"
+    ],
+    [
+     "🐄",
+     "Hayvanı zehirler",
+     "hayvanı",
+     "x"
+    ]
+   ],
+   "kelime_t": [
+    0.201,
+    0.395,
+    0.844,
+    1.06,
+    1.692,
+    1.9,
+    2.228,
+    2.556,
+    3.047,
+    3.211,
+    3.703,
+    3.866
+   ]
+  },
+  {
+   "sahne": "ifiltre",
+   "konusan": "usta",
+   "metin": "İkinci adım filtreler. Emiş filtresini, basınç filtresini, meme filtrelerini sök, bol suyla yıka.",
+   "sure": 7.71,
+   "konusma": [
+    [
+     0.2,
+     0.889
+    ],
+    [
+     1.269,
+     1.947
+    ],
+    [
+     2.376,
+     3.379
+    ],
+    [
+     3.507,
+     4.612
+    ],
+    [
+     4.77,
+     6.112
+    ],
+    [
+     6.348,
+     7.354
+    ]
+   ],
+   "kelime_t": [
+    0.2,
+    0.613,
+    1.269,
+    2.376,
+    2.711,
+    3.507,
+    3.876,
+    4.77,
+    5.106,
+    5.944,
+    6.348,
+    6.549,
+    6.952
+   ]
+  },
+  {
+   "sahne": "imeme",
+   "konusan": "usta",
+   "metin": "Memeleri de sök, yumuşak fırçayla temizle. Tıkalı memeyi iğneyle, telle kurcalama; deliği bozulur.",
+   "sure": 8.43,
+   "konusma": [
+    [
+     0.203,
+     1.138
+    ],
+    [
+     1.345,
+     2.764
+    ],
+    [
+     3.209,
+     4.038
+    ],
+    [
+     4.125,
+     4.741
+    ],
+    [
+     4.863,
+     5.825
+    ],
+    [
+     6.092,
+     6.929
+    ],
+    [
+     7.3,
+     8.071
+    ]
+   ],
+   "kelime_t": [
+    0.203,
+    0.826,
+    0.982,
+    1.345,
+    1.818,
+    2.291,
+    3.209,
+    4.125,
+    4.863,
+    6.092,
+    6.371,
+    7.3,
+    7.686
+   ]
+  },
+  {
+   "sahne": "ktepki",
+   "konusan": "dayi",
+   "metin": "Ben kırk yıldır tıkanan memeyi ağzımla üflerim evladım.",
+   "sure": 5.13,
+   "konusma": [
+    [
+     0.204,
+     0.89
+    ],
+    [
+     1.224,
+     1.535
+    ],
+    [
+     1.599,
+     4.565
+    ]
+   ],
+   "balon": [
+    "Kırk yıldır tıkanan memeyi",
+    "[ağzımla] üflerim! 😮"
+   ],
+   "kelime_t": [
+    1.224,
+    1.379,
+    1.599,
+    1.948,
+    2.471,
+    2.995,
+    3.518,
+    4.042
+   ]
+  },
+  {
+   "sahne": "smadde",
+   "konusan": "usta",
+   "metin": "Sakın dayı! İlaç ağızdan zehirler. Eldiven tak, fırçayla temizle.",
+   "sure": 4.46,
+   "konusma": [
+    [
+     0.195,
+     1.704
+    ],
+    [
+     2.153,
+     2.899
+    ],
+    [
+     3.111,
+     4.106
+    ]
+   ],
+   "baslik": "SAKIN!",
+   "renk": "#c62828",
+   "maddeler": [
+    [
+     "👄",
+     "Ağızla üfleme: zehirler",
+     "ağızdan",
+     "x"
+    ],
+    [
+     "🧤",
+     "Eldiven tak",
+     "eldiven",
+     "ok"
+    ],
+    [
+     "🪥",
+     "Fırçayla temizle",
+     "fırçayla",
+     "ok"
+    ]
+   ],
+   "kelime_t": [
+    0.195,
+    0.447,
+    0.698,
+    0.95,
+    1.327,
+    2.153,
+    2.712,
+    3.111,
+    3.609
+   ]
+  },
+  {
+   "sahne": "skaydet",
+   "konusan": "usta",
+   "metin": "Bu videoyu kaydet dayı, baharda lazım olur.",
+   "sure": 3.29,
+   "konusma": [
+    [
+     0.203,
+     1.119
+    ],
+    [
+     1.223,
+     1.461
+    ],
+    [
+     1.785,
+     2.837
+    ]
+   ],
+   "kelime_t": [
+    0.203,
+    0.334,
+    0.857,
+    1.223,
+    1.785,
+    2.236,
+    2.536
+   ]
+  },
+  {
+   "sahne": "idon",
+   "konusan": "usta",
+   "metin": "Üçüncü adım, en önemlisi: içeride su bırakma. Pompada, hortumda, borularda kalan su donunca pompayı ve manometreyi çatlatır.",
+   "sure": 11.77,
+   "konusma": [
+    [
+     0.204,
+     0.907
+    ],
+    [
+     1.322,
+     2.043
+    ],
+    [
+     2.509,
+     3.84
+    ],
+    [
+     4.327,
+     4.961
+    ],
+    [
+     5.023,
+     7.475
+    ],
+    [
+     7.75,
+     9.18
+    ],
+    [
+     9.264,
+     9.616
+    ],
+    [
+     10.022,
+     10.416
+    ],
+    [
+     10.542,
+     11.416
+    ]
+   ],
+   "kelime_t": [
+    0.204,
+    0.626,
+    1.322,
+    1.466,
+    2.509,
+    3.174,
+    3.341,
+    4.327,
+    5.023,
+    5.759,
+    6.74,
+    7.23,
+    7.75,
+    8.465,
+    9.264,
+    10.022,
+    10.542
+   ]
+  },
+  {
+   "sahne": "smadde",
+   "konusan": "usta",
+   "metin": "Suyu iyice boşalt. Sonra depoya biraz antifriz koy, pompayı çalıştır; memelerden antifriz gelince durdur.",
+   "sure": 6.62,
+   "konusma": [
+    [
+     0.199,
+     2.333
+    ],
+    [
+     2.601,
+     3.636
+    ],
+    [
+     3.961,
+     5.729
+    ],
+    [
+     5.854,
+     6.266
+    ]
+   ],
+   "baslik": "ANTİFRİZ",
+   "renk": "#1565c0",
+   "maddeler": [
+    [
+     "💧",
+     "Suyu iyice boşalt",
+     "suyu",
+     "ok"
+    ],
+    [
+     "🧪",
+     "Depoya biraz antifriz koy",
+     "depoya",
+     "ok"
+    ],
+    [
+     "⚙️",
+     "Pompayı çalıştır",
+     "pompayı",
+     "ok"
+    ],
+    [
+     "🚿",
+     "Memeden gelince durdur",
+     "memelerden",
+     "ok"
+    ]
+   ],
+   "kelime_t": [
+    0.199,
+    0.436,
+    0.792,
+    1.029,
+    1.266,
+    1.621,
+    1.858,
+    2.214,
+    2.601,
+    3.118,
+    3.961,
+    4.668,
+    5.199,
+    5.854
+   ]
+  },
+  {
+   "sahne": "iyag",
+   "konusan": "usta",
+   "metin": "Dördüncü adım pompa yağı. Membranlı pompanın yağına bak. Yağ süt gibi beyazlaşmışsa membran delinmiştir; membranı değiştir, yağı yenile.",
+   "sure": 10.74,
+   "konusma": [
+    [
+     0.203,
+     1.024
+    ],
+    [
+     1.465,
+     2.083
+    ],
+    [
+     2.693,
+     4.235
+    ],
+    [
+     4.827,
+     7.954
+    ],
+    [
+     8.343,
+     9.413
+    ],
+    [
+     9.642,
+     10.391
+    ]
+   ],
+   "kelime_t": [
+    0.203,
+    0.696,
+    1.465,
+    1.774,
+    2.693,
+    3.155,
+    3.618,
+    4.081,
+    4.827,
+    5.035,
+    5.244,
+    5.661,
+    6.703,
+    7.12,
+    8.343,
+    8.878,
+    9.642,
+    9.942
+   ]
+  },
+  {
+   "sahne": "ktepki",
+   "konusan": "dayi",
+   "metin": "Meğer benim pompa ayran yapıyormuş!",
+   "sure": 5.25,
+   "konusma": [
+    [
+     0.206,
+     0.453
+    ],
+    [
+     0.593,
+     0.819
+    ],
+    [
+     0.905,
+     3.202
+    ],
+    [
+     3.402,
+     3.683
+    ],
+    [
+     3.837,
+     4.697
+    ]
+   ],
+   "balon": [
+    "Meğer benim pompa",
+    "[ayran] yapıyormuş! 😄"
+   ],
+   "kelime_t": [
+    1.885,
+    2.324,
+    2.763,
+    3.402,
+    3.837
+   ]
+  },
+  {
+   "sahne": "smadde",
+   "konusan": "usta",
+   "metin": "Sonra makineyi kapalı, kuru bir yere çek. Hortumları güneşten koru, kardan milini gresle.",
+   "sure": 6.59,
+   "konusma": [
+    [
+     0.202,
+     1.098
+    ],
+    [
+     1.158,
+     1.656
+    ],
+    [
+     1.805,
+     2.693
+    ],
+    [
+     3.086,
+     4.497
+    ],
+    [
+     4.876,
+     6.229
+    ]
+   ],
+   "baslik": "KIŞLIK PARK",
+   "renk": "#2F5737",
+   "maddeler": [
+    [
+     "🏠",
+     "Kapalı, kuru yere çek",
+     "kapalı",
+     "ok"
+    ],
+    [
+     "☀️",
+     "Hortumları güneşten koru",
+     "hortumları",
+     "ok"
+    ],
+    [
+     "🔧",
+     "Kardan milini gresle",
+     "kardan",
+     "ok"
+    ]
+   ],
+   "kelime_t": [
+    0.202,
+    0.501,
+    1.158,
+    1.805,
+    2.101,
+    2.249,
+    2.545,
+    3.086,
+    3.713,
+    4.184,
+    4.876,
+    5.263,
+    5.842
+   ]
+  },
+  {
+   "sahne": "itest",
+   "konusan": "usta",
+   "metin": "Beşinci adım, çoğu kişinin atladığı: meme testi. Baharda ilk ilaçlamadan önce her memenin altına bir kap koy, bir dakika su püskürt.",
+   "sure": 8.39,
+   "konusma": [
+    [
+     0.2,
+     0.945
+    ],
+    [
+     1.364,
+     2.208
+    ],
+    [
+     2.285,
+     2.66
+    ],
+    [
+     3.083,
+     3.838
+    ],
+    [
+     4.37,
+     4.871
+    ],
+    [
+     4.934,
+     6.229
+    ],
+    [
+     6.358,
+     8.022
+    ]
+   ],
+   "faz": 1,
+   "kelime_t": [
+    0.2,
+    0.647,
+    1.364,
+    1.702,
+    2.285,
+    3.083,
+    3.46,
+    4.37,
+    4.746,
+    4.934,
+    5.523,
+    5.758,
+    5.876,
+    6.358,
+    6.742,
+    6.87,
+    6.998,
+    7.126,
+    7.254,
+    7.638,
+    7.766
+   ]
+  },
+  {
+   "sahne": "itest",
+   "konusan": "usta",
+   "metin": "Ortalamadan yüzde ondan fazla sapan memeyi değiştir. Aşınmış meme fazla ilaç atar; ilaç boşa gider, ürüne de zarar verir.",
+   "sure": 10.65,
+   "konusma": [
+    [
+     0.204,
+     1.536
+    ],
+    [
+     1.954,
+     5.213
+    ],
+    [
+     5.615,
+     7.474
+    ],
+    [
+     7.798,
+     8.836
+    ],
+    [
+     9.113,
+     10.303
+    ]
+   ],
+   "faz": 2,
+   "kelime_t": [
+    0.204,
+    1.954,
+    2.42,
+    2.885,
+    3.351,
+    3.817,
+    4.515,
+    5.615,
+    6.122,
+    6.46,
+    6.798,
+    7.136,
+    7.798,
+    8.144,
+    8.49,
+    9.113,
+    9.559,
+    9.708,
+    10.005
+   ]
+  },
+  {
+   "sahne": "ktepki",
+   "konusan": "dayi",
+   "metin": "Desene, bahar gelince makine ilk günden hazır, ilaç da boşa gitmeyecek!",
+   "sure": 4.7,
+   "konusma": [
+    [
+     0.198,
+     1.759
+    ],
+    [
+     1.872,
+     2.573
+    ],
+    [
+     2.885,
+     4.144
+    ]
+   ],
+   "balon": [
+    "Makine ilk günden [hazır],",
+    "ilaç da boşa gitmeyecek! 😄"
+   ],
+   "kelime_t": [
+    0.198,
+    0.624,
+    0.908,
+    1.333,
+    1.872,
+    2.012,
+    2.292,
+    2.885,
+    3.165,
+    3.305,
+    3.585
+   ]
+  },
+  {
+   "sahne": "ikapanis",
+   "konusan": "dayi",
+   "metin": "Serinin devamı için takip etmeyi unutmayın.",
+   "sure": 4.66,
+   "konusma": [
+    [
+     0.196,
+     1.573
+    ],
+    [
+     1.732,
+     3.209
+    ]
+   ],
+   "kelime_t": [
+    0.196,
+    0.712,
+    1.229,
+    1.732,
+    2.06,
+    2.553
+   ]
+  }
+ ]
+}
