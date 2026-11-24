@@ -277,7 +277,8 @@ Sıfır ürünler, Yüksel Tarım güvencesiyle. Denizli'den tüm Türkiye'ye g�
 
 ### 5. Metricool'a planla
 `createScheduledPost`, `blogId` "7661465", `date` = `<date>T<time>:00+03:00`, info:
-- `providers`: kaydın `platform` alanına göre `facebook`, `tiktok`, `youtube`. "Facebook + TikTok" yazan ESKİ kayıtlarda da varsayılan olarak YouTube'u ekle (kullanıcı Ekim 2026'da her paylaşımın Shorts olarak da gitmesini istedi); sadece kayıt açıkça "Facebook" ya da "TikTok" tek platformsa ekleme.
+- **YouTube Shorts'a YALNIZCA "Dayı Soruyor" bölümleri gider (kullanıcı kararı 24.11.2026).** Sebep: Buffer ücretsiz planı YouTube'a kanal başına kayan 24 saatte en fazla 2 Shorts gönderiyor; 3. gönderi "daily posting limit" hatası veriyordu (20, 21, 23, 24 Kasım). Ürün, kampanya, referans, firma tanıtımı, usta ipucu, Cuma/özel gün videoları — kayıttaki `platform` ne yazarsa yazsın — yalnızca Facebook + TikTok'a gider (Metricool'da da Buffer'da da). Dayı Soruyor kayıtlarında YouTube eklenir.
+- `providers`: kaydın `platform` alanına göre `facebook`, `tiktok` (+ yalnız Dayı Soruyor ise `youtube`).
 - `media`: [herkese açık link], `text`: caption, `autoPublish`: true, `draft`: false,
   `publicationDate`: {"dateTime": "<date>T<time>:00", "timezone": "Europe/Istanbul"}.
 - `facebookData`: {"type": "POST"}.
@@ -295,7 +296,7 @@ Sıfır ürünler, Yüksel Tarım güvencesiyle. Denizli'den tüm Türkiye'ye g�
   20'den azsa Metricool'a planla (`arac`: "Metricool"). 20 dolduysa **Buffer'a planla** (`arac`: "Buffer"), kullanıcıya sorma:
   - Buffer'a yalnızca paylaşım zamanı **en fazla 4 gün sonra** olan kayıtlar planlanır (10 bekleyen sınırına takılmamak için).
     Daha ileri tarihli olanlar "Taslak" kalır, `uyari` YAZMA; sonraki sabah çalışmasında sırası gelince planlanır. Özette "Buffer sırasında bekliyor" de.
-  - Her platform için AYRI `create_post` (Buffer bir gönderiyi tek kanala atar): `schedulingType` "automatic", `mode` "customScheduled",
+  - Her platform için AYRI `create_post` (Buffer bir gönderiyi tek kanala atar; YouTube kanalına yalnız Dayı Soruyor): `schedulingType` "automatic", `mode` "customScheduled",
     `dueAt` "<date>T<time>:00+03:00", `text` = caption, `assets` [{"video": {"url": <herkese açık link>}}].
     Facebook: `metadata.facebook.type` "post". TikTok: `metadata.tiktok.title` (kaydın başlığı, en fazla 90 karakter).
     YouTube: `metadata.youtube` {"title": Metricool'daki YouTube başlığıyla aynı kural, "categoryId": "2" (Autos & Vehicles; usta ipucu "26" Howto & Style,
