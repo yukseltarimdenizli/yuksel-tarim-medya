@@ -1,0 +1,549 @@
+{
+ "bant": "DAYI SORUYOR #5",
+ "kapak": {
+  "ust": "DAYI SORUYOR #5",
+  "baslik": "Tarlanda [beton] var!",
+  "alt": "Usta cevaplıyor 👇",
+  "sure": 0.2
+ },
+ "parcalar": [
+  {
+   "sahne": "tdayi",
+   "konusan": "dayi",
+   "metin": "Ahmet Usta, bu tarla her yıl biraz daha inatlaşıyor! Traktör bağırıyor, ben bağırıyorum, toprak oralı bile değil.",
+   "sure": 9.74,
+   "kelime_t": [
+    0.21,
+    0.53,
+    1.17,
+    1.33,
+    1.81,
+    2.09,
+    2.37,
+    2.65,
+    2.93,
+    4.05,
+    4.53,
+    5.37,
+    5.57,
+    6.49,
+    6.85,
+    7.17,
+    7.41
+   ],
+   "konusma": [
+    [
+     0.25,
+     0.89
+    ],
+    [
+     1.21,
+     3.69
+    ],
+    [
+     4.09,
+     8.01
+    ]
+   ],
+   "balon": [
+    "Bu tarla her yıl",
+    "biraz daha [inatlaşıyor]! 😤"
+   ],
+   "kanca": "3 adım · sonuncusu sürpriz 👇"
+  },
+  {
+   "sahne": "t3",
+   "konusan": "usta",
+   "metin": "Dayı, senin tarlanın altında görünmez bir beton var: pulluk tabanı. Üç adımda çözeceğiz, sonuncusunu çoğu kişi atlıyor.",
+   "sure": 9.05,
+   "kelime_t": [
+    0.11,
+    0.59,
+    0.91,
+    1.59,
+    2.03,
+    2.67,
+    2.87,
+    3.31,
+    3.91,
+    4.19,
+    5.03,
+    5.23,
+    5.59,
+    6.59,
+    7.31,
+    7.63,
+    7.99
+   ],
+   "konusma": [
+    [
+     0.15,
+     8.75
+    ]
+   ]
+  },
+  {
+   "sahne": "tsebep",
+   "konusan": "usta",
+   "metin": "Önce sebebi. Her yıl aynı derinlikte sürünce, pulluğun altındaki toprak ezilip sıkışıyor. Sürdüğün derinliğin hemen altında sert bir tabaka oluşuyor.",
+   "sure": 11.45,
+   "kelime_t": [
+    0.39,
+    0.79,
+    1.75,
+    2.03,
+    2.39,
+    2.71,
+    3.35,
+    4.27,
+    4.63,
+    5.19,
+    5.75,
+    6.19,
+    7.35,
+    7.91,
+    8.47,
+    8.79,
+    9.51,
+    9.83,
+    9.99,
+    10.43
+   ],
+   "konusma": [
+    [
+     0.43,
+     1.31
+    ],
+    [
+     1.79,
+     11.15
+    ]
+   ]
+  },
+  {
+   "sahne": "smadde",
+   "konusan": "usta",
+   "metin": "Islak toprağa girmek ve ağır römorkla tarlada dolaşmak da bu tabakayı kalınlaştırıyor.",
+   "sure": 6.57,
+   "kelime_t": [
+    0.35,
+    0.75,
+    1.23,
+    1.79,
+    2.11,
+    2.43,
+    2.99,
+    3.51,
+    4.11,
+    4.43,
+    4.59,
+    5.15
+   ],
+   "konusma": [
+    [
+     0.39,
+     6.27
+    ]
+   ],
+   "baslik": "TABANI KALINLAŞTIRAN",
+   "renk": "#c62828",
+   "maddeler": [
+    [
+     "🌧️",
+     "Islak toprağa girmek",
+     "ıslak",
+     "x"
+    ],
+    [
+     "🚛",
+     "Ağır römorkla dolaşmak",
+     "ağır",
+     "x"
+    ]
+   ]
+  },
+  {
+   "sahne": "ktepki",
+   "konusan": "dayi",
+   "metin": "Ben de yağmurdan sonra hemen tarlaya dalardım, toprak tam yumuşamış derdim.",
+   "sure": 6.615,
+   "kelime_t": [
+    1.31,
+    1.55,
+    1.71,
+    2.19,
+    2.59,
+    2.99,
+    3.39,
+    4.31,
+    4.67,
+    4.91,
+    5.51
+   ],
+   "konusma": [
+    [
+     1.35,
+     6.11
+    ]
+   ],
+   "balon": [
+    "Yağmurdan sonra hemen",
+    "tarlaya [dalardım]! 😅"
+   ]
+  },
+  {
+   "sahne": "tbelirti",
+   "konusan": "usta",
+   "metin": "En çok orada sıkışıyor dayı. Belirtilerine bak: Yağmurdan sonra su göllenir, kökler aşağı inemez, yana kıvrılır. Kuraklıkta ürün çabuk solar.",
+   "sure": 10.985,
+   "kelime_t": [
+    0.31,
+    0.55,
+    0.87,
+    1.19,
+    1.79,
+    2.31,
+    3.03,
+    3.67,
+    4.23,
+    4.63,
+    4.87,
+    5.67,
+    6.15,
+    6.55,
+    7.31,
+    7.59,
+    8.47,
+    9.27,
+    9.59,
+    9.95
+   ],
+   "konusma": [
+    [
+     0.35,
+     3.31
+    ],
+    [
+     3.71,
+     10.67
+    ]
+   ]
+  },
+  {
+   "sahne": "tcubuk",
+   "konusan": "usta",
+   "metin": "Birinci adım, kontrol: Toprak tavındayken ince bir demir çubuğu toprağa bastır. Bir yerde birden sertleşiyorsa, taban orada.",
+   "sure": 10.13,
+   "kelime_t": [
+    0.415,
+    0.895,
+    1.535,
+    2.575,
+    2.975,
+    3.935,
+    4.255,
+    4.415,
+    4.735,
+    5.135,
+    5.615,
+    6.575,
+    6.735,
+    7.135,
+    7.615,
+    8.735,
+    9.215
+   ],
+   "konusma": [
+    [
+     0.455,
+     2.135
+    ],
+    [
+     2.615,
+     9.655
+    ]
+   ]
+  },
+  {
+   "sahne": "ktepki",
+   "konusan": "dayi",
+   "metin": "Kırk yıldır göz kararı sürdüm, bir kere de çubuğa bakalım bari!",
+   "sure": 5.955,
+   "kelime_t": [
+    0.385,
+    0.705,
+    1.105,
+    1.425,
+    1.825,
+    2.545,
+    2.745,
+    2.985,
+    3.105,
+    3.505,
+    3.985
+   ],
+   "konusma": [
+    [
+     0.425,
+     4.505
+    ]
+   ],
+   "balon": [
+    "Kırk yıldır göz kararı,",
+    "bir de [çubuğa] bakalım! 😄"
+   ]
+  },
+  {
+   "sahne": "smadde",
+   "konusan": "usta",
+   "metin": "Kürekle küçük bir çukur da kazabilirsin. Sert katmanı ve yana kıvrılan kökleri gözünle görürsün.",
+   "sure": 6.98,
+   "kelime_t": [
+    0.335,
+    0.815,
+    1.175,
+    1.295,
+    1.615,
+    1.735,
+    2.895,
+    3.215,
+    3.935,
+    4.175,
+    4.495,
+    4.975,
+    5.455,
+    5.935
+   ],
+   "konusma": [
+    [
+     0.375,
+     6.68
+    ]
+   ],
+   "baslik": "ÇUKUR KONTROLÜ",
+   "renk": "#2F5737",
+   "maddeler": [
+    [
+     "⛏️",
+     "Kürekle küçük bir çukur kaz",
+     "kürekle",
+     "ok"
+    ],
+    [
+     "👀",
+     "Sert katmanı gör",
+     "sert",
+     "ok"
+    ],
+    [
+     "🌱",
+     "Yana kıvrılan kökleri gör",
+     "yana",
+     "ok"
+    ]
+   ]
+  },
+  {
+   "sahne": "skaydet",
+   "konusan": "usta",
+   "metin": "Bu videoyu kaydet dayı, tarlaya çıkınca lazım olur.",
+   "sure": 4.1,
+   "kelime_t": [
+    0.325,
+    0.445,
+    0.925,
+    1.325,
+    1.885,
+    2.285,
+    2.725,
+    3.125
+   ],
+   "konusma": [
+    [
+     0.365,
+     3.445
+    ]
+   ]
+  },
+  {
+   "sahne": "tdip",
+   "konusan": "usta",
+   "metin": "İkinci adım, çözüm: Dipkazanla tabanın biraz altına in. Ama toprak kuruyken ya da tavındayken çek. Çamurda çekersen işe yaramaz, toprağı daha da sıkıştırır.",
+   "sure": 12.335,
+   "kelime_t": [
+    0.415,
+    0.895,
+    1.535,
+    2.415,
+    3.295,
+    3.775,
+    4.095,
+    4.575,
+    5.015,
+    5.295,
+    5.695,
+    6.415,
+    6.575,
+    6.735,
+    7.535,
+    8.135,
+    8.575,
+    9.215,
+    9.535,
+    10.295,
+    10.655,
+    10.895,
+    11.015
+   ],
+   "konusma": [
+    [
+     0.455,
+     12.035
+    ]
+   ]
+  },
+  {
+   "sahne": "smadde",
+   "konusan": "usta",
+   "metin": "Üçüncü adım, çoğu kişinin unuttuğu: Tabanı bir daha oluşturmamak. Her yıl sürüm derinliğini biraz değiştir, ıslak toprağa girme, römorku hep aynı izden geçir.",
+   "sure": 12.61,
+   "kelime_t": [
+    0.45,
+    0.85,
+    1.49,
+    1.81,
+    2.29,
+    3.25,
+    3.81,
+    4.05,
+    4.29,
+    5.65,
+    5.89,
+    6.21,
+    6.53,
+    7.17,
+    7.57,
+    8.41,
+    8.77,
+    9.25,
+    10.01,
+    10.69,
+    11.01,
+    11.37,
+    11.73
+   ],
+   "konusma": [
+    [
+     0.49,
+     2.89
+    ],
+    [
+     3.29,
+     5.21
+    ],
+    [
+     5.69,
+     12.29
+    ]
+   ],
+   "baslik": "3. TEKRAR OLUŞMASIN",
+   "renk": "#b8860b",
+   "maddeler": [
+    [
+     "↕️",
+     "Sürüm derinliğini değiştir",
+     "sürüm",
+     "ok"
+    ],
+    [
+     "🌧️",
+     "Islak toprağa girme",
+     "ıslak",
+     "x"
+    ],
+    [
+     "🛞",
+     "Römorku hep aynı izden geçir",
+     "römorku",
+     "ok"
+    ]
+   ]
+  },
+  {
+   "sahne": "tyonca",
+   "konusan": "usta",
+   "metin": "Bir de ekim nöbetine yonca gibi derin köklü bir bitki koy, kökleri toprağı aşağıdan gevşetir.",
+   "sure": 7.143,
+   "kelime_t": [
+    0.29,
+    0.53,
+    0.77,
+    1.09,
+    1.81,
+    2.21,
+    2.53,
+    2.85,
+    3.25,
+    3.41,
+    3.73,
+    4.37,
+    4.85,
+    5.33,
+    5.97
+   ],
+   "konusma": [
+    [
+     0.33,
+     6.843
+    ]
+   ]
+  },
+  {
+   "sahne": "ktepki",
+   "konusan": "dayi",
+   "metin": "Desene, toprağın da nefes alması lazımmış, tıpkı benim gibi!",
+   "sure": 5.92,
+   "kelime_t": [
+    0.2,
+    0.96,
+    1.36,
+    1.48,
+    1.8,
+    2.2,
+    3.08,
+    3.48,
+    3.8
+   ],
+   "konusma": [
+    [
+     0.24,
+     4.32
+    ]
+   ],
+   "balon": [
+    "Toprağın da nefes",
+    "alması [lazımmış]! 😄"
+   ]
+  },
+  {
+   "sahne": "tkapanis",
+   "konusan": "dayi",
+   "metin": "Serinin devamı için takip etmeyi unutmayın.",
+   "sure": 5.123,
+   "kelime_t": [
+    0.61,
+    1.09,
+    1.53,
+    2.05,
+    2.45,
+    2.85
+   ],
+   "konusma": [
+    [
+     0.65,
+     3.723
+    ]
+   ]
+  }
+ ]
+}
