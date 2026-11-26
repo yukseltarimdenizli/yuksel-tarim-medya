@@ -150,6 +150,16 @@ Kayıt türü "Teslimat / müşteri" ve ürün seçilmemişse video sitedeki **R
 - **Yayın günleri (kullanıcı kararı 25.11.2026):** Dayı Soruyor bölümleri yalnız HAFTA İÇİ (Pazartesi-Cuma) 19:00'da yayınlanır; cumartesi-pazar Dayı bölümü YOK (ürün/referans/özel gün paylaşımları hafta sonu da devam eder). Bir bölüm kayarsa sonrakiler sırayla bir sonraki hafta içi güne ötelenir.
 - **Konu çeşitliliği (kullanıcı kararı 23.11.2026):** hep traktör konusu yapılmaz; içerik yelpazesi geniş tutulur (ilaçlama/pülverizatör, toprak işleme, ekim/gübreleme, hayvancılık/yem, bahçe/bağ, güvenlik vb.). Haftalık planda en fazla 1-2 traktör bölümü; aynı tema art arda gelmez.
   Bekleyen konu havuzu: **Traktör patinaj yapıyor (balast, lastik basıncı)** → 30.11-06.12 haftasına alındı (kullanıcı, 23.11.2026).
+- **Metrik dersleri (26.11.2026 incelemesi; kullanıcı: "sonraki haftaların konu, hook cümleleri vs. planlarını buna göre yaparız"):**
+  Veri (14-26.11, Buffer): Dayı bölüm başı ort. TikTok 25.534 izlenme / FB 10.837 erişim; diğer paylaşımlar 1.090 / 429 (~23-25 kat). TikTok izleme süresinin ~%96'sı Dayı.
+  Ort. izleme Dayı 16-26 sn, ürün videoları 2-6 sn. Bölümler: #1 Kış bakımı TT 93.129 (440 paylaşım, 32 yorum; FB 556), #3 Soğukta çalışma TT 19.534 + FB 49.358 erişim / 462 tıklama (FB rekoru),
+  #4 İlaçlama 1,5 günde TT 10.812 (ort. 26 sn), #2 Toprak analizi TT 3.228 (en zayıf), seslendirmesiz pulluk bölümü 969. YouTube bölüm başı ~540 (zayıf). Ürünlerde istisna: Fortis goble TT 12.440.
+  Planlamada uygula:
+  1. **Konu + başlık = "şu an başına gelebilecek sorun + mevsim"** (kış bakımı, soğukta çalışmama, kışa bırakılan makine). Genel/"şart mı?" tipi sorular zayıf kalıyor; başlığı sorun cümlesine çevir (ör. "Kaç dönüme kaç beygir" → somut bir zarar/sorun cümlesi).
+  2. **Hook:** ilk 3 sn'de sorun/zarar + merak ("baharda pompa çatlar", "Sonuncusunu çoğu kişi bilmiyor 👇"). Uzunluk sorun değil (izleyici 20+ sn kalıyor); bilgiyi kısaltma.
+  3. **Sesli bölüm şart** (sessiz bölüm ~25 kat geride kaldı).
+  4. **Paylaşım/kaydetme yüksek, yorum düşük:** "Kaydet, lazım olur 📌" ve "başkasına gönder" çağrıları kalsın; yorumu artırmak için somut soru sor, gelen yorum sorularını sonraki bölüm konusu yap ("İzleyicimiz sordu").
+  5. YouTube'a emek harcama önceliği düşük; asıl hedef TikTok + Facebook.
 - **Hasan Dayı'nın dili (kullanıcı isteği 20.11.2026):** samimi, köylü ağzıyla konuşur, araya kısa ve sıcak espriler girer (ör. "Benim traktör de benim gibi; sabah ayaklanması zor!", "Kırk yıldır göz kararı, bir kere de ölçüye bakalım bari"). Espri bilginin önüne geçmez; kimseyi küçümsemez, sevimli bir gülümseme bırakır. Argo/kaba kelime YOK ("lan" vb. kullanılmaz); hitaplar "evladım", "oğlum", "Ahmet Usta" gibi saygılı ve sıcak. Ses metninde uygun yerlere `[laughs]` gibi etiketler.
 - Motor: `motor/dayi_video.py` (sahneler: dayi_soru, pulluk, rotavator, taban, tepki, kapanis), karakterler `motor/usta.py` (dayı = "kasketli", usta = "genc"), arka plan `motor/arka.py`.
 - Seslendirme (kullanıcı kararı 12.11.2026): **ElevenLabs v4** — **Dayı (Hasan Dayı) = "Seyfullah Kartal – Deep and Muffled"**,
