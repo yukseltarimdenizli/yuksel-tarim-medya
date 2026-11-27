@@ -160,6 +160,8 @@ Kayıt türü "Teslimat / müşteri" ve ürün seçilmemişse video sitedeki **R
   3. **Sesli bölüm şart** (sessiz bölüm ~25 kat geride kaldı).
   4. **Paylaşım/kaydetme yüksek, yorum düşük:** "Kaydet, lazım olur 📌" ve "başkasına gönder" çağrıları kalsın; yorumu artırmak için somut soru sor, gelen yorum sorularını sonraki bölüm konusu yap ("İzleyicimiz sordu").
   5. YouTube'a emek harcama önceliği düşük; asıl hedef TikTok + Facebook.
+  6. **TikTok analiz ekranı (27.11.2026, #4/#5):** trafiğin %98-99'u "Sizin İçin" (takip etmeyen yeni kitle); çoğu izleyici 0:01'de bırakıyor, tam izlenme ~%1; ort. izleme 26-30 sn, bölüm başı 53-69 yeni takipçi, 113-118 kaydetme. → İLK KARE/İLK SANİYE en kritik yer: video ilk karede sorunu/zararı büyük yazıyla göstermeli (kapak yazısı ilk karede hazır olsun, boş/yavaş açılış yok).
+  Not: Buffer'ın TikTok `totalTimeWatched` değeri DAKİKA cinsindendir (saniye değil).
 - **Hasan Dayı'nın dili (kullanıcı isteği 20.11.2026):** samimi, köylü ağzıyla konuşur, araya kısa ve sıcak espriler girer (ör. "Benim traktör de benim gibi; sabah ayaklanması zor!", "Kırk yıldır göz kararı, bir kere de ölçüye bakalım bari"). Espri bilginin önüne geçmez; kimseyi küçümsemez, sevimli bir gülümseme bırakır. Argo/kaba kelime YOK ("lan" vb. kullanılmaz); hitaplar "evladım", "oğlum", "Ahmet Usta" gibi saygılı ve sıcak. Ses metninde uygun yerlere `[laughs]` gibi etiketler.
 - Motor: `motor/dayi_video.py` (sahneler: dayi_soru, pulluk, rotavator, taban, tepki, kapanis), karakterler `motor/usta.py` (dayı = "kasketli", usta = "genc"), arka plan `motor/arka.py`.
 - Seslendirme (kullanıcı kararı 12.11.2026): **ElevenLabs v4** — **Dayı (Hasan Dayı) = "Seyfullah Kartal – Deep and Muffled"**,
