@@ -1,0 +1,531 @@
+{
+ "bant": "DAYI SORUYOR #6",
+ "kapak": {
+  "ust": "DAYI SORUYOR #6",
+  "baslik": "Hayvan [yem] seçiyor!",
+  "alt": "Usta cevaplıyor 👇",
+  "sure": 0.2
+ },
+ "parcalar": [
+  {
+   "sahne": "ydayi",
+   "konusan": "dayi",
+   "balon": [
+    "Yemlikte hep",
+    "[saman] kalıyor! 🤔"
+   ],
+   "kanca": "3 fark · sonuncusu sürpriz 👇",
+   "metin": "Ahmet Usta, kışlık danalara yemi kürekle karıştırıyorum ama sabah yemliğe bakıyorum, hep saman kalmış! Bunlar benden de seçici çıktı.",
+   "sure": 10.96,
+   "kelime_t": [
+    0.21,
+    0.65,
+    1.33,
+    1.73,
+    2.21,
+    2.49,
+    2.93,
+    3.97,
+    4.29,
+    4.61,
+    5.09,
+    5.81,
+    6.01,
+    6.37,
+    7.25,
+    7.65,
+    8.05,
+    8.21,
+    8.57
+   ],
+   "konusma": [
+    [
+     0.25,
+     3.61
+    ],
+    [
+     4.01,
+     9.13
+    ]
+   ]
+  },
+  {
+   "sahne": "y3",
+   "konusan": "usta",
+   "metin": "Dayı, hayvanların yem seçiyor. Elle karıştırınca bu olur. Yem karmayla farkını üç adımda anlatayım, sonuncusunu çoğu kişi bilmiyor.",
+   "sure": 10.19,
+   "kelime_t": [
+    0.11,
+    0.75,
+    1.39,
+    1.63,
+    2.51,
+    2.83,
+    3.55,
+    3.71,
+    4.59,
+    4.91,
+    5.47,
+    6.03,
+    6.23,
+    6.59,
+    7.47,
+    8.27,
+    8.59,
+    8.91
+   ],
+   "konusma": [
+    [
+     0.15,
+     9.71
+    ]
+   ]
+  },
+  {
+   "sahne": "smadde",
+   "konusan": "usta",
+   "baslik": "ELLE KARIŞTIRINCA",
+   "renk": "#c62828",
+   "maddeler": [
+    [
+     "✋",
+     "Kürekle tam karışmaz",
+     "kürekle",
+     "x"
+    ],
+    [
+     "🌾",
+     "Saman, silaj, kesif yem ayrı",
+     "saman",
+     "x"
+    ],
+    [
+     "🐄",
+     "Hayvan kesif yemi seçer",
+     "hayvan",
+     "x"
+    ],
+    [
+     "🍂",
+     "Samanı bırakır",
+     "samanı",
+     "x"
+    ]
+   ],
+   "metin": "Önce sorun. Kürekle karıştırınca saman, silaj ve kesif yem tam karışmaz. Hayvan sevdiği kesif yemi seçip yer, samanı bırakır.",
+   "sure": 10.25,
+   "kelime_t": [
+    0.21,
+    0.53,
+    1.33,
+    1.81,
+    2.93,
+    3.69,
+    4.13,
+    4.37,
+    4.77,
+    5.01,
+    5.33,
+    6.45,
+    6.85,
+    7.33,
+    7.73,
+    7.97,
+    8.41,
+    8.85,
+    9.25
+   ],
+   "konusma": [
+    [
+     0.25,
+     2.57
+    ],
+    [
+     2.97,
+     6.01
+    ],
+    [
+     6.49,
+     9.93
+    ]
+   ]
+  },
+  {
+   "sahne": "smadde",
+   "konusan": "usta",
+   "baslik": "SONUÇ",
+   "renk": "#c62828",
+   "maddeler": [
+    [
+     "⚠️",
+     "Fazla kesif yiyen: işkembe bozulur",
+     "işkembesi",
+     "uyari"
+    ],
+    [
+     "😟",
+     "Öteki aç kalır",
+     "öteki",
+     "x"
+    ],
+    [
+     "🗑️",
+     "Dipte kalan saman boşa gider",
+     "yemliğin",
+     "x"
+    ]
+   ],
+   "metin": "Bir hayvan fazla kesif yem yer, işkembesi bozulabilir. Öteki aç kalır. Yemliğin dibinde kalan saman da boşa gider.",
+   "sure": 8.85,
+   "kelime_t": [
+    0.33,
+    0.57,
+    1.05,
+    1.45,
+    1.85,
+    2.09,
+    2.57,
+    3.13,
+    4.09,
+    4.57,
+    4.81,
+    5.61,
+    6.09,
+    6.49,
+    6.89,
+    7.25,
+    7.37,
+    7.65
+   ],
+   "konusma": [
+    [
+     0.37,
+     5.17
+    ],
+    [
+     5.65,
+     8.37
+    ]
+   ]
+  },
+  {
+   "sahne": "ktepki",
+   "konusan": "dayi",
+   "balon": [
+    "Bu kadar [saman]",
+    "nereye gidiyor! 😅"
+   ],
+   "metin": "Ben de diyordum, bu kadar saman nereye gidiyor!",
+   "sure": 4.81,
+   "kelime_t": [
+    1.13,
+    1.29,
+    1.45,
+    2.21,
+    2.33,
+    2.65,
+    3.05,
+    3.45
+   ],
+   "konusma": [
+    [
+     1.17,
+     3.89
+    ]
+   ]
+  },
+  {
+   "sahne": "ykarma",
+   "konusan": "usta",
+   "metin": "Birinci fark: Yem karma samanı ve kaba yemi doğrar, kesif yemle birlikte karıştırır. Her lokmada aynı yem olur, hayvan seçemez.",
+   "sure": 10.04,
+   "kelime_t": [
+    0.25,
+    0.65,
+    1.53,
+    1.77,
+    2.49,
+    2.97,
+    3.21,
+    3.53,
+    3.77,
+    4.49,
+    4.89,
+    5.21,
+    5.61,
+    6.65,
+    6.89,
+    7.45,
+    7.77,
+    8.01,
+    8.53,
+    8.89
+   ],
+   "konusma": [
+    [
+     0.29,
+     1.09
+    ],
+    [
+     1.57,
+     2.21
+    ],
+    [
+     2.53,
+     9.57
+    ]
+   ]
+  },
+  {
+   "sahne": "smadde",
+   "konusan": "usta",
+   "baslik": "2. FARK",
+   "renk": "#2F5737",
+   "maddeler": [
+    [
+     "💰",
+     "Yem israfı azalır",
+     "israfı",
+     "ok"
+    ],
+    [
+     "🐄",
+     "Sürü düzenli beslenir",
+     "sürü",
+     "ok"
+    ],
+    [
+     "⏱️",
+     "Kürekle saatler bitti",
+     "kürekle",
+     "ok"
+    ]
+   ],
+   "metin": "İkinci fark: Yem israfı azalır, sürü düzenli beslenir. Kürekle saatlerce uğraşmazsın.",
+   "sure": 7.54,
+   "kelime_t": [
+    0.42,
+    0.9,
+    1.7,
+    1.94,
+    2.54,
+    3.3,
+    3.62,
+    4.14,
+    4.98,
+    5.54,
+    6.22
+   ],
+   "konusma": [
+    [
+     0.46,
+     1.26
+    ],
+    [
+     1.74,
+     4.7
+    ],
+    [
+     5.02,
+     7.22
+    ]
+   ]
+  },
+  {
+   "sahne": "skaydet",
+   "konusan": "usta",
+   "metin": "Bu videoyu kaydet dayı, kışın lazım olur.",
+   "sure": 3.75,
+   "kelime_t": [
+    0.29,
+    0.45,
+    0.85,
+    1.33,
+    1.863,
+    2.13,
+    2.53
+   ],
+   "konusma": [
+    [
+     0.33,
+     3.09
+    ]
+   ]
+  },
+  {
+   "sahne": "smadde",
+   "konusan": "usta",
+   "baslik": "3. FARK: SIRA",
+   "renk": "#b8860b",
+   "maddeler": [
+    [
+     "❗",
+     "Yanlış kullanım fayda etmez",
+     "makine",
+     "uyari"
+    ],
+    [
+     "1️⃣",
+     "Önce kuru ot ve saman",
+     "önce",
+     "ok"
+    ],
+    [
+     "2️⃣",
+     "Islak yem en sona",
+     "ıslak",
+     "ok"
+    ]
+   ],
+   "metin": "Üçüncü fark, çoğu kişinin bilmediği: Makine yanlış kullanılırsa fayda etmez. Önce kuru ot ve samanı koy, ıslak yemi en sona bırak.",
+   "sure": 10.17,
+   "kelime_t": [
+    0.13,
+    0.61,
+    1.25,
+    1.49,
+    1.89,
+    3.01,
+    3.53,
+    3.89,
+    4.69,
+    5.09,
+    5.97,
+    6.45,
+    6.81,
+    6.97,
+    7.17,
+    7.57,
+    8.13,
+    8.53,
+    8.85,
+    9.09,
+    9.33
+   ],
+   "konusma": [
+    [
+     0.17,
+     2.57
+    ],
+    [
+     3.05,
+     5.61
+    ],
+    [
+     6.01,
+     9.87
+    ]
+   ]
+  },
+  {
+   "sahne": "smadde",
+   "konusan": "usta",
+   "baslik": "DİKKAT",
+   "renk": "#c62828",
+   "maddeler": [
+    [
+     "⏳",
+     "Çok uzun karıştırma",
+     "uzun",
+     "uyari"
+    ],
+    [
+     "🌾",
+     "Saman fazla incelmesin",
+     "saman",
+     "uyari"
+    ],
+    [
+     "📘",
+     "Süre: makinenin kılavuzu",
+     "kılavuzuna",
+     "ok"
+    ],
+    [
+     "🩺",
+     "Rasyon: veteriner / zooteknist",
+     "rasyonu",
+     "ok"
+    ]
+   ],
+   "metin": "Çok uzun da karıştırma. Saman fazla incelirse işkembe iyi çalışmaz. Süre için makinenin kılavuzuna bak, rasyonu da bir veteriner hekim ya da zooteknistle hazırla.",
+   "sure": 12.239,
+   "kelime_t": [
+    0.33,
+    0.57,
+    0.85,
+    0.97,
+    2.01,
+    2.41,
+    2.85,
+    3.61,
+    4.17,
+    4.41,
+    5.53,
+    5.85,
+    6.25,
+    6.81,
+    7.37,
+    8.01,
+    8.49,
+    8.73,
+    8.93,
+    9.53,
+    10.09,
+    10.25,
+    10.41,
+    11.263
+   ],
+   "konusma": [
+    [
+     0.37,
+     11.89
+    ]
+   ]
+  },
+  {
+   "sahne": "ykapanis",
+   "konusan": "dayi",
+   "metin": "Desene, hayvanlar da sofrada seçiciymiş, tıpkı benim torunlar gibi! Sizin hayvanlarınız yemlikte neyi bırakıyor? Yorumlara yazın. Serinin devamı için takip etmeyi unutmayın.",
+   "sure": 14.846,
+   "kelime_t": [
+    0.17,
+    1.09,
+    1.57,
+    1.69,
+    2.17,
+    3.21,
+    3.61,
+    3.97,
+    4.45,
+    6.33,
+    6.65,
+    7.53,
+    8.01,
+    8.25,
+    9.13,
+    9.65,
+    10.41,
+    11.01,
+    11.41,
+    11.85,
+    12.25,
+    12.65
+   ],
+   "konusma": [
+    [
+     0.21,
+     4.93
+    ],
+    [
+     6.37,
+     10.05
+    ],
+    [
+     10.45,
+     13.446
+    ]
+   ]
+  }
+ ]
+}
