@@ -1,0 +1,100 @@
+<!doctype html><html><head><meta charset="utf-8">
+<style>html,body{margin:0;background:transparent}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js","three/addons/":"./node_modules/three/examples/jsm/"}}</script>
+</head><body>
+<script type="module">
+import * as THREE from 'three';
+import {RoundedBoxGeometry} from 'three/addons/geometries/RoundedBoxGeometry.js';
+const W=1200,H=900;
+const r=new THREE.WebGLRenderer({antialias:true,alpha:true,preserveDrawingBuffer:true});
+r.setPixelRatio(1); r.setSize(W,H); r.setClearColor(0,0);
+r.shadowMap.enabled=true; r.shadowMap.type=THREE.PCFSoftShadowMap;
+r.toneMapping=THREE.ACESFilmicToneMapping; r.toneMappingExposure=1.08; r.outputColorSpace=THREE.SRGBColorSpace;
+document.body.appendChild(r.domElement);
+const sc=new THREE.Scene();
+const cam=new THREE.PerspectiveCamera(27,W/H,0.1,100); cam.position.set(6.6,3.1,7.4); cam.lookAt(-0.15,1.05,0);
+sc.add(new THREE.HemisphereLight(0xfffaf0,0x7a6a4a,1.15));
+const sun=new THREE.DirectionalLight(0xffffff,2.4); sun.position.set(5,9,7); sun.castShadow=true;
+sun.shadow.mapSize.set(2048,2048); Object.assign(sun.shadow.camera,{left:-6,right:6,top:6,bottom:-6}); sun.shadow.bias=-0.0005; sc.add(sun);
+const fill=new THREE.DirectionalLight(0xdfe9ff,0.7); fill.position.set(-5,4,-3); sc.add(fill);
+
+const M=(c,o={})=>new THREE.MeshStandardMaterial({color:c,roughness:.45,metalness:.2,...o});
+const mavi=M(0x1565c0,{roughness:.3,metalness:.35}), koyu=M(0x263238,{roughness:.6}), siyah=M(0x161616,{roughness:.85}),
+      gri=M(0xb0bec5,{metalness:.6,roughness:.3}), krom=M(0xdadada,{metalness:.9,roughness:.15});
+const ekle=(geo,mat,x,y,z,rx=0,ry=0,rz=0)=>{const m=new THREE.Mesh(geo,mat); m.position.set(x,y,z); m.rotation.set(rx,ry,rz); m.castShadow=true; m.receiveShadow=true; sc.add(m); return m;};
+
+const zem=new THREE.Mesh(new THREE.PlaneGeometry(14,10),new THREE.ShadowMaterial({opacity:.3})); zem.rotation.x=-Math.PI/2; zem.receiveShadow=true; sc.add(zem);
+
+function teker(x,y,z,rr,w,lug){
+  const g=new THREE.Group(); g.position.set(x,y,z);
+  const lastik=new THREE.Mesh(new THREE.CylinderGeometry(rr,rr,w,56,1,true),M(0x161616,{roughness:.85,side:THREE.DoubleSide})); lastik.rotation.x=Math.PI/2; lastik.castShadow=true; g.add(lastik);
+  for(const s of [-1,1]){const yan=new THREE.Mesh(new THREE.RingGeometry(rr*0.6,rr*0.93,56),M(0x1d1d1d,{roughness:.8,side:THREE.DoubleSide})); yan.position.z=s*w*0.47; g.add(yan);}
+  for(const s of [-1,1]){const t=new THREE.Mesh(new THREE.TorusGeometry(rr*0.9,rr*0.11,14,56),siyah); t.position.z=s*w*0.42; t.castShadow=true; g.add(t);}
+  const jant=new THREE.Mesh(new THREE.CylinderGeometry(rr*0.6,rr*0.6,w*0.86,40),gri); jant.rotation.x=Math.PI/2; g.add(jant);
+  const ic=new THREE.Mesh(new THREE.CylinderGeometry(rr*0.46,rr*0.46,w*0.9,40),M(0x78909c,{metalness:.5})); ic.rotation.x=Math.PI/2; g.add(ic);
+  const gobek=new THREE.Mesh(new THREE.CylinderGeometry(rr*0.18,rr*0.2,w*1.02,24),koyu); gobek.rotation.x=Math.PI/2; g.add(gobek);
+  for(let i=0;i<8;i++){const a=i/8*Math.PI*2; const c=new THREE.Mesh(new THREE.CylinderGeometry(rr*0.035,rr*0.035,w*1.04,10),krom); c.rotation.x=Math.PI/2; c.position.set(Math.cos(a)*rr*0.3,Math.sin(a)*rr*0.3,0); g.add(c);}
+  const n=lug, im=new THREE.InstancedMesh(new THREE.BoxGeometry(rr*0.11,rr*0.13,w*0.5),siyah,n*2), o=new THREE.Object3D(); let k=0;
+  for(let i=0;i<n;i++) for(const s of [-1,1]){const a=i/n*Math.PI*2+(s>0?0:Math.PI/n);
+    o.position.set(Math.cos(a)*(rr+rr*0.03),Math.sin(a)*(rr+rr*0.03),s*w*0.24); o.rotation.set(0,0,a); o.rotateX(s*0.5); o.updateMatrix(); im.setMatrixAt(k++,o.matrix);}
+  im.castShadow=true; g.add(im); sc.add(g); return g;}
+
+// tekerler
+const RR=0.88, RW=0.5, RX=-1.0, RZ=1.0;
+teker(RX,RR,RZ,RR,RW,24); teker(RX,RR,-RZ,RR,RW,24);
+const FR=0.47, FX=1.55, FZ=0.78;
+teker(FX,FR,FZ,FR,0.3,18); teker(FX,FR,-FZ,FR,0.3,18);
+
+// şasi ve motor kaputu
+ekle(new THREE.BoxGeometry(3.4,0.34,0.62),koyu,0.25,0.72,0);
+ekle(new RoundedBoxGeometry(2.15,0.7,0.98,5,0.16),mavi,0.82,1.16,0);
+ekle(new RoundedBoxGeometry(0.9,0.5,1.05,4,0.1),mavi,-0.55,1.05,0);  // gövde arka/aktarma
+// ızgara
+ekle(new THREE.BoxGeometry(0.06,0.52,0.8),koyu,1.9,1.1,0);
+for(let i=0;i<6;i++) ekle(new THREE.BoxGeometry(0.03,0.035,0.74),krom,1.935,0.9+i*0.08,0);
+// farlar
+for(const z of [-0.38,0.38]){const f=ekle(new THREE.CylinderGeometry(0.07,0.07,0.06,20),M(0xfff8e1,{emissive:0xfff3c4,emissiveIntensity:.8}),1.92,1.33,z,0,0,Math.PI/2);}
+// ön aks
+ekle(new THREE.BoxGeometry(0.22,0.16,1.5),koyu,FX,FR,0);
+// ön ağırlıklar (balast)
+ekle(new THREE.BoxGeometry(0.25,0.14,1.0),koyu,2.05,0.62,0);
+const AG=[];for(let i=0;i<7;i++){const z=-0.42+i*0.14; AG.push(ekle(new RoundedBoxGeometry(0.34,0.42,0.12,3,0.03),M(0x455a64,{roughness:.5,metalness:.4}),2.16,0.9,z));}
+ekle(new THREE.CylinderGeometry(0.03,0.03,1.0,12),krom,2.34,1.05,0,Math.PI/2,0,0);
+// arka çamurluklar
+for(const s of [-1,1]){
+  const c=new THREE.Mesh(new THREE.CylinderGeometry(RR+0.14,RR+0.14,RW+0.12,40,1,true,Math.PI-1.25,2.5),M(0x1565c0,{roughness:.3,metalness:.35,side:THREE.DoubleSide}));
+  c.rotation.x=Math.PI/2; c.position.set(RX,RR,s*RZ); c.castShadow=true; sc.add(c);
+  const k=new THREE.Mesh(new THREE.CylinderGeometry(RR+0.14,RR+0.14,0.03,40,1,false,Math.PI-1.25,2.5),M(0x0d47a1)); k.rotation.x=Math.PI/2; k.position.set(RX,RR,s*(RZ-RW/2-0.06)); sc.add(k);}
+// kabin
+const kz=0.72, kx0=-1.55, kx1=-0.2, ky0=1.32, ky1=2.75;
+for(const x of [kx0,kx1]) for(const z of [-kz,kz]) ekle(new THREE.BoxGeometry(0.07,ky1-ky0,0.07),siyah,x,(ky0+ky1)/2,z);
+ekle(new RoundedBoxGeometry(1.6,0.16,1.75,4,0.06),M(0xeceff1,{roughness:.35}),(kx0+kx1)/2,ky1+0.05,0);
+const cam_m=new THREE.MeshStandardMaterial({color:0xbfe3ff,transparent:true,opacity:.22,roughness:.05,metalness:.1,side:THREE.DoubleSide});
+ekle(new THREE.PlaneGeometry(1.35,ky1-ky0),cam_m,(kx0+kx1)/2,(ky0+ky1)/2,kz,0,0,0).castShadow=false;
+ekle(new THREE.PlaneGeometry(1.44,ky1-ky0),cam_m,kx1,(ky0+ky1)/2,0,0,Math.PI/2,0).castShadow=false;
+ekle(new THREE.BoxGeometry(1.4,0.08,1.5),koyu,(kx0+kx1)/2,ky0,0);
+// koltuk, direksiyon
+ekle(new RoundedBoxGeometry(0.45,0.12,0.5,3,0.04),siyah,-1.1,1.6,0); ekle(new RoundedBoxGeometry(0.12,0.55,0.5,3,0.04),siyah,-1.32,1.88,0);
+ekle(new THREE.CylinderGeometry(0.03,0.03,0.6,10),koyu,-0.5,1.72,0,0,0,0.6);
+ekle(new THREE.TorusGeometry(0.17,0.025,10,30),siyah,-0.66,2.0,0,0,Math.PI/2,0.6);
+// egzoz
+ekle(new THREE.CylinderGeometry(0.055,0.055,1.2,16),koyu,0.12,2.0,0.36); ekle(new THREE.CylinderGeometry(0.07,0.055,0.12,16),krom,0.12,2.62,0.36);
+// arka üç nokta askı
+ekle(new THREE.BoxGeometry(0.7,0.08,0.08),koyu,-1.85,0.75,0.4,0,0,0.25); ekle(new THREE.BoxGeometry(0.7,0.08,0.08),koyu,-1.85,0.75,-0.4,0,0,0.25);
+ekle(new THREE.BoxGeometry(0.6,0.07,0.07),koyu,-1.8,1.25,0,0,0,-0.2);
+
+// patinaj: arka tekerin arkasından savrulan toprak
+let seed=11; const rnd=()=>{seed=(seed*16807)%2147483647; return seed/2147483647;};
+for(const [renk,op,n,boy] of [[0xa1887f,.28,120,.1],[0x6d4c41,1,90,.045]]){
+  const im=new THREE.InstancedMesh(new THREE.IcosahedronGeometry(boy,1),new THREE.MeshStandardMaterial({color:renk,transparent:op<1,opacity:op,roughness:1,flatShading:true}),n);
+  const o=new THREE.Object3D();
+  for(let i=0;i<n;i++){const t=rnd(); const x=RX-0.75-t*1.7, y=0.08+t*1.0*(0.5+rnd()*0.8)+rnd()*0.15, z=RZ+(rnd()-0.5)*0.7;
+    o.position.set(x,y,z); const s=0.5+rnd()*(op<1?1.6:1); o.scale.set(s,s,s); o.updateMatrix(); im.setMatrixAt(i,o.matrix);}
+  sc.add(im);}
+
+r.render(sc,cam);
+// etiket noktaları (ekran pikseli)
+const P=v=>{const p=v.clone().project(cam); return [(p.x+1)/2*W,(1-p.y)/2*H];};
+window.NOKTA={agirlik:P(new THREE.Vector3(2.2,0.95,0.3)), arkateker:P(new THREE.Vector3(RX,RR*1.6,RZ+RW/2)), onteker:P(new THREE.Vector3(FX,FR*1.9,FZ+0.15)), toz:P(new THREE.Vector3(RX-1.8,0.7,RZ))};
+window.HAZIR=true;
+</script></body></html>
